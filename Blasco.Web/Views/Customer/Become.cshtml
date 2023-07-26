@@ -1,0 +1,33 @@
+﻿@model BecomeCustomerFormModel
+@using Blasco.Data.Models.Enums
+@{
+    ViewBag.Title = "Become Customer";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData.ModelState["Error"].Errors.First().ErrorMessage
+    </div>
+}
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="CustomerType"></label>
+                <select name="CustomerType">
+                <option value="0">@CustomerType.Freelancer</option>
+                <option value="1">@CustomerType.Business</option>
+                <option value="2">@CustomerType.Private</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <input class="btn btn-primary mt-3 " type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

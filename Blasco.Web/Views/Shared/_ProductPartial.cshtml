@@ -1,0 +1,46 @@
+﻿@model ProductAllViewModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Product Image">
+        <div class="card-body text-center">
+            <h4>@Model.Title</h4>
+           
+            <h6>
+                Price:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </h6>
+            <h6>(@(Model.IsPurchased ? "Purchased" : "Not Purchased"))</h6>
+            @if (!String.IsNullOrWhiteSpace(Model.City))
+            {
+                <h6>City: <b>@Model.City</b></h6>
+            }
+            <br />
+            <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-success">Details</a>
+            @if (this.User.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-controller="Product" asp-action="EditProduct" asp-route-id="@Model.Id"
+                   class="btn btn-warning">EditProduct</a>
+
+                <a asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@Model.Id"
+                   class="btn btn-danger">DeleteProduct</a>
+                <p></p>
+                @if (!Model.IsPurchased)
+                {
+                    <form class="input-group-sm" asp-controller="Product"
+                  asp-action="Purchase" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Purchase" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Product" asp-action="CancelPurchase"
+                  asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Cancel Purchase" />
+                    </form>
+                }
+            }
+        </div>
+    </div>
+</div>

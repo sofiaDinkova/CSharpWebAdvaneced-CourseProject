@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Blasco.Web-fdeaa844-f15d-483d-a341-12673f50a898</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blasco.Common\Blasco.Common.csproj" />
+    <ProjectReference Include="..\Blasco.Data.Models\Blasco.Data.Models.csproj" />
+    <ProjectReference Include="..\Blasco.Data\Blasco.Data.csproj" />
+    <ProjectReference Include="..\Blasco.Services.Data.Models\Blasco.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\Blasco.Services.Data\Blasco.Services.Data.csproj" />
+    <ProjectReference Include="..\Blasco.Web.Infrastructure\Blasco.Web.Infrastructure.csproj" />
+    <ProjectReference Include="..\Blasco.Web.ViewModels\Blasco.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

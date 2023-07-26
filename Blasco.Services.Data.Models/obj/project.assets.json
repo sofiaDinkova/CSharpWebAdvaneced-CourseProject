@@ -1,0 +1,113 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Blasco.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Blasco.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Blasco.Common.dll": {}
+        }
+      },
+      "Blasco.Web.ViewModels/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Blasco.Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Blasco.Web.ViewModels.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Blasco.Web.ViewModels.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Blasco.Common/1.0.0": {
+      "type": "project",
+      "path": "../Blasco.Common/Blasco.Common.csproj",
+      "msbuildProject": "../Blasco.Common/Blasco.Common.csproj"
+    },
+    "Blasco.Web.ViewModels/1.0.0": {
+      "type": "project",
+      "path": "../Blasco.Web.ViewModels/Blasco.Web.ViewModels.csproj",
+      "msbuildProject": "../Blasco.Web.ViewModels/Blasco.Web.ViewModels.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Blasco.Common >= 1.0.0",
+      "Blasco.Web.ViewModels >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Sofia\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Services.Data.Models\\Blasco.Services.Data.Models.csproj",
+      "projectName": "Blasco.Services.Data.Models",
+      "projectPath": "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Services.Data.Models\\Blasco.Services.Data.Models.csproj",
+      "packagesPath": "C:\\Users\\Sofia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Services.Data.Models\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Sofia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Common\\Blasco.Common.csproj": {
+              "projectPath": "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Common\\Blasco.Common.csproj"
+            },
+            "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Web.ViewModels\\Blasco.Web.ViewModels.csproj": {
+              "projectPath": "C:\\Users\\Sofia\\source\\repos\\CSharpWebAdvaneced-CourseProject\\Blasco.Web.ViewModels\\Blasco.Web.ViewModels.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
