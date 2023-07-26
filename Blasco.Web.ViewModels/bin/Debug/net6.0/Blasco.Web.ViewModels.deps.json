@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Blasco.Web.ViewModels/1.0.0": {
+        "dependencies": {
+          "Blasco.Common": "1.0.0"
+        },
+        "runtime": {
+          "Blasco.Web.ViewModels.dll": {}
+        }
+      },
+      "Blasco.Common/1.0.0": {
+        "runtime": {
+          "Blasco.Common.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Blasco.Web.ViewModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blasco.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
