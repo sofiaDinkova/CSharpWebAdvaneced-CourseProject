@@ -67,7 +67,7 @@ namespace Blasco.Web.Controllers
             {
                 return this.GeneralError();
             }
-            
+
         }
 
         [HttpPost]
@@ -216,7 +216,7 @@ namespace Blasco.Web.Controllers
             catch (Exception)
             {
                 return this.GeneralError();
-            } 
+            }
 
             return this.View(myProducts);
         }
@@ -270,7 +270,8 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = this.User.GetId()!;
+            
+            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.productService
                 .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
@@ -317,12 +318,12 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = this.User.GetId()!;
+            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.productService
                 .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
 
-            if (!isCreatorOwner) 
+            if (!isCreatorOwner)
             {
                 this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
                 return this.RedirectToAction("Mine", "Product");
@@ -342,7 +343,55 @@ namespace Blasco.Web.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> PurchaseProduct(string id)
+        {
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            bool isPurcherchesed = await this.productService.IsPurchasedByIdAsync(id);
+            if (isPurcherchesed)
+            {
+                this.TempData[ErrorMessage] = "Product is allready purchesed";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            //TODO: change ProductEntity to have Buyer instead of Customer; Change logic so that creators can also buy Products!
+            //string userId = this.User.GetId()!;
+
+            //bool isTheCreatorOfTheProductTheUser = await this.productService.IsCreatorWithIdOwnerOfProductWithIdAsync(id, userId);
+
+            //if (isTheCreatorOfTheProductTheUser)
+            //{
+            //    this.TempData[ErrorMessage] = "Creators of products can not purchase their own products!";
+            //    return this.RedirectToAction("AllProducts", "Product");
+            //}
+
+            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
+
+            if (!isCustomer)
+            {
+                this.TempData[ErrorMessage] = "You must be a customer to purchase Products";
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            try
+            {
+                string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
+                await this.productService.PuchaseProductAsync(id, customerId);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+
+            this.TempData[SuccessMessage] = "Product was purchased successfully";
+            return this.RedirectToAction("Mine", "Product");
+        }
 
         private IActionResult GeneralError()
         {

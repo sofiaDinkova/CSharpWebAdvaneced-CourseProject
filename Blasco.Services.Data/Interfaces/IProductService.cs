@@ -30,5 +30,9 @@ namespace Blasco.Services.Data.Interfaces
 
         Task DeleteProductByIdAsync(string id);
 
+        Task<bool> IsPurchasedByIdAsync(string productId);
+
+        Task PuchaseProductAsync(string productId, string userId);
+
     }
 }

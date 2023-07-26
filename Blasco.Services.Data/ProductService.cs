@@ -258,5 +258,26 @@ namespace Blasco.Services.Data
 
             await this.dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> IsPurchasedByIdAsync(string productId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            return product.CustomerId.HasValue;
+        }
+
+        public async Task PuchaseProductAsync(string productId, string userId)
+        {
+            Product product = await this.dbContext
+                 .Products
+                 .FirstAsync(p => p.Id.ToString() == productId);
+
+            product.CustomerId = Guid.Parse(userId);
+
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }
