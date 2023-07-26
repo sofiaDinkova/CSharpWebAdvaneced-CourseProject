@@ -34,5 +34,8 @@ namespace Blasco.Services.Data.Interfaces
 
         Task PuchaseProductAsync(string productId, string userId);
 
+        Task<bool> isPurchesedByCustomerWithIdAsync(string productId, string customerId);
+
+        Task CancelProductAsync(string productId, string customerId);
     }
 }

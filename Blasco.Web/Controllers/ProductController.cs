@@ -393,6 +393,46 @@ namespace Blasco.Web.Controllers
             return this.RedirectToAction("Mine", "Product");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CancelProduct(string id)
+        {
+            bool productExists = await this.productService.ExistsByIdAsync(id);
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            bool isPurcherchesed = await this.productService.IsPurchasedByIdAsync(id);
+            if (!isPurcherchesed)
+            {
+                this.TempData[ErrorMessage] = "Product is not purchesed";
+                return this.RedirectToAction("Mine", "Product");
+            }
+
+            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
+
+            bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, customerId);
+
+            if (!didTheCurrCustomerPurchaseTheProduct)
+            {
+                this.TempData[ErrorMessage] = "Product is not purchesed by you";
+                return this.RedirectToAction("Mine", "Product");
+            }
+
+            try
+            {
+                await this.productService.CancelProductAsync(id, customerId);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+
+            this.TempData[SuccessMessage] = "Product was canceled successfully";
+            return this.RedirectToAction("Mine", "Product");
+        }
+
         private IActionResult GeneralError()
         {
             this.TempData[ErrorMessage] = "Unexpected error occured! Please try again letar or contact an administrator.";

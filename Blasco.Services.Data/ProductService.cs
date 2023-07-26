@@ -156,10 +156,10 @@ namespace Blasco.Services.Data
             Product product = await this.dbContext
                 .Products
                 .Include(p => p.Category)
-                .Include(p=>p.Creator)
+                .Include(p => p.Creator)
                 .Where(p => p.IsActive)
-                .FirstAsync(h=>h.Id.ToString() == productId);
-           
+                .FirstAsync(h => h.Id.ToString() == productId);
+
             string creatorEmail = product.Creator.Email;
 
             return new ProductDetailsViewModel
@@ -273,9 +273,32 @@ namespace Blasco.Services.Data
         {
             Product product = await this.dbContext
                  .Products
+                 .Where(p => p.IsActive)
                  .FirstAsync(p => p.Id.ToString() == productId);
 
             product.CustomerId = Guid.Parse(userId);
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> isPurchesedByCustomerWithIdAsync(string productId, string customerId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            return product.CustomerId.HasValue && product.CustomerId.ToString()== customerId; 
+        }
+
+        public async Task CancelProductAsync(string productId, string customerId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            product.CustomerId = null;
 
             await this.dbContext.SaveChangesAsync();
         }
