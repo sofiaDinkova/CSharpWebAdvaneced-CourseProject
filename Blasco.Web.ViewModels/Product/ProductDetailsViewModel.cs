@@ -10,5 +10,7 @@
 
         public string CreatorEmail { get; set; } = null!;
 
+        public string CreatorPseudonym { get; set;} = null!;
+
     }
 }

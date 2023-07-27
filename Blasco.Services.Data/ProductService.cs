@@ -162,6 +162,7 @@ namespace Blasco.Services.Data
                 .FirstAsync(h => h.Id.ToString() == productId);
 
             string creatorEmail = product.Creator.Email;
+            string creatorPseudonym = product.Creator.Pseudonym;
 
             return new ProductDetailsViewModel
             {
@@ -174,6 +175,7 @@ namespace Blasco.Services.Data
                 Category = product.Category.Name,
                 CreatorId = product.CreatorId.ToString(),
                 CreatorEmail = creatorEmail,
+                CreatorPseudonym = creatorPseudonym,
             };
         }
 
