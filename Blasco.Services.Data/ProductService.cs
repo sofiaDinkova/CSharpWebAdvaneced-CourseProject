@@ -3,6 +3,7 @@ using Blasco.Data.Models;
 
 using Blasco.Services.Data.Interfaces;
 using Blasco.Services.Data.Models.Product;
+using Blasco.Services.Data.Models.Statistics;
 using Blasco.Web.ViewModels.Home;
 using Blasco.Web.ViewModels.Product;
 using Blasco.Web.ViewModels.Product.Enums;
@@ -301,6 +302,17 @@ namespace Blasco.Services.Data
             product.CustomerId = null;
 
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<StatisticsServiceModel> GetStatisticsAsync()
+        {
+            return new StatisticsServiceModel()
+            {
+                TotalProducts = await this.dbContext.Products.CountAsync(),
+                TotalPurchesedProducts = await this.dbContext.Products
+                    .Where(p => p.CustomerId.HasValue)
+                    .CountAsync()
+            };
         }
     }
 }

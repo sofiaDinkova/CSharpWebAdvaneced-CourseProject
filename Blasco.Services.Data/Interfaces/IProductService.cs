@@ -1,4 +1,5 @@
 ﻿using Blasco.Services.Data.Models.Product;
+using Blasco.Services.Data.Models.Statistics;
 using Blasco.Web.ViewModels.Home;
 using Blasco.Web.ViewModels.Product;
 
@@ -37,5 +38,8 @@ namespace Blasco.Services.Data.Interfaces
         Task<bool> isPurchesedByCustomerWithIdAsync(string productId, string customerId);
 
         Task CancelProductAsync(string productId, string customerId);
+
+        Task<StatisticsServiceModel> GetStatisticsAsync();
+
     }
 }
