@@ -40,5 +40,14 @@
         {
             public const int MaxNumEnumCustomerType = 2;
         }
+
+        public static class Creator
+        {
+            public const int FirstNameMinLenght = 1;
+            public const int FirstNameMaxLenght = 15;
+
+            public const int LastNameMinLenght = 1;
+            public const int LastNameMaxLenght = 15;
+        }
     }
 }
