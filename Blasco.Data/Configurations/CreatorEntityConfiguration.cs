@@ -14,6 +14,9 @@
 
             builder.Property(c => c.LastName)
                 .HasDefaultValue("Testov");
+
+            builder.Property(c => c.Pseudonym)
+                .HasDefaultValue("Pseudonym");
         }
     }
 }

@@ -35,7 +35,8 @@ namespace Blasco.Web.Controllers
             Creator creator = new Creator()
             {
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                Pseudonym = model.Pseudonym,
             };
 
             await this.creatorManager.SetUserNameAsync(creator, model.Email);

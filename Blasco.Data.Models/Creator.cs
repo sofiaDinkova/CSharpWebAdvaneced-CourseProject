@@ -21,6 +21,11 @@
         [Required]
         [MaxLength(LastNameMaxLenght)]
         public string LastName { get; set; } = null!;
+
+        [Required]
+        [MaxLength(PseudonymMaxLenght)]
+        public string Pseudonym { get; set; } = null!;
+
         public ICollection<Project> Projects { get; set; }
 
         public ICollection<Product> Products { get; set; }
