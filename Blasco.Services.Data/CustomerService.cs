@@ -48,7 +48,23 @@
                 return null;
             }
 
-            return customer.Id.ToString();  
+            return customer.Id.ToString();
+        }
+
+        public async Task<bool> HasProductWithIdAsync(string productId, string userId)
+        {
+            Customer? customer = await this.dbContext
+                .Customers
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.CreatorId.ToString() == userId);
+
+            if (customer == null)
+            {
+                return false;
+            }
+
+            productId = productId.ToLower();
+            return customer.Products.Any(p => p.Id.ToString() == productId);
         }
     }
 }

@@ -1,4 +1,12 @@
 ﻿@model IEnumerable<IndexViewModel>
+@using Blasco.Services.Data.Interfaces
+@using Blasco.Web.Infrastructure.Extentions;
+
+@inject ICustomerService CustomerService
+@{
+    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+}
+
 @{
     ViewData["Title"] = "Home Page";
     var projects = Model.ToList();
@@ -15,9 +23,11 @@
         <p class="lead">
             @if (User.Identity?.IsAuthenticated ?? false)
             {
-                <a asp-controller="Projects" asp-action="Add" class="btn btn-primary
-btn-lg"
-                   role="button">Add Project</a>
+                @if (!isUserCustomer)
+                {
+                    <a asp-controller="Projects" asp-action="Add" class="btn btn-primary btn-lg"
+                       role="button">Add Project</a>
+                }
             }
         </p>
     </div>
@@ -31,12 +41,10 @@ btn-lg"
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img class="d-block w-100" style="height:500px"
                      src="@project.ImageUrl" alt="@project.Title">
-                © SoftUni – about.softuni.bg. Copyrighted document. Unauthorized copy, reproduction or use is not permitted.
 
-                Follow us: Page 25 of 69
                 <div class="carousel-caption d-none d-md-block">
                     <h5>
-                        <a class="btn btn-primary" asp-controller="House" aspaction="Details"
+                        <a class="btn btn-primary" asp-controller="House" asp-action="Details"
                        asp-route-id="@project.Id"> @project.Title</a>
                     </h5>
                 </div>
@@ -52,3 +60,22 @@ btn-lg"
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+
+<div class="mb-5"></div>
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-primary" id="statistics_btn">Show Statistics</button>
+    </div>
+</div>
+
+<div class="mt-4 p-5 bg-white d-none" id="statistics_box">
+    <div class="row">
+        <h2 class="col-md-6 text-center" id="total_products"></h2>
+        <h2 class="col-md-6 text-center" id="total_purchased_products"></h2>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>statistics();</script>
+}

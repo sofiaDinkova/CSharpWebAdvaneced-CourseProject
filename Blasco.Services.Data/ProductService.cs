@@ -3,6 +3,7 @@ using Blasco.Data.Models;
 
 using Blasco.Services.Data.Interfaces;
 using Blasco.Services.Data.Models.Product;
+using Blasco.Services.Data.Models.Statistics;
 using Blasco.Web.ViewModels.Home;
 using Blasco.Web.ViewModels.Product;
 using Blasco.Web.ViewModels.Product.Enums;
@@ -156,10 +157,10 @@ namespace Blasco.Services.Data
             Product product = await this.dbContext
                 .Products
                 .Include(p => p.Category)
-                .Include(p=>p.Creator)
+                .Include(p => p.Creator)
                 .Where(p => p.IsActive)
-                .FirstAsync(h=>h.Id.ToString() == productId);
-           
+                .FirstAsync(h => h.Id.ToString() == productId);
+
             string creatorEmail = product.Creator.Email;
 
             return new ProductDetailsViewModel
@@ -257,6 +258,61 @@ namespace Blasco.Services.Data
             productToDelete.IsActive = false;
 
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsPurchasedByIdAsync(string productId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            return product.CustomerId.HasValue;
+        }
+
+        public async Task PuchaseProductAsync(string productId, string userId)
+        {
+            Product product = await this.dbContext
+                 .Products
+                 .Where(p => p.IsActive)
+                 .FirstAsync(p => p.Id.ToString() == productId);
+
+            product.CustomerId = Guid.Parse(userId);
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> isPurchesedByCustomerWithIdAsync(string productId, string customerId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            return product.CustomerId.HasValue && product.CustomerId.ToString()== customerId; 
+        }
+
+        public async Task CancelProductAsync(string productId, string customerId)
+        {
+            Product product = await this.dbContext
+                .Products
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            product.CustomerId = null;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<StatisticsServiceModel> GetStatisticsAsync()
+        {
+            return new StatisticsServiceModel()
+            {
+                TotalProducts = await this.dbContext.Products.CountAsync(),
+                TotalPurchesedProducts = await this.dbContext.Products
+                    .Where(p => p.CustomerId.HasValue)
+                    .CountAsync()
+            };
         }
     }
 }

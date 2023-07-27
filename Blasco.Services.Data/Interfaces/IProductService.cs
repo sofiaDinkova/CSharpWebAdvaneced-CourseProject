@@ -1,4 +1,5 @@
 ﻿using Blasco.Services.Data.Models.Product;
+using Blasco.Services.Data.Models.Statistics;
 using Blasco.Web.ViewModels.Home;
 using Blasco.Web.ViewModels.Product;
 
@@ -29,6 +30,16 @@ namespace Blasco.Services.Data.Interfaces
         Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productid);
 
         Task DeleteProductByIdAsync(string id);
+
+        Task<bool> IsPurchasedByIdAsync(string productId);
+
+        Task PuchaseProductAsync(string productId, string userId);
+
+        Task<bool> isPurchesedByCustomerWithIdAsync(string productId, string customerId);
+
+        Task CancelProductAsync(string productId, string customerId);
+
+        Task<StatisticsServiceModel> GetStatisticsAsync();
 
     }
 }
