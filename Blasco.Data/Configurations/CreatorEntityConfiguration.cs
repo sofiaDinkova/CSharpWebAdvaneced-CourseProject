@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Data.Configurations
+﻿namespace Blasco.Data.Configurations
 {
-    internal class CreatorEntityConfiguration
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Blasco.Data.Models;
+
+    public class CreatorEntityConfiguration : IEntityTypeConfiguration<Creator>
     {
+        public void Configure(EntityTypeBuilder<Creator> builder)
+        {
+            builder.Property(c => c.FirstName)
+                .HasDefaultValue("Test");
+
+            builder.Property(c => c.LastName)
+                .HasDefaultValue("Testov");
+        }
     }
 }

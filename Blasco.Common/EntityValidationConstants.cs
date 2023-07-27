@@ -43,6 +43,10 @@
 
         public static class Creator
         {
+            public const int PassMinLenght = 6;
+            public const int PassMaxLenght = 100;
+
+
             public const int FirstNameMinLenght = 1;
             public const int FirstNameMaxLenght = 15;
 

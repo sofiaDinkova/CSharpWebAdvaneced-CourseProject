@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Blasco.Data;
 namespace Blasco.Web
 {
     using Microsoft.EntityFrameworkCore;
