@@ -7,6 +7,7 @@ namespace Blasco.Web
     using Blasco.Services.Data.Interfaces;
     using Blasco.Web.Infrastructure.Extentions;
     using Blasco.Web.Infrastructure.ModelBinders;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Program
     {
@@ -37,6 +38,7 @@ namespace Blasco.Web
                 .AddMvcOptions(options =>
                 {
                     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
 

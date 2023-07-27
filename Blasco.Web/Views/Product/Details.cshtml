@@ -1,4 +1,16 @@
 ﻿@model ProductDetailsViewModel
+@using Blasco.Services.Data.Interfaces
+@using Blasco.Web.Infrastructure.Extentions;
+
+@inject ICustomerService CustomerService
+@inject ICreatorService CreatorService
+
+@{
+    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+    bool isCreatorrOwnerOfProduct = await this.CreatorService.HasProductWithIdAsync(Model.Id, this.User.GetId());
+    bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
+}
+
 @{
     ViewBag.Title = "Prodict Details";
 }
@@ -26,25 +38,30 @@
             <div class="form-inline">
                 @if (this.User.Identity?.IsAuthenticated ?? false)
                 {
-                    <a class="btn btn-warning" asp-controller="Product" aspaction="Edit"
-                   asp-route-id="@Model.Id">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="Product" aspaction="Delete"
-                   asp-route-id="@Model.Id">Delete</a>
-                    @if (!Model.IsPurchased)
+                    @if (!isUserCustomer && isCreatorrOwnerOfProduct)
+                    {
+                        <a asp-controller="Product" asp-action="EditProduct"
+                   asp-route-id="@Model.Id" class="btn btn-warning">EditProduct</a>
+                        <a asp-controller="Product" asp-action="DeleteProduct"
+                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">DeleteProduct</a>
+
+                    }
+
+                    @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
                     {
                         <form class="ml-2" asp-controller="Product"
-                      asp-action="Purchase" asp-route-id="@Model.Id"
+                      asp-action="PurchaseProduct" asp-route-id="@Model.Id"
                               method="post">
                             <input class="btn btn-primary" type="submit"
-                                   value="Purchase" />
+                                   value="PurchaseProduct" />
                         </form>
                     }
-                    else
+                    @if (isUserCustomer && isCustomerOwnerOfProduct)
                     {
-                        <form class="ml-2" asp-controller="Product" asp-action="CancelPurchase"
-                      asp-route-id="@Model.Id" method="post">
+                        <form class="ml-2" asp-controller="Product" asp-action="CancelProduct"
+                            asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit"
-                                   value="Cancel Purchase" />
+                                   value="CancelProduct" />
                         </form>
                     }
                 }

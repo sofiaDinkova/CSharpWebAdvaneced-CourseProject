@@ -26,7 +26,7 @@ namespace Blasco.WebApi
 
             builder.Services.AddCors(setup =>
             {
-                setup.AddPolicy("Blasco", policyBuilder =>
+                setup.AddPolicy("BlascoDev", policyBuilder =>
                 {
                     policyBuilder.WithOrigins("https://localhost:7138")
                     .AllowAnyHeader()
@@ -50,7 +50,7 @@ namespace Blasco.WebApi
 
             app.MapControllers();
 
-            app.UseCors("Blasco");
+            app.UseCors("BlascoDev");
 
             app.Run();
         }

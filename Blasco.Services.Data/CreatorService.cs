@@ -18,9 +18,25 @@ namespace Blasco.Services.Data
         {
             Creator creator = await this.dbContext
                 .Users
-                .FirstAsync(c=>c.Id.ToString() == creatorId);
+                .FirstAsync(c => c.Id.ToString() == creatorId);
 
             return creator.Products.Any();
+        }
+
+        public async Task<bool> HasProductWithIdAsync(string productId, string userId)
+        {
+            Creator? creator = await this.dbContext
+                .Users
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+
+            if (creator == null)
+            {
+                return false;
+            }
+
+            productId = productId.ToLower();
+            return creator.Products.Any(p => p.Id.ToString() == productId);
         }
     }
 }

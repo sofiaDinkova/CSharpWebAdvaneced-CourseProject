@@ -1,14 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Blasco.Data.Models
+@using Blasco.Services.Data.Interfaces;
+@using Blasco.Web.Infrastructure.Extentions;
+
 @inject SignInManager<Creator> SignInManager
 @inject UserManager<Creator> UserManager
+
+@inject ICustomerService CustomerService
+@{
+    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
+        if (!isUserCustomer)
+        {
+            <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Become" >Become Customer!</a>
         </li>
+        }
+        
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>

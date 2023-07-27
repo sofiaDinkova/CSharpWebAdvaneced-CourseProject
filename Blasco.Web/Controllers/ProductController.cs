@@ -15,12 +15,14 @@ namespace Blasco.Web.Controllers
         private readonly IProductProjectCategoryService productProjectCategoryService;
         private readonly ICustomerService customerService;
         private readonly IProductService productService;
+        private readonly ICreatorService creatorService;
 
-        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService)
+        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService, ICreatorService creatorService)
         {
             this.productProjectCategoryService = productProjectCategoryService;
             this.customerService = customerService;
             this.productService = productService;
+            this.creatorService = creatorService;
         }
 
         [HttpGet]
@@ -271,10 +273,9 @@ namespace Blasco.Web.Controllers
             }
 
             
-            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
+            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
-            bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+            bool isCreatorOwner = await this.creatorService.HasProductWithIdAsync(id, this.User.GetId()!);
 
             if (!isCreatorOwner)
             {
@@ -318,10 +319,10 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
+            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
 
             if (!isCreatorOwner)
             {
