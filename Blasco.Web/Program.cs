@@ -36,6 +36,11 @@ namespace Blasco.Web
 
             builder.Services.AddApplicationServices(typeof(IProjectService));
 
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LogoutPath = "/Creator/Login";
+            });
+
             builder.Services
                 .AddControllersWithViews()
                 .AddMvcOptions(options =>
