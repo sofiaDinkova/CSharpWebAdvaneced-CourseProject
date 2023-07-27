@@ -24,6 +24,16 @@ namespace Blasco.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(setup =>
+            {
+                setup.AddPolicy("Blasco", policyBuilder =>
+                {
+                    policyBuilder.WithOrigins("https://localhost:7138")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,6 +49,8 @@ namespace Blasco.WebApi
 
 
             app.MapControllers();
+
+            app.UseCors("Blasco");
 
             app.Run();
         }
