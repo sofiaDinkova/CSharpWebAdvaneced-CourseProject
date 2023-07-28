@@ -58,8 +58,7 @@ namespace Blasco.Web
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
-                //app.UseDeveloperExceptionPage();
-                app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+                app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -76,7 +75,10 @@ namespace Blasco.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.SeedAdministrator(DevelopmentAdminEmail);
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdministrator(DevelopmentAdminEmail);
+            }
 
             //app.MapControllerRoute(
             //name: "default",

@@ -52,7 +52,7 @@ namespace Blasco.Web.Controllers
             {
                 bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-                if (isCustomer)
+                if (isCustomer && !this.User.IsAdmin())
                 {
                     this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                     return this.RedirectToAction("Home", "Index");
@@ -77,7 +77,7 @@ namespace Blasco.Web.Controllers
         {
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer)
+            if (isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                 return this.RedirectToAction("Home", "Index");
@@ -128,7 +128,7 @@ namespace Blasco.Web.Controllers
 
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer)
+            if (isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
@@ -139,7 +139,7 @@ namespace Blasco.Web.Controllers
             bool isCreatorOwner = await this.productService
                 .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
 
-            if (!isCreatorOwner)
+            if (!isCreatorOwner && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
                 return this.RedirectToAction("Mine", "Product");
@@ -169,7 +169,7 @@ namespace Blasco.Web.Controllers
 
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer)
+            if (isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
@@ -179,6 +179,12 @@ namespace Blasco.Web.Controllers
 
             bool isCreatorOwner = await this.productService
                 .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator of the Product to delete it";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
 
             try
             {
@@ -203,8 +209,20 @@ namespace Blasco.Web.Controllers
                 string creatorId = this.User.GetId();
 
                 bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(creatorId);
+                if (this.User.IsAdmin())
+                {
+                    string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
+                    //purchased Product as customer
+                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
+                    //added Product as creator
+                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(creatorId));
 
-                if (isUserCustomer)
+                    //preventing doubles(Products)
+                    myProducts = myProducts
+                        .DistinctBy(p => p.Id)
+                        .ToList();
+                }
+                else if (isUserCustomer)
                 {
                     string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
 
@@ -266,18 +284,18 @@ namespace Blasco.Web.Controllers
 
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer)
+            if (isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            
+
             //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.creatorService.HasProductWithIdAsync(id, this.User.GetId()!);
 
-            if (!isCreatorOwner)
+            if (!isCreatorOwner && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
                 return this.RedirectToAction("Mine", "Product");
@@ -313,7 +331,7 @@ namespace Blasco.Web.Controllers
 
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer)
+            if (isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
@@ -324,7 +342,7 @@ namespace Blasco.Web.Controllers
             bool isCreatorOwner = await this.productService
                 .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
 
-            if (!isCreatorOwner)
+            if (!isCreatorOwner && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
                 return this.RedirectToAction("Mine", "Product");
@@ -374,7 +392,7 @@ namespace Blasco.Web.Controllers
 
             bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (!isCustomer)
+            if (!isCustomer && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be a customer to purchase Products";
                 return this.RedirectToAction("Index", "Home");
