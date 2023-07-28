@@ -3,6 +3,7 @@ using Blasco.Web.ViewModels.Creator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static Blasco.Common.NotificationMessagesConstents;
 
 namespace Blasco.Web.Controllers
@@ -38,6 +39,8 @@ namespace Blasco.Web.Controllers
                 LastName = model.LastName,
                 Pseudonym = model.Pseudonym,
             };
+
+            //await this.creatorManager.AddClaimAsync(creator, new Claim("FirstName", model.FirstName));
 
             await this.creatorManager.SetUserNameAsync(creator, model.Email);
             await this.creatorManager.SetEmailAsync(creator, model.Email);
