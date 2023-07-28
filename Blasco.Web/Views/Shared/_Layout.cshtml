@@ -43,7 +43,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Mine">My Product</a>
                             </li>
-                            @if (!isUserCustomer)
+                            @if (!isUserCustomer || this.User.IsAdmin())
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Mine">My Projects</a>

@@ -38,7 +38,7 @@
             <div class="form-inline">
                 @if (this.User.Identity?.IsAuthenticated ?? false)
                 {
-                    @if (!isUserCustomer && isCreatorrOwnerOfProduct)
+                    @if ((!isUserCustomer && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
                         <a asp-controller="Product" asp-action="EditProduct"
                    asp-route-id="@Model.Id" class="btn btn-warning">EditProduct</a>
@@ -72,6 +72,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Creator Info</h5>
                     <p class="card-text">Email: @Model.CreatorEmail</p>
+                    <p class="card-text">Pseudonym: @Model.CreatorPseudonym</p>
                 </div>
             </div>
         </div>

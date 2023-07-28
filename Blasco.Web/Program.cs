@@ -1,13 +1,16 @@
 namespace Blasco.Web
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
-    using Blasco.Data;
-    using Blasco.Data.Models;
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Web.Infrastructure.Extentions;
-    using Blasco.Web.Infrastructure.ModelBinders;
-    using Microsoft.AspNetCore.Mvc;
+    using Data;
+    using Data.Models;
+    using Services.Data.Interfaces;
+    using Infrastructure.Extentions;
+    using Infrastructure.ModelBinders;
+
+    using static Common.GeneralApplicationConstants;
 
     public class Program
     {
@@ -29,9 +32,15 @@ namespace Blasco.Web
                 options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
                 options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
             })
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<BlascoDbContext>();
 
             builder.Services.AddApplicationServices(typeof(IProjectService));
+
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LogoutPath = "/Creator/Login";
+            });
 
             builder.Services
                 .AddControllersWithViews()
@@ -65,6 +74,11 @@ namespace Blasco.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdministrator(DevelopmentAdminEmail);
+            }
 
             //app.MapControllerRoute(
             //name: "default",

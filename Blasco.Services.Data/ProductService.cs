@@ -82,7 +82,7 @@ namespace Blasco.Services.Data
                      .OrderByDescending(p => p.CreatedOn),
                 ProductSorting.Oldest => productQuery
                     .OrderBy(p => p.CreatedOn),
-                ProductSorting.PriceAscending => productQuery
+                ProductSorting.PriceAscending => productQuery 
                     .OrderBy(p => p.Price),
                 ProductSorting.PriceDescending => productQuery
                     .OrderByDescending(p => p.Price),
@@ -162,6 +162,7 @@ namespace Blasco.Services.Data
                 .FirstAsync(h => h.Id.ToString() == productId);
 
             string creatorEmail = product.Creator.Email;
+            string creatorPseudonym = product.Creator.Pseudonym;
 
             return new ProductDetailsViewModel
             {
@@ -174,6 +175,7 @@ namespace Blasco.Services.Data
                 Category = product.Category.Name,
                 CreatorId = product.CreatorId.ToString(),
                 CreatorEmail = creatorEmail,
+                CreatorPseudonym = creatorPseudonym,
             };
         }
 

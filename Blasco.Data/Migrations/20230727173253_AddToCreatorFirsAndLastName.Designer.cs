@@ -4,6 +4,7 @@ using Blasco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    partial class BlascoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230727173253_AddToCreatorFirsAndLastName")]
+    partial class AddToCreatorFirsAndLastName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,13 +80,6 @@ namespace Blasco.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Pseudonym")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("Pseudonym");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -188,7 +183,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bd7ff9e2-7d14-4d41-89db-cd594405f573"),
+                            Id = new Guid("de296de3-4962-44a5-b505-49fc62bd6dd2"),
                             CategoryId = 10,
                             City = "Buenos Aires",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -201,7 +196,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4d4c87f9-088d-42be-a256-f1ceea011909"),
+                            Id = new Guid("d1e4dda7-c237-4d62-baa0-8ae661919584"),
                             CategoryId = 12,
                             City = "London",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -353,7 +348,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c555ed2c-343d-4c6e-924a-f774236da6e5"),
+                            Id = new Guid("3c447653-65ad-4a82-a0bb-7896aa450205"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
@@ -364,7 +359,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("75dc5b88-4ca1-42d4-ae74-53c7ebcc2cd3"),
+                            Id = new Guid("d83c56de-b816-41ef-b11b-4a2b0e9fb2c6"),
                             CategoryId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
