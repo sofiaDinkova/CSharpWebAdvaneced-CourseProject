@@ -82,7 +82,7 @@ namespace Blasco.Services.Data
                      .OrderByDescending(p => p.CreatedOn),
                 ProductSorting.Oldest => productQuery
                     .OrderBy(p => p.CreatedOn),
-                ProductSorting.PriceAscending => productQuery
+                ProductSorting.PriceAscending => productQuery 
                     .OrderBy(p => p.Price),
                 ProductSorting.PriceDescending => productQuery
                     .OrderByDescending(p => p.Price),
