@@ -28,7 +28,7 @@
         /// UserName_Pseudonym for user in role "Creator".
         /// </summary>
         [MaxLength(PseudonymMaxLenght)]
-        public override string? UserName { get; set; }
+        public string? UserName { get; set; }
 
         /// <summary>
         /// Categories to be associated with for user in role "Creator".

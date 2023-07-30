@@ -37,12 +37,12 @@ namespace Blasco.Web.Controllers
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserName = model.Pseudonym,
+                UserName = model.UserName,
             };
 
             //await this.creatorManager.AddClaimAsync(creator, new Claim("FirstName", model.FirstName));
 
-            await this.creatorManager.SetUserNameAsync(creator, model.Email);
+            await this.creatorManager.SetUserNameAsync(creator, model.UserName);
             await this.creatorManager.SetEmailAsync(creator, model.Email);
 
             IdentityResult result = await this.creatorManager.CreateAsync(creator, model.Password);

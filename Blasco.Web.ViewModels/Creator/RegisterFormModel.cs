@@ -32,6 +32,6 @@ namespace Blasco.Web.ViewModels.Creator
 
         [Required]
         [StringLength(PseudonymMaxLenght, MinimumLength =PseudonymMinLenght)]
-        public string Pseudonym { get; set; } = null!;
+        public string UserName { get; set; } = null!;
     }
 }
