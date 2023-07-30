@@ -10,10 +10,10 @@ namespace Blasco.Web.Controllers
 {
     public class CreatorController : Controller
     {
-        private readonly SignInManager<Creator> signInManager;
-        private readonly UserManager<Creator> creatorManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> creatorManager;
         
-        public CreatorController(SignInManager<Creator> signInManager, UserManager<Creator> creatorManager)
+        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager)
         {
             this.signInManager = signInManager;
             this.creatorManager = creatorManager;
@@ -33,11 +33,11 @@ namespace Blasco.Web.Controllers
                 return this.View(model);
             }
 
-            Creator creator = new Creator()
+            ApplicationUser creator = new ApplicationUser()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Pseudonym = model.Pseudonym,
+                UserName = model.Pseudonym,
             };
 
             //await this.creatorManager.AddClaimAsync(creator, new Claim("FirstName", model.FirstName));

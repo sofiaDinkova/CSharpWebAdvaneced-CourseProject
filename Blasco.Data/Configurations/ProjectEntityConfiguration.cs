@@ -30,7 +30,7 @@
                 .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(this.GenerateProjects());
+            //builder.HasData(this.GenerateProjects());
         }
 
         private Project[] GenerateProjects()

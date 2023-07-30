@@ -41,14 +41,14 @@
         [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
-        public virtual Creator Creator { get; set; } = null!;
+        public virtual ApplicationUser Creator { get; set; } = null!;
 
         [MaxLength(CityNameMaxLenght)]
         public string? City { get; set; }
 
         [ForeignKey(nameof(Customer))]
         public Guid? CustomerId { get; set; }
-        public Customer? Customer { get; set; }
+        public virtual ApplicationUser? Customer { get; set; }
 
     }
 }

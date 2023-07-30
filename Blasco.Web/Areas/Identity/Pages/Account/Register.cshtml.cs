@@ -24,17 +24,17 @@ namespace Blasco.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<Creator> _signInManager;
-        private readonly UserManager<Creator> _userManager;
-        private readonly IUserStore<Creator> _userStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
         //private readonly IUserEmailStore<IdentityUser> _emailStore;
         //private readonly ILogger<RegisterModel> _logger;
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<Creator> userManager,
-            IUserStore<Creator> userStore,
-            SignInManager<Creator> signInManager
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager
             //ILogger<RegisterModel> logger,
             //IEmailSender emailSender
             )
@@ -156,11 +156,11 @@ namespace Blasco.Web.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private Creator CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<Creator>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {

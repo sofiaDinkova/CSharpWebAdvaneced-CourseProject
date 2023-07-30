@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static Blasco.Common.EntityValidationConstants.Creator;
+using static Blasco.Common.EntityValidationConstants.ApplicationUser;
 using System.Xml.Linq;
 
 namespace Blasco.Web.ViewModels.Creator

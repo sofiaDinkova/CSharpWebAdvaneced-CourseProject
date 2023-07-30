@@ -41,7 +41,7 @@
             public const int MaxNumEnumCustomerType = 2;
         }
 
-        public static class Creator
+        public static class ApplicationUser
         {
             public const int PassMinLenght = 6;
             public const int PassMaxLenght = 100;

@@ -40,6 +40,6 @@
         [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
-        public virtual Creator Creator { get; set; } = null!;
+        public virtual ApplicationUser Creator { get; set; } = null!;
     }
 }

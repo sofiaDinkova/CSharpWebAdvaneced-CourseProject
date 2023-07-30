@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Blasco.Data.Migrations
 {
-    public partial class InitializeDb : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,10 @@ namespace Blasco.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    CustomerType = table.Column<int>(type: "int", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -46,19 +49,6 @@ namespace Blasco.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductProjectCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductProjectCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,22 +158,60 @@ namespace Blasco.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "ProductProjectCategories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerType = table.Column<int>(type: "int", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_ProductProjectCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customers_AspNetUsers_CreatorId",
+                        name: "FK_ProductProjectCategories_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: true),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_AspNetUsers_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Products_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Products_ProductProjectCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "ProductProjectCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,6 +222,8 @@ namespace Blasco.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -212,41 +242,6 @@ namespace Blasco.Data.Migrations
                         principalTable: "ProductProjectCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Products_ProductProjectCategories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "ProductProjectCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -289,9 +284,9 @@ namespace Blasco.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CreatorId",
-                table: "Customers",
-                column: "CreatorId");
+                name: "IX_ProductProjectCategories_ApplicationUserId",
+                table: "ProductProjectCategories",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -344,9 +339,6 @@ namespace Blasco.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "ProductProjectCategories");

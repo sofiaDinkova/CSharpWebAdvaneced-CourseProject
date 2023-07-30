@@ -16,7 +16,7 @@ namespace Blasco.Services.Data
 
         public async Task<bool> CreatorHasProductsAsync(string creatorId)
         {
-            Creator creator = await this.dbContext
+            ApplicationUser creator = await this.dbContext
                 .Users
                 .FirstAsync(c => c.Id.ToString() == creatorId);
 
@@ -25,7 +25,7 @@ namespace Blasco.Services.Data
                 
         public async Task<bool> HasProductWithIdAsync(string productId, string userId)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
@@ -41,7 +41,7 @@ namespace Blasco.Services.Data
 
         public async Task<string> GetFullNameByIdAsync(string email)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
                 .FirstOrDefaultAsync(c=>c.Email == email);
 
@@ -55,7 +55,7 @@ namespace Blasco.Services.Data
 
         public async Task<string> GetCreatorPseudonymByIdAsync(string email)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
                 .FirstOrDefaultAsync(c => c.Email == email);
 
@@ -64,7 +64,7 @@ namespace Blasco.Services.Data
                 return string.Empty;
             }
 
-            return creator.Pseudonym;
+            return creator.UserName;
         }
     }
 }

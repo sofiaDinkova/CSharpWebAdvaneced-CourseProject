@@ -29,13 +29,13 @@
                 .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(p => p.Customer)
-                .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder
+            //    .HasOne(p => p.Customer)
+            //    .WithMany(c => c.Products)
+            //    .HasForeignKey(p => p.CustomerId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(this.GenerateProducts());
+            //builder.HasData(this.GenerateProducts());
         }
         private Product[] GenerateProducts()
         {

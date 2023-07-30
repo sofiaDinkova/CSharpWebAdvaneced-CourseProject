@@ -7,7 +7,7 @@
     using Models;
     using System.Reflection;
 
-    public class BlascoDbContext : IdentityDbContext<Creator, IdentityRole<Guid>, Guid>
+    public class BlascoDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public BlascoDbContext(DbContextOptions<BlascoDbContext> options)
             : base(options)
@@ -21,7 +21,6 @@
 
         public DbSet<Product> Products { get; set; } = null!;
 
-        public DbSet<Customer> Customers { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

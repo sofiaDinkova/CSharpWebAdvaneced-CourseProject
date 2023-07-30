@@ -23,7 +23,7 @@ namespace Blasco.Web
             builder.Services.AddDbContext<BlascoDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<Creator>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 
@@ -75,10 +75,10 @@ namespace Blasco.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.SeedAdministrator(DevelopmentAdminEmail);
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            //    app.SeedAdministrator(DevelopmentAdminEmail);
+            //}
 
             //app.MapControllerRoute(
             //name: "default",
