@@ -1,8 +1,8 @@
 ﻿namespace Blasco.Data.Models
 {
-    using Blasco.Data.Models.Enums;
     using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using static Blasco.Common.EntityValidationConstants.ApplicationUser;
 
     public class ApplicationUser : IdentityUser<Guid>
@@ -28,7 +28,7 @@
         /// UserName_Pseudonym for user in role "Creator".
         /// </summary>
         [MaxLength(PseudonymMaxLenght)]
-        public string? UserName { get; set; }
+        public string? UserName_Pseudonym { get; set; }
 
         /// <summary>
         /// Categories to be associated with for user in role "Creator".
@@ -38,6 +38,8 @@
         /// <summary>
         /// CustomerType for user in role "Customer".
         /// </summary>
+        [ForeignKey(nameof(CustomerType))]
+        public int? CustomerTypeId { get; set; }
         public CustomerType? CustomerType { get; set; }
 
         public ICollection<Project> Projects { get; set; }

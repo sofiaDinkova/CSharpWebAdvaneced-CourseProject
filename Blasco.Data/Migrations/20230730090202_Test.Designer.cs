@@ -4,6 +4,7 @@ using Blasco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    partial class BlascoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230730090202_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace Blasco.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CustomerTypeId")
+                    b.Property<int?>("CustomerType")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -89,12 +91,11 @@ namespace Blasco.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UserName_Pseudonym")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerTypeId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -105,40 +106,6 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CustomerTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Private Customer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Freelancer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Buisness"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -220,78 +187,6 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("ProductProjectCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Architectural plan"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Furniture"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Glass sculpture"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Graphic design"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Illustration"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Interior design"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Metal designs"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Painting"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Photograph"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Print"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Sculpture"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Tapestry"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Video"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -475,16 +370,6 @@ namespace Blasco.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.CustomerType", "CustomerType")
-                        .WithMany("Customers")
-                        .HasForeignKey("CustomerTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CustomerType");
-                });
-
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
                 {
                     b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
@@ -594,11 +479,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
-                {
-                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>

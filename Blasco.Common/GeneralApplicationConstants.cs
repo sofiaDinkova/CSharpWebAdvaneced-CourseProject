@@ -9,5 +9,11 @@
 
         public const string AdminRoleName = "Administrator";
         public const string DevelopmentAdminEmail = "admin@blasco.com";
+
+        public const string CreatorRoleName = "Creator";
+        public const string DevelopmentCreatorEmail = "firstCreator@creator.com";
+
+        public const string CustomerRoleName = "Customer";
+
     }
 }

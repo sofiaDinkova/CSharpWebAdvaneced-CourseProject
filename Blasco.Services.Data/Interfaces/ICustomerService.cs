@@ -11,7 +11,5 @@ namespace Blasco.Services.Data.Interfaces
         Task<string?> GetCustomerByUserIdAsync(string userId);
         
         Task<bool> HasProductWithIdAsync(string productId, string userId);
-
-        
     }
 }

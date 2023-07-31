@@ -4,7 +4,6 @@
 
     using Blasco.Data;
     using Blasco.Data.Models;
-    using Blasco.Data.Models.Enums;
     using Blasco.Services.Data.Interfaces;
     using Blasco.Web.ViewModels.Customer;
 
@@ -21,7 +20,7 @@
             ApplicationUser newCustomer = new ApplicationUser()
             {
                 //CreatorId = Guid.Parse(creatorId),
-                CustomerType = (CustomerType)Enum.Parse(typeof(CustomerType), model.CustomerType)
+                CustomerTypeId = model.CustomerType
             };
 
             await this.dbContext.Users.AddAsync(newCustomer);

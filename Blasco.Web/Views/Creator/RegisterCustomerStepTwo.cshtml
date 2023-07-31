@@ -1,6 +1,6 @@
-﻿@model RegisterFormModel
+﻿@model RegisterCustomerStepTwoFormModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "RegisterStepTwo";
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
@@ -36,10 +36,15 @@
                 <label asp-for="LastName"></label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="UserName" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="UserName"></label>
-                <span asp-validation-for="UserName" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="CustomerTypeId"></label>
+                <select asp-for="CustomerTypeId" class="form-control">
+                    @foreach (var category in Model.CustomerTypes)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CustomerTypeId" class="small textdanger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

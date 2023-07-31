@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Blasco.Web.ViewModels.Creator
 {
-    public class RegisterFormModel
+    public class RegisterCreatorStepTwoFormModel
     {
         [Required]
         [EmailAddress]
@@ -32,6 +32,7 @@ namespace Blasco.Web.ViewModels.Creator
 
         [Required]
         [StringLength(PseudonymMaxLenght, MinimumLength =PseudonymMinLenght)]
-        public string UserName { get; set; } = null!;
+        public string UserName_Pseudonym { get; set; } = null!;
+
     }
 }

@@ -75,10 +75,14 @@ namespace Blasco.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    app.SeedAdministrator(DevelopmentAdminEmail);
-            //}
+            if (app.Environment.IsDevelopment())
+            {
+                app.SeedAdministrator(DevelopmentAdminEmail);
+            }
+            if (app.Environment.IsDevelopment())
+            {
+                app.createCreatorRole(DevelopmentCreatorEmail);
+            }
 
             //app.MapControllerRoute(
             //name: "default",

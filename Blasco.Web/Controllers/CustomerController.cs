@@ -7,17 +7,28 @@
     using Blasco.Services.Data.Interfaces;
 
     using static Common.NotificationMessagesConstents;
+    using static Common.GeneralApplicationConstants;
     using Blasco.Web.ViewModels.Customer;
+    using Blasco.Web.ViewModels.Creator;
+    using Microsoft.AspNetCore.Identity;
+    using Blasco.Data.Models;
+
 
     [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerService customerService;
+        private readonly ICustomerTypeService customerTypeService;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> creatorManager;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, UserManager<ApplicationUser> creatorManager)
         {
             this.customerService = customerService;
+            this.creatorManager = creatorManager;
         }
+
+        
 
         [HttpGet]
         public async Task<IActionResult> Become()

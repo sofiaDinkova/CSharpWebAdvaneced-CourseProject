@@ -10,7 +10,7 @@ namespace Blasco.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductProjectCategory> builder)
         {
-          //builder.HasData(this.GenerateCategories());
+          builder.HasData(this.GenerateCategories());
         }
 
         private ProductProjectCategory[] GenerateCategories()

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blasco.Common\Blasco.Common.csproj" />
+    <ProjectReference Include="..\Blasco.Data.Models\Blasco.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

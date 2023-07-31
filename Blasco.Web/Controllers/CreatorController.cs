@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static Blasco.Common.NotificationMessagesConstents;
+using static Blasco.Common.GeneralApplicationConstants;
+using Blasco.Web.ViewModels.Customer;
+using Blasco.Services.Data.Interfaces;
 
 namespace Blasco.Web.Controllers
 {
@@ -12,40 +15,75 @@ namespace Blasco.Web.Controllers
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> creatorManager;
-        
-        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager)
+        private readonly ICustomerTypeService customerTypeService;
+
+
+        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager, ICustomerTypeService customerTypeService)
         {
             this.signInManager = signInManager;
             this.creatorManager = creatorManager;
+
+            this.customerTypeService = customerTypeService;
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult RegisterStepOne()
         {
             return this.View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterFormModel model)
+        public IActionResult RegisterStepOne(RegisterStepOneFormModel registerStepOneFormModel)
+        {
+            if (registerStepOneFormModel.Role == CreatorRoleName)
+            {
+                Register register = new Register()
+                {
+                    registerStepOneFormModel = registerStepOneFormModel
+                };
+
+                return this.RedirectToAction("RegisterCreatorStepTwo", "Creator", registerStepOneFormModel);
+            }
+            if (registerStepOneFormModel.Role == CustomerRoleName)
+            {
+                Register register = new Register()
+                {
+                    registerStepOneFormModel = registerStepOneFormModel
+                };
+
+                return this.RedirectToAction("RegisterCustomerStepTwo", "Creator", registerStepOneFormModel);
+            }
+            return this.RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        public IActionResult RegisterCreatorStepTwo(RegisterStepOneFormModel registerStepOneFormModel)
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterCreatorStepTwo(RegisterStepOneFormModel registerStepOneFormModel, RegisterCreatorStepTwoFormModel registerStepTwoFormModel)
         {
             if (!ModelState.IsValid)
             {
-                return this.View(model);
+                return this.View(registerStepTwoFormModel);
             }
 
             ApplicationUser creator = new ApplicationUser()
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
+                FirstName = registerStepTwoFormModel.FirstName,
+                LastName = registerStepTwoFormModel.LastName,
+                UserName_Pseudonym = registerStepTwoFormModel.UserName_Pseudonym,
             };
 
-            //await this.creatorManager.AddClaimAsync(creator, new Claim("FirstName", model.FirstName));
+            //await this.creatorManager.AddClaimAsync(creator, new Claim("SomeClaim", model.SomeClaim));
 
-            await this.creatorManager.SetUserNameAsync(creator, model.UserName);
-            await this.creatorManager.SetEmailAsync(creator, model.Email);
+            await this.creatorManager.SetUserNameAsync(creator, registerStepTwoFormModel.Email);
+            await this.creatorManager.SetEmailAsync(creator, registerStepTwoFormModel.Email);
 
-            IdentityResult result = await this.creatorManager.CreateAsync(creator, model.Password);
+            IdentityResult result = await this.creatorManager.CreateAsync(creator, registerStepTwoFormModel.Password);
 
             if (!result.Succeeded)
             {
@@ -54,10 +92,75 @@ namespace Blasco.Web.Controllers
                     ModelState.AddModelError(string.Empty, errorr.Description);
                 }
 
-                return this.View(model);
+                return this.View(registerStepTwoFormModel);
+            }
+
+            if (registerStepOneFormModel.Role == CreatorRoleName)
+            {
+                await creatorManager.AddToRoleAsync(creator, CreatorRoleName);
             }
 
             await this.signInManager.SignInAsync(creator, false);
+
+            return this.RedirectToAction("Index", "Home");
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> RegisterCustomerStepTwo(RegisterStepOneFormModel registerStepOneFormModel)
+        {
+            try
+            {
+                RegisterCustomerStepTwoFormModel formModel = new RegisterCustomerStepTwoFormModel();
+                formModel.CustomerTypes = await this.customerTypeService.AllCustomerTypesAsync();
+
+                return this.View(formModel);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+            //return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterCustomerStepTwo(RegisterStepOneFormModel registerStepOneFormModel, RegisterCustomerStepTwoFormModel registerStepTwoFormModel)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(registerStepTwoFormModel);
+            }
+
+            ApplicationUser customer = new ApplicationUser()
+            {
+                FirstName = registerStepTwoFormModel.FirstName,
+                LastName = registerStepTwoFormModel.LastName,
+                CustomerTypeId = registerStepTwoFormModel.CustomerTypeId,
+            };
+
+            //await this.creatorManager.AddClaimAsync(creator, new Claim("SomeClaim", model.SomeClaim));
+
+            await this.creatorManager.SetUserNameAsync(customer, registerStepTwoFormModel.Email);
+            await this.creatorManager.SetEmailAsync(customer, registerStepTwoFormModel.Email);
+
+            IdentityResult result = await this.creatorManager.CreateAsync(customer, registerStepTwoFormModel.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (IdentityError errorr in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, errorr.Description);
+                }
+
+                return this.View(registerStepTwoFormModel);
+            }
+
+            if (registerStepOneFormModel.Role == CustomerRoleName)
+            {
+                await creatorManager.AddToRoleAsync(customer, CreatorRoleName);
+            }
+
+            await this.signInManager.SignInAsync(customer, false);
 
             return this.RedirectToAction("Index", "Home");
 
@@ -85,7 +188,7 @@ namespace Blasco.Web.Controllers
                 return this.View(model);
             }
 
-           var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
             if (!result.Succeeded)
             {

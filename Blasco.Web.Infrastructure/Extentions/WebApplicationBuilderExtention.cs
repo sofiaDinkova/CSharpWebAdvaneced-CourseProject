@@ -35,7 +35,44 @@
                 services.AddScoped(interfaceType, st);
             }
         }
+        public static IApplicationBuilder createCreatorRole(this IApplicationBuilder app, string email)
+        {
+            using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
 
+            IServiceProvider serviceProvider = scopedServices.ServiceProvider;
+
+            UserManager<ApplicationUser> creatorManagaer = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole<Guid>> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(CreatorRoleName))
+                {
+                    return;
+                }
+                if (await roleManager.RoleExistsAsync(CustomerRoleName))
+                {
+                    return;
+                }
+
+                IdentityRole<Guid> roleCustomer = new IdentityRole<Guid>(CustomerRoleName);
+
+                await roleManager.CreateAsync(roleCustomer);
+
+                IdentityRole<Guid> roleCreator = new IdentityRole<Guid>(CreatorRoleName);
+
+                await roleManager.CreateAsync(roleCreator);
+
+                ApplicationUser creatorUser = await creatorManagaer.FindByEmailAsync(email);
+
+                await creatorManagaer.AddToRoleAsync(creatorUser, AdminRoleName);
+
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
+        }
         public static IApplicationBuilder SeedAdministrator(this IApplicationBuilder app, string email)
         {
             using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
