@@ -45,5 +45,8 @@
         public ICollection<Project> Projects { get; set; }
 
         public ICollection<Product> Products { get; set; }
+
+        public ICollection<Vote> Votes { get; set; }
+
     }
 }

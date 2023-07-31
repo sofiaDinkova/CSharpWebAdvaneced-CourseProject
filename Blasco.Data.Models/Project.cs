@@ -10,7 +10,7 @@
         public Project()
         {
             this.Id = Guid.NewGuid();
-
+            this.Votes = new HashSet<Vote>();  
         }
 
         [Key]
@@ -32,14 +32,18 @@
 
         public bool IsActive { get; set; }
 
-        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
         public virtual ProductProjectCategory Category { get; set; } = null!;
 
-        [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
         public virtual ApplicationUser Creator { get; set; } = null!;
+
+        public virtual ICollection<Vote> Votes { get; set; }
+
+        public Guid? ChallengeId { get; set; }
+
+        public Challenge? Challenge { get; set; }
     }
 }

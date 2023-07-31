@@ -55,5 +55,11 @@
             public const int LastNameMinLenght = 1;
             public const int LastNameMaxLenght = 15;
         }
+
+        public static class Challenge
+        {
+            public const int TitleMinLenght = 2;
+            public const int TitleMaxLenght = 50;
+        }
     }
 }

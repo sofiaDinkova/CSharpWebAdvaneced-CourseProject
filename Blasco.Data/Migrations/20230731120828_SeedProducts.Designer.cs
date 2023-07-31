@@ -4,6 +4,7 @@ using Blasco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    partial class BlascoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230731120828_SeedProducts")]
+    partial class SeedProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,35 +107,6 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<bool>("IsOnGoing")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WinnerId");
-
-                    b.ToTable("Challenges");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -230,7 +203,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("137ab52f-7bdc-4d35-94c6-0211c869b925"),
+                            Id = new Guid("4ceab04c-b9f5-472c-8a1f-1d902437d800"),
                             CategoryId = 10,
                             City = "Buenos Aires",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -243,7 +216,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aa9c794f-5230-4ec8-bdf4-5850d8c3de4f"),
+                            Id = new Guid("4dd89adb-8fc9-4816-9314-5367d2a7a239"),
                             CategoryId = 12,
                             City = "London",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -257,7 +230,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("49a0fc25-bfe0-4d38-9ca5-10d8daf261d8"),
+                            Id = new Guid("f1d2166c-fc49-4ecc-8dba-11bc1babd6e0"),
                             CategoryId = 11,
                             City = "Paris",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -270,7 +243,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66cbc9b1-a959-4036-aff9-6a3769880bdf"),
+                            Id = new Guid("75605076-26f0-435b-8a0b-85171b89d360"),
                             CategoryId = 13,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -283,7 +256,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d15de9ac-301f-4ffc-b64d-4bdf45d0eba3"),
+                            Id = new Guid("6dd3294f-59de-4abc-9b30-cab2e48ca7e2"),
                             CategoryId = 7,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -400,9 +373,6 @@ namespace Blasco.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ChallengeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -435,61 +405,9 @@ namespace Blasco.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ChallengeId");
-
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("489268b7-ee80-4fd1-8813-ba748e17f4cd"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Fallingwater is a house designed by the architect Frank Lloyd Wright in 1935 in the Laurel Highlands of southwest Pennsylvania, about 70 miles (110 km) southeast of Pittsburgh in the United States. It is built partly over a waterfall on Bear Run in the Mill Run section of Stewart Township, Fayette County, Pennsylvania.",
-                            ImageUrl = "https://en.wikipedia.org/wiki/Fallingwater#/media/File:Fallingwater3.jpg",
-                            IsActive = false,
-                            Title = "Fallingwater"
-                        },
-                        new
-                        {
-                            Id = new Guid("378b1b7a-4a49-4fea-8159-2301941b5724"),
-                            CategoryId = 4,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Sarpaneva made his and Finland's largest glass sculpture, Ahtojää (\"Pack Ice,\" renamed from Jäävuori, \"Iceberg\"), for the Finnish pavilion at Expo 67 in Montreal in 1967.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
-                            IsActive = false,
-                            Title = "The Year Zero"
-                        });
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationUserWhoVotedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("ProjectCastOnId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserWhoVotedId");
-
-                    b.HasIndex("ProjectCastOnId");
-
-                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -637,15 +555,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("CustomerType");
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
-
-                    b.Navigation("Winner");
-                });
-
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
                 {
                     b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
@@ -686,11 +595,6 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
-                        .WithMany("Projects")
-                        .HasForeignKey("ChallengeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Blasco.Data.Models.ApplicationUser", "Creator")
                         .WithMany("Projects")
                         .HasForeignKey("CreatorId")
@@ -699,28 +603,7 @@ namespace Blasco.Data.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("Challenge");
-
                     b.Navigation("Creator");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUserWhoVoted")
-                        .WithMany("Votes")
-                        .HasForeignKey("ApplicationUserWhoVotedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
-                        .WithMany("Votes")
-                        .HasForeignKey("ProjectCastOnId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUserWhoVoted");
-
-                    b.Navigation("ProjectCastOn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -781,13 +664,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
-
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -800,11 +676,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Project", b =>
-                {
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

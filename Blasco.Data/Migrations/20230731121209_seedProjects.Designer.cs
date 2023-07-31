@@ -4,6 +4,7 @@ using Blasco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    partial class BlascoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230731121209_seedProjects")]
+    partial class seedProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,35 +107,6 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<bool>("IsOnGoing")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WinnerId");
-
-                    b.ToTable("Challenges");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -230,7 +203,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("137ab52f-7bdc-4d35-94c6-0211c869b925"),
+                            Id = new Guid("dac5ee23-b72f-4f94-818f-249a03bd71c1"),
                             CategoryId = 10,
                             City = "Buenos Aires",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -243,7 +216,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aa9c794f-5230-4ec8-bdf4-5850d8c3de4f"),
+                            Id = new Guid("579784ba-89df-4070-a2ac-8c4ca442e1b4"),
                             CategoryId = 12,
                             City = "London",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -257,7 +230,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("49a0fc25-bfe0-4d38-9ca5-10d8daf261d8"),
+                            Id = new Guid("ba56fd54-12a3-4ea8-bbc5-b8c8d2efa504"),
                             CategoryId = 11,
                             City = "Paris",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -270,7 +243,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66cbc9b1-a959-4036-aff9-6a3769880bdf"),
+                            Id = new Guid("4095acbe-7e5e-4e5f-8a4f-06b59c659372"),
                             CategoryId = 13,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -283,7 +256,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d15de9ac-301f-4ffc-b64d-4bdf45d0eba3"),
+                            Id = new Guid("3628f457-5d3e-4400-a8ee-dd13f501170d"),
                             CategoryId = 7,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -400,9 +373,6 @@ namespace Blasco.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ChallengeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -435,8 +405,6 @@ namespace Blasco.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ChallengeId");
-
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
@@ -444,7 +412,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("489268b7-ee80-4fd1-8813-ba748e17f4cd"),
+                            Id = new Guid("edddcd68-84e5-4064-8aac-27bffe7af98e"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
@@ -455,7 +423,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("378b1b7a-4a49-4fea-8159-2301941b5724"),
+                            Id = new Guid("e3fc0ada-0f70-4513-a623-cfa810cea722"),
                             CategoryId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
@@ -464,32 +432,6 @@ namespace Blasco.Data.Migrations
                             IsActive = false,
                             Title = "The Year Zero"
                         });
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApplicationUserWhoVotedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid>("ProjectCastOnId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserWhoVotedId");
-
-                    b.HasIndex("ProjectCastOnId");
-
-                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -637,15 +579,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("CustomerType");
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
-                        .WithMany()
-                        .HasForeignKey("WinnerId");
-
-                    b.Navigation("Winner");
-                });
-
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
                 {
                     b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
@@ -686,11 +619,6 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
-                        .WithMany("Projects")
-                        .HasForeignKey("ChallengeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Blasco.Data.Models.ApplicationUser", "Creator")
                         .WithMany("Projects")
                         .HasForeignKey("CreatorId")
@@ -699,28 +627,7 @@ namespace Blasco.Data.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("Challenge");
-
                     b.Navigation("Creator");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUserWhoVoted")
-                        .WithMany("Votes")
-                        .HasForeignKey("ApplicationUserWhoVotedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
-                        .WithMany("Votes")
-                        .HasForeignKey("ProjectCastOnId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUserWhoVoted");
-
-                    b.Navigation("ProjectCastOn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -781,13 +688,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
-
-                    b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
-                {
-                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -800,11 +700,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.Project", b =>
-                {
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }
