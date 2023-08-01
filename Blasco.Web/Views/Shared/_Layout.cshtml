@@ -38,13 +38,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">All Products</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChallenges">All Challenges</a>
+                        </li>
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Mine">My Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChalanges">All Chalanges</a>
                             </li>
                             @if (!isUserCustomer || this.User.IsAdmin())
                             {

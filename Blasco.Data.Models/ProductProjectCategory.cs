@@ -10,6 +10,7 @@
         {
             this.Projects = new HashSet<Project>();
             this.Products = new HashSet<Product>();
+            this.Challenges = new HashSet<Challenge>();
         }
         [Key]
         public int Id { get; set; }
@@ -20,5 +21,7 @@
 
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Challenge> Challenges { get; set; }
+
     }
 }

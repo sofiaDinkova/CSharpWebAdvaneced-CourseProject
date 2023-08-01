@@ -4,6 +4,7 @@ using Blasco.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    partial class BlascoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230801180507_seedChallenge")]
+    partial class seedChallenge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +158,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c90d9b5b-b70b-459c-8840-b454667d67ca"),
+                            Id = new Guid("a1d2afca-1d02-4823-ae42-93c9f3c50d44"),
                             CategoryId = 5,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Are you a creative mind with a flair for design? Put your artistic prowess to the test and join our exciting contest, \"Architectural Visions: Redesign Our Identity.\"\r\n\r\nAre you up for the challenge? Unleash your creativity and design a new logo that symbolizes the essence of Architecture, evoking elegance, forward-thinking concepts, and a seamless fusion of form and function.",
@@ -167,7 +169,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1f99bcae-b8e9-4419-86b5-946cc9986094"),
+                            Id = new Guid("f9dde318-3a7e-4227-8097-44f816827da6"),
                             CategoryId = 10,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Calling all nature enthusiasts and photography enthusiasts alike! Embark on a visual journey of awe and wonder as we invite you to participate in our thrilling contest, \"Capturing Nature's Wonders: A Photographic Odyssey.\" Immerse yourself in the beauty of the natural world and showcase your talent by capturing the most mesmerizing moments in nature through your lens.",
@@ -272,7 +274,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cc38d3a2-5681-4424-9aee-062ce60ae511"),
+                            Id = new Guid("8f6b3a86-ab14-431c-9927-dfcf18a7ef1c"),
                             CategoryId = 10,
                             City = "Buenos Aires",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -285,7 +287,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0c9c87ad-8b28-48f9-ad57-53079c092035"),
+                            Id = new Guid("7e2fff18-acb5-4a7c-9506-2d3a7a348ece"),
                             CategoryId = 12,
                             City = "London",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -299,7 +301,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("84f63997-e74f-48e1-ad30-e2f263e02832"),
+                            Id = new Guid("1aae51ac-e5c9-4396-af09-771b656b584f"),
                             CategoryId = 11,
                             City = "Paris",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -312,7 +314,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a872566c-e10c-42bc-b50d-a7b6fe20bee8"),
+                            Id = new Guid("001ffeea-0b2f-4751-8a1f-976121b2e91c"),
                             CategoryId = 13,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -325,7 +327,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7873d198-3850-44ec-9552-466e9bfd291f"),
+                            Id = new Guid("38ae8c76-2eef-45b9-9fdb-afb3afb49cdb"),
                             CategoryId = 7,
                             City = "Madrid",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -486,7 +488,7 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("48d79e5e-9979-4e5c-9ab4-d050c774aa2a"),
+                            Id = new Guid("2fc47a9c-a5f5-429c-ba2d-c8fac8ccb437"),
                             CategoryId = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
@@ -497,7 +499,7 @@ namespace Blasco.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("385f1ebd-dd63-47a9-9a46-39f27599cae7"),
+                            Id = new Guid("0643e2bc-6269-45b8-b820-a01824d9b45f"),
                             CategoryId = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
@@ -505,30 +507,6 @@ namespace Blasco.Data.Migrations
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
                             IsActive = false,
                             Title = "The Year Zero"
-                        },
-                        new
-                        {
-                            Id = new Guid("96f91254-5a50-45d3-a4f0-5f44b83c810b"),
-                            CategoryId = 10,
-                            ChallengeId = new Guid("f9dde318-3a7e-4227-8097-44f816827da6"),
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "In Collaboration with the Zoo: Graceful Giants Unveiled - A Mesmerizing Giraffe Photoshoot\r\nStep into a world of wonder as our lens captures the mesmerizing charm of giraffes, revealing their elegant grace and captivating allure. Witness these gentle giants in their natural habitat, towering above the savanna, their majestic presence leaving an indelible mark on your heart. ",
-                            ImageUrl = "https://static.photocrowd.com/upl/YJ/cms.z47KexT7uDpD2YJWlvXw-collection_cover.jpeg",
-                            IsActive = false,
-                            Title = "Giraffe"
-                        },
-                        new
-                        {
-                            Id = new Guid("a5d01ff6-a784-4e05-902e-696ee0d6ca62"),
-                            CategoryId = 5,
-                            ChallengeId = new Guid("a1d2afca-1d02-4823-ae42-93c9f3c50d44"),
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "In my design I reimagined the identity by drawing inspiration from the mesmerizing patterns and structural elements of iconic architectural landmarks worldwide. Through a harmonious blend of modern aesthetics and timeless elegance, I created a visually captivating representation that symbolizes our collective journey towards a progressive and interconnected future. By infusing vibrant hues and intricate details, my design communicates a compelling narrative of transformation, embracing both our rich architectural heritage and innovative spirit.",
-                            ImageUrl = "https://weandthecolor.com/wp-content/uploads/2013/03/Architecture-Brand-Identity-University-Project-by-Matt-Purcell.jpg",
-                            IsActive = false,
-                            Title = "Architecture Brand Identity"
                         });
                 });
 

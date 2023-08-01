@@ -1,7 +1,10 @@
 ﻿using Blasco.Data;
 using Blasco.Data.Models;
 using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data.Models.Project;
+using Blasco.Services.Data.Models.Product;
+using Blasco.Web.ViewModels.Challenge;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Blasco.Services.Data
 {
@@ -13,16 +16,26 @@ namespace Blasco.Services.Data
         {
             this.dbContext = dbContext;
         }
-        public IEnumerable<AllProjectsChallengeModel> AllChallengesAsync()
+        public async Task<AllChallengesModel> AllChallengesAsync()
         {
-            //IEnumerable<Challenge> allChallanges = this.dbContext
-                
+            IEnumerable<ChallangeAllViewModel> allChallengeModels = await this.dbContext
+                .Challenges
+                .Select(c => new ChallangeAllViewModel
+                {
+                    Id = c.Id.ToString(),
+                    Title = c.Title,
+                    Description = c.Description,
+                    ImageUrl = c.ImageUrl,
+                    Category = c.Category.Name,
+                    PriceToWin = c.PriceToWin.ToString(),
+                })
+                .ToArrayAsync();
 
-
-
-            IEnumerable<AllProjectsChallengeModel> allProjectsChallengeModels = new List<AllProjectsChallengeModel>();
-
-            return allProjectsChallengeModels;
+            return new AllChallengesModel()
+            {
+                TotalChallengesCount = allChallengeModels.Count(),
+                Challenges = allChallengeModels
+            };
         }
     }
 }

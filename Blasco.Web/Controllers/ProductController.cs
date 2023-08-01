@@ -1,5 +1,4 @@
-﻿
-namespace Blasco.Web.Controllers
+﻿namespace Blasco.Web.Controllers
 {
     using Blasco.Services.Data.Interfaces;
     using Blasco.Services.Data.Models.Product;

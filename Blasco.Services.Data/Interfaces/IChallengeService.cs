@@ -1,10 +1,10 @@
 ﻿using Blasco.Data.Models;
-using Blasco.Services.Data.Models.Project;
+using Blasco.Web.ViewModels.Challenge;
 
 namespace Blasco.Services.Data.Interfaces
 {
     public interface IChallengeService
     {
-        public IEnumerable<AllProjectsChallengeModel> AllChallengesAsync();
+        public Task<AllChallengesModel> AllChallengesAsync();
     }
 }

@@ -60,6 +60,12 @@
         {
             public const int TitleMinLenght = 2;
             public const int TitleMaxLenght = 50;
+
+            public const int DescriptionMinLenght = 10;
+            public const int DescriptionMaxLenght = 500;
+
+            public const int ImageUrlMaxLength = 2048;
+
         }
     }
 }
