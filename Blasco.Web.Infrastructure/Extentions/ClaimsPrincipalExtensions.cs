@@ -16,6 +16,14 @@
             return user.IsInRole(AdminRoleName);
         }
 
-        
+        public static bool IsCustomer (this ClaimsPrincipal user)
+        {
+            return user.IsInRole(CustomerRoleName);
+        }
+
+        public static bool IsCreator (this ClaimsPrincipal user)
+        {
+            return user.IsInRole(CreatorRoleName);
+        }
     }
 }
