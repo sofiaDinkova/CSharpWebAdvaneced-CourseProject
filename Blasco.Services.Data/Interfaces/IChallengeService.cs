@@ -6,5 +6,6 @@ namespace Blasco.Services.Data.Interfaces
     public interface IChallengeService
     {
         public Task<AllChallengesModel> AllChallengesAsync();
+
     }
 }

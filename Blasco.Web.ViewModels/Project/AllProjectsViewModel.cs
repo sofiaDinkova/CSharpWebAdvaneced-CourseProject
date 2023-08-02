@@ -4,9 +4,9 @@
     {
         public AllProjectsViewModel()
         {
-            this.Projects = new HashSet<ProjectViewModel>();
+            this.Projects = new HashSet<ProjectAllViewModel>();
         }
         public int ProjectsCount { get; set; }
-        public virtual IEnumerable<ProjectViewModel> Projects { get; set; }
+        public virtual IEnumerable<ProjectAllViewModel> Projects { get; set; }
     }
 }

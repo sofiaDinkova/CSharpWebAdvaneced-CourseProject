@@ -1,0 +1,104 @@
+﻿@model ChallangeAllViewModel
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .challenge-box {
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .challenge-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .challenge-details {
+        padding: 20px;
+    }
+
+    .challenge-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .challenge-info {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .challenge-description {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .challenge-price {
+        font-size: 24px;
+        color: #6c757d; /* Gray color for price */
+        font-weight: bold;
+    }
+
+    .form-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .form-container form {
+            margin-right: 10px;
+        }
+
+    .participate-button {
+        color: #6c757d; /* Gray color for button text */
+        border: 2px solid #6c757d; /* Gray outline for button */
+        background-color: transparent; /* Transparent background for button */
+        border-radius: 4px;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 18px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .participate-button:hover {
+            color: #fff; /* White text on hover */
+            background-color: #6c757d; /* Gray background on hover */
+        }
+
+</style>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <img src="@Model.ImageUrl" class="challenge-image" alt="Challenge Image">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <div class="challenge-details">
+                    <h5 class="challenge-title">@Model.Title</h5>
+                    <p class="challenge-info">
+                        <strong>Category:</strong> @Model.Category<br />
+                        <strong>Price to Win:</strong> <span class="challenge-price">@Model.PriceToWin</span>
+                    </p>
+                    <p class="challenge-description">@Model.Description</p>
+                    <div class="form-container">
+                        <form class="ml-2" asp-controller="Project" asp-action="AllProjects" asp-route-id="@Model.Id" method="get">
+                            <input class="participate-button" type="submit" value="All Projects" />
+                        </form>
+                        <form class="ml-2" asp-controller="Challenge" asp-action="Participate" asp-route-id="@Model.Id" method="post">
+                            <input class="participate-button" type="submit" value="Participate" />
+                        </form>
+                        <form class="ml-2" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">
+                            <input class="participate-button" type="submit" value="Vote" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

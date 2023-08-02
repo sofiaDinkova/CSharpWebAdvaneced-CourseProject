@@ -17,10 +17,10 @@
 
         public async Task<AllProjectsViewModel> AllProjectsByChallengeIdAsync(string challengeId)
         {
-            IEnumerable<ProjectViewModel> projectViewModels = await this.dbContext
+            IEnumerable<ProjectAllViewModel> projectViewModels = await this.dbContext
                 .Projects
                 .Where(p => p.ChallengeId.ToString() == challengeId)
-                .Select(p => new ProjectViewModel
+                .Select(p => new ProjectAllViewModel
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,

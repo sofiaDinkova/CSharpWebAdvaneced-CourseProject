@@ -1,13 +1,4 @@
-﻿@model AllChallengesModel
-@{
-    ViewBag.Title = "All Challenges";
-}
-<h2 class="text-center">@ViewBag.Title</h2>
-<hr />
-@if (!Model.Challenges.Any())
-{
-    <h2 class="text-center">There are no Challenges yet!</h2>
-}
+﻿@model ProjectAllViewModel
 <style>
     body {
         background-color: #f8f9fa;
@@ -78,11 +69,25 @@
             background-color: #6c757d; /* Gray background on hover */
         }
 
-
 </style>
-<div class="row">
-    @foreach (var challenge in Model.Challenges)
-    {
-        <partial name="_ChallengePartial" model="@challenge" />
-    }
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <img src="@Model.ImageUrl" class="challenge-image" alt="Challenge Image">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <div class="challenge-details">
+                    <h5 class="challenge-title">@Model.Title</h5>
+                    <p class="challenge-info">
+                        <strong>Creator</strong> @Model.CreatorPseudonym<br />
+                    </p>
+                    <p class="challenge-description">@Model.Description</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

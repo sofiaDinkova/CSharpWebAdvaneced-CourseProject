@@ -15,12 +15,14 @@
             this.projectService = projectService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AllProjects(string challangeId)
+        public async Task<IActionResult> AllProjects(string id)
         {
+            //check if EXISTSSS!!!!
             try
             {
-                AllProjectsViewModel model = await this.projectService.AllProjectsByChallengeIdAsync(challangeId);
+                AllProjectsViewModel model = await this.projectService.AllProjectsByChallengeIdAsync(id);
 
                 return this.View(model);
             }

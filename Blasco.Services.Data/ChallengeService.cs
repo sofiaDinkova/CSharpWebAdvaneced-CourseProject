@@ -27,7 +27,7 @@ namespace Blasco.Services.Data
                     Description = c.Description,
                     ImageUrl = c.ImageUrl,
                     Category = c.Category.Name,
-                    PriceToWin = c.PriceToWin.ToString(),
+                    PriceToWin = c.PriceToWin,
                 })
                 .ToArrayAsync();
 
