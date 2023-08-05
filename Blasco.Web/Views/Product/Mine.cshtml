@@ -15,7 +15,7 @@ else
     <div class=" row">
         @foreach (ProductAllViewModel product in Model)
         {
-            <partial name="_ProductPartial" model="product" />
+            <partial name="_ProductPartial" model="@product" />
         }
     </div>
 }

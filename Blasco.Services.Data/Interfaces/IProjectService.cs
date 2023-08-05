@@ -8,5 +8,7 @@
         Task<IEnumerable<IndexViewModel>> LastThreeProjectAsync();
 
         Task<AllProjectsViewModel> AllProjectsByChallengeIdAsync(string challengeId);
+
+        Task<IEnumerable<ProjectAllViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId);
     }
 }

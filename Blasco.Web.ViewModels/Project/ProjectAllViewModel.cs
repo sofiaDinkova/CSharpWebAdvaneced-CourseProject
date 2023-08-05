@@ -1,6 +1,6 @@
 ﻿namespace Blasco.Web.ViewModels.Project
 {
-    public class ProjectViewModel
+    public class ProjectAllViewModel
     {
         public string Id { get; set; } = null!;
 

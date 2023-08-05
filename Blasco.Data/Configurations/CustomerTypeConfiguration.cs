@@ -13,7 +13,7 @@ namespace Blasco.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<CustomerType> builder)
         {
-            builder.HasData(this.GenerateCategories());
+            //builder.HasData(this.GenerateCategories());
         }
         private CustomerType[] GenerateCategories()
         {

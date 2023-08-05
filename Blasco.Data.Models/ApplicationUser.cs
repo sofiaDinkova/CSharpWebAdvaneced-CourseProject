@@ -28,7 +28,9 @@
         /// UserName_Pseudonym for user in role "Creator".
         /// </summary>
         [MaxLength(PseudonymMaxLenght)]
-        public string? UserName_Pseudonym { get; set; }
+        public string? Pseudonym { get; set; }
+
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// Categories to be associated with for user in role "Creator".

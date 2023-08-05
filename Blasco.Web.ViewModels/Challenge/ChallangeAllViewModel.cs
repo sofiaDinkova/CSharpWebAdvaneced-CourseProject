@@ -24,5 +24,9 @@ namespace Blasco.Web.ViewModels.Challenge
 
         public decimal PriceToWin { get; set; } 
 
+        public string ImageId { get; set; }
+
+        public byte[] ImageArray { get; set; }
+
     }
 }

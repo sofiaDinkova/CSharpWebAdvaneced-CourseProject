@@ -75,7 +75,7 @@ namespace Blasco.Web.Controllers
             {
                 FirstName = registerStepTwoFormModel.FirstName,
                 LastName = registerStepTwoFormModel.LastName,
-                UserName_Pseudonym = registerStepTwoFormModel.UserName_Pseudonym,
+                Pseudonym = registerStepTwoFormModel.UserName_Pseudonym,
             };
 
             //await this.creatorManager.AddClaimAsync(creator, new Claim("SomeClaim", model.SomeClaim));

@@ -11,6 +11,9 @@ namespace Blasco.Web
     using Infrastructure.ModelBinders;
 
     using static Common.GeneralApplicationConstants;
+    using Blasco.Data.Configurations.Seed;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using MongoDB.Driver;
 
     public class Program
     {
@@ -42,6 +45,15 @@ namespace Blasco.Web
                 cfg.LogoutPath = "/Creator/Login";
             });
 
+            //string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDbConnectionString") ?? throw new InvalidOperationException("Connection string 'MongoDBConnection' not found.");
+            //MongoClientSettings mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
+            //IMongoClient mongoClient = new MongoClient(mongoClientSettings);
+            //IMongoDatabase mongoDatabase = mongoClient.GetDatabase("MongoDBConnection:Database");
+
+            //builder.Services.AddSingleton(mongoClient);
+            //builder.Services.AddSingleton(mongoDatabase);
+
+           
             builder.Services
                 .AddControllersWithViews()
                 .AddMvcOptions(options =>
@@ -50,7 +62,8 @@ namespace Blasco.Web
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
-
+            BlascoMongoExperimental mongoDb = new BlascoMongoExperimental();
+            mongoDb.ListDatabases();
 
             WebApplication app = builder.Build();
 
@@ -77,12 +90,13 @@ namespace Blasco.Web
 
             if (app.Environment.IsDevelopment())
             {
-                app.SeedAdministrator(DevelopmentAdminEmail);
+                //app.CreateRolesAdminCreatorAndCustomer();
+
+                //var dataSeeder = new DataSeeder(app.Services);
+                //dataSeeder.SeedData();
+
             }
-            if (app.Environment.IsDevelopment())
-            {
-                app.createCreatorRole(DevelopmentCreatorEmail);
-            }
+            
 
             //app.MapControllerRoute(
             //name: "default",

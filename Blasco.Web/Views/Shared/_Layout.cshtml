@@ -41,6 +41,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChallenges">All Challenges</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MongoTest" asp-action="ReturnImage">Image</a>
+                        </li>
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">

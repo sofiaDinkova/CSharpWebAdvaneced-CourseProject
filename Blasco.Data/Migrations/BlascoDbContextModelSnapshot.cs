@@ -22,6 +22,21 @@ namespace Blasco.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("CreatorsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CategoriesId", "CreatorsId");
+
+                    b.HasIndex("CreatorsId");
+
+                    b.ToTable("ApplicationUserProductProjectCategory");
+                });
+
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,6 +64,9 @@ namespace Blasco.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -78,6 +96,10 @@ namespace Blasco.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Pseudonym")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -87,10 +109,6 @@ namespace Blasco.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserName_Pseudonym")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -134,6 +152,10 @@ namespace Blasco.Data.Migrations
                     b.Property<bool>("IsOnGoing")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PhotoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("PriceToWin")
                         .HasColumnType("decimal(18,2)");
 
@@ -152,30 +174,6 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("WinnerId");
 
                     b.ToTable("Challenges");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c90d9b5b-b70b-459c-8840-b454667d67ca"),
-                            CategoryId = 5,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Are you a creative mind with a flair for design? Put your artistic prowess to the test and join our exciting contest, \"Architectural Visions: Redesign Our Identity.\"\r\n\r\nAre you up for the challenge? Unleash your creativity and design a new logo that symbolizes the essence of Architecture, evoking elegance, forward-thinking concepts, and a seamless fusion of form and function.",
-                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt_6cdJdGcppF55kqefSCDtaPuH9CFyZx1ktsjy1AX5GhsO4hGDYnZXtExPtahHlQkpdg&usqp=CAU",
-                            IsOnGoing = true,
-                            PriceToWin = 200m,
-                            Title = "Architectural Visions: Redesign Our Identity"
-                        },
-                        new
-                        {
-                            Id = new Guid("1f99bcae-b8e9-4419-86b5-946cc9986094"),
-                            CategoryId = 10,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Calling all nature enthusiasts and photography enthusiasts alike! Embark on a visual journey of awe and wonder as we invite you to participate in our thrilling contest, \"Capturing Nature's Wonders: A Photographic Odyssey.\" Immerse yourself in the beauty of the natural world and showcase your talent by capturing the most mesmerizing moments in nature through your lens.",
-                            ImageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/230706090105-02-monaco-foundation-environmental-photography-awards.jpg?c=original&q=h_618,c_fill",
-                            IsOnGoing = true,
-                            PriceToWin = 200m,
-                            Title = "Capturing Nature's Wonders: A Photographic Odyssey"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -193,23 +191,6 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Private Customer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Freelancer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Buisness"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -268,74 +249,6 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("cc38d3a2-5681-4424-9aee-062ce60ae511"),
-                            CategoryId = 10,
-                            City = "Buenos Aires",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("0c13dba1-b072-4e26-9cc5-f93eb50adf00"),
-                            Description = "A group of bees compete for the only female in the group. Climate change, pesticides and ever-dwindling habitat make it difficult for bees around the world to maintain their species.",
-                            ImageUrl = "https://image.geo.de/32808766/t/vQ/v5/w1440/r1.5/-/--karine-aigner--1---wildlife-photographer-of-the-year.jpg",
-                            IsActive = false,
-                            Price = 15m,
-                            Title = "Bees"
-                        },
-                        new
-                        {
-                            Id = new Guid("0c9c87ad-8b28-48f9-ad57-53079c092035"),
-                            CategoryId = 12,
-                            City = "London",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            CustomerId = new Guid("650511f1-b82c-4d3b-85f5-d769c096aa97"),
-                            Description = "Taking her art from life and nature, Helena breaks down forms simplifying and playing with the uses of light and shadows. Sometimes staying true to a likeness, which is always the starting point, but sometimes her work will take on a much more abstract nature. Often she uses her experience as a graphic designer to create works with a digital starting point using flat plains that are then assembled into a 3d structure.",
-                            ImageUrl = "https://artpark.com.au/wp-content/uploads/2022/12/Tosca-60x52x15cm-600x600.jpg",
-                            IsActive = false,
-                            Price = 17m,
-                            Title = "Horse"
-                        },
-                        new
-                        {
-                            Id = new Guid("84f63997-e74f-48e1-ad30-e2f263e02832"),
-                            CategoryId = 11,
-                            City = "Paris",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "High-quality Print of a girl with a sword and dog",
-                            ImageUrl = "https://global-uploads.webflow.com/5e3ce2ec7f6e53c045fe7cfa/603debbc0b31de538d79fa5e_discovery.png",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Girl with a sword and dog"
-                        },
-                        new
-                        {
-                            Id = new Guid("a872566c-e10c-42bc-b50d-a7b6fe20bee8"),
-                            CategoryId = 13,
-                            City = "Madrid",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("7cd705c4-c50a-45a2-ad5b-4fe7fdf3b009"),
-                            Description = "Beautiful sunrise over mountains",
-                            ImageUrl = "https://reviewed-com-res.cloudinary.com/image/fetch/s--bELGdL_2--/b_white,c_limit,cs_srgb,f_auto,fl_progressive.strip_profile,g_center,q_auto,w_972/https://reviewed-production.s3.amazonaws.com/1655235044230/341DA4D2-A0C7-4E24-AC12-04BD64CDC6E1_1_201_a.jpeg",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Sunrise"
-                        },
-                        new
-                        {
-                            Id = new Guid("7873d198-3850-44ec-9552-466e9bfd291f"),
-                            CategoryId = 7,
-                            City = "Madrid",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("7cd705c4-c50a-45a2-ad5b-4fe7fdf3b009"),
-                            Description = "Discover the beauty of flowers with this stunning Found a Flower Bouquet in Heavy Textured 3d Abstract Art. The intricate botanical design is both abstract and realistic, capturing the essence of nature in a unique and eye-catching way. Measuring 12x18 inches, it's the perfect size to make a stateme...",
-                            ImageUrl = "https://images.saatchiart.com/saatchi/1883590/art/10134163/9196933-ZIJATGTD-6.jpg",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Heavy Textured 3d Abstract Art Painting"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
@@ -346,9 +259,6 @@ namespace Blasco.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -356,81 +266,7 @@ namespace Blasco.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.ToTable("ProductProjectCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Architectural plan"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Furniture"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Glass sculpture"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Graphic design"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Illustration"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Interior design"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Metal designs"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Painting"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Photograph"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Print"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Sculpture"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Tapestry"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Video"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -482,54 +318,6 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("48d79e5e-9979-4e5c-9ab4-d050c774aa2a"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Fallingwater is a house designed by the architect Frank Lloyd Wright in 1935 in the Laurel Highlands of southwest Pennsylvania, about 70 miles (110 km) southeast of Pittsburgh in the United States. It is built partly over a waterfall on Bear Run in the Mill Run section of Stewart Township, Fayette County, Pennsylvania.",
-                            ImageUrl = "https://en.wikipedia.org/wiki/Fallingwater#/media/File:Fallingwater3.jpg",
-                            IsActive = false,
-                            Title = "Fallingwater"
-                        },
-                        new
-                        {
-                            Id = new Guid("385f1ebd-dd63-47a9-9a46-39f27599cae7"),
-                            CategoryId = 4,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Sarpaneva made his and Finland's largest glass sculpture, Ahtojää (\"Pack Ice,\" renamed from Jäävuori, \"Iceberg\"), for the Finnish pavilion at Expo 67 in Montreal in 1967.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
-                            IsActive = false,
-                            Title = "The Year Zero"
-                        },
-                        new
-                        {
-                            Id = new Guid("96f91254-5a50-45d3-a4f0-5f44b83c810b"),
-                            CategoryId = 10,
-                            ChallengeId = new Guid("f9dde318-3a7e-4227-8097-44f816827da6"),
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "In Collaboration with the Zoo: Graceful Giants Unveiled - A Mesmerizing Giraffe Photoshoot\r\nStep into a world of wonder as our lens captures the mesmerizing charm of giraffes, revealing their elegant grace and captivating allure. Witness these gentle giants in their natural habitat, towering above the savanna, their majestic presence leaving an indelible mark on your heart. ",
-                            ImageUrl = "https://static.photocrowd.com/upl/YJ/cms.z47KexT7uDpD2YJWlvXw-collection_cover.jpeg",
-                            IsActive = false,
-                            Title = "Giraffe"
-                        },
-                        new
-                        {
-                            Id = new Guid("a5d01ff6-a784-4e05-902e-696ee0d6ca62"),
-                            CategoryId = 5,
-                            ChallengeId = new Guid("a1d2afca-1d02-4823-ae42-93c9f3c50d44"),
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "In my design I reimagined the identity by drawing inspiration from the mesmerizing patterns and structural elements of iconic architectural landmarks worldwide. Through a harmonious blend of modern aesthetics and timeless elegance, I created a visually captivating representation that symbolizes our collective journey towards a progressive and interconnected future. By infusing vibrant hues and intricate details, my design communicates a compelling narrative of transformation, embracing both our rich architectural heritage and innovative spirit.",
-                            ImageUrl = "https://weandthecolor.com/wp-content/uploads/2013/03/Architecture-Brand-Identity-University-Project-by-Matt-Purcell.jpg",
-                            IsActive = false,
-                            Title = "Architecture Brand Identity"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
@@ -693,6 +481,21 @@ namespace Blasco.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Blasco.Data.Models.CustomerType", "CustomerType")
@@ -743,13 +546,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -850,8 +646,6 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("Products");
 
                     b.Navigation("Projects");

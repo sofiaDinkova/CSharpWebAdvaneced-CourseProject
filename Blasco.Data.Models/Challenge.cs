@@ -36,6 +36,8 @@ namespace Blasco.Data.Models
 
         public decimal PriceToWin { get; set; }
 
+        public string PhotoId { get; set; }
+
         public bool IsOnGoing { get; set; }
 
         public Guid? WinnerId { get; set; }

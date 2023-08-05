@@ -4,15 +4,14 @@
 
 namespace Blasco.Data.Migrations
 {
-    public partial class Test : Migration
+    public partial class AddedPhotoId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "UserName_Pseudonym",
-                table: "AspNetUsers",
-                type: "nvarchar(20)",
-                maxLength: 20,
+                name: "PhotoId",
+                table: "Challenges",
+                type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
         }
@@ -20,8 +19,8 @@ namespace Blasco.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UserName_Pseudonym",
-                table: "AspNetUsers");
+                name: "PhotoId",
+                table: "Challenges");
         }
     }
 }

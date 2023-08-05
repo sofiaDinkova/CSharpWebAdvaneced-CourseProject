@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    [Migration("20230731121209_seedProjects")]
-    partial class seedProjects
+    [Migration("20230805153643_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace Blasco.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("CreatorsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CategoriesId", "CreatorsId");
+
+                    b.HasIndex("CreatorsId");
+
+                    b.ToTable("ApplicationUserProductProjectCategory");
+                });
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
@@ -52,6 +67,9 @@ namespace Blasco.Data.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -80,6 +98,10 @@ namespace Blasco.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Pseudonym")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -89,10 +111,6 @@ namespace Blasco.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserName_Pseudonym")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -107,6 +125,53 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<bool>("IsOnGoing")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("PriceToWin")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("WinnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("WinnerId");
+
+                    b.ToTable("Challenges");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -124,23 +189,6 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Private Customer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Freelancer"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Buisness"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -199,74 +247,6 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("dac5ee23-b72f-4f94-818f-249a03bd71c1"),
-                            CategoryId = 10,
-                            City = "Buenos Aires",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("0c13dba1-b072-4e26-9cc5-f93eb50adf00"),
-                            Description = "A group of bees compete for the only female in the group. Climate change, pesticides and ever-dwindling habitat make it difficult for bees around the world to maintain their species.",
-                            ImageUrl = "https://image.geo.de/32808766/t/vQ/v5/w1440/r1.5/-/--karine-aigner--1---wildlife-photographer-of-the-year.jpg",
-                            IsActive = false,
-                            Price = 15m,
-                            Title = "Bees"
-                        },
-                        new
-                        {
-                            Id = new Guid("579784ba-89df-4070-a2ac-8c4ca442e1b4"),
-                            CategoryId = 12,
-                            City = "London",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            CustomerId = new Guid("650511f1-b82c-4d3b-85f5-d769c096aa97"),
-                            Description = "Taking her art from life and nature, Helena breaks down forms simplifying and playing with the uses of light and shadows. Sometimes staying true to a likeness, which is always the starting point, but sometimes her work will take on a much more abstract nature. Often she uses her experience as a graphic designer to create works with a digital starting point using flat plains that are then assembled into a 3d structure.",
-                            ImageUrl = "https://artpark.com.au/wp-content/uploads/2022/12/Tosca-60x52x15cm-600x600.jpg",
-                            IsActive = false,
-                            Price = 17m,
-                            Title = "Horse"
-                        },
-                        new
-                        {
-                            Id = new Guid("ba56fd54-12a3-4ea8-bbc5-b8c8d2efa504"),
-                            CategoryId = 11,
-                            City = "Paris",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "High-quality Print of a girl with a sword and dog",
-                            ImageUrl = "https://global-uploads.webflow.com/5e3ce2ec7f6e53c045fe7cfa/603debbc0b31de538d79fa5e_discovery.png",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Girl with a sword and dog"
-                        },
-                        new
-                        {
-                            Id = new Guid("4095acbe-7e5e-4e5f-8a4f-06b59c659372"),
-                            CategoryId = 13,
-                            City = "Madrid",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("7cd705c4-c50a-45a2-ad5b-4fe7fdf3b009"),
-                            Description = "Beautiful sunrise over mountains",
-                            ImageUrl = "https://reviewed-com-res.cloudinary.com/image/fetch/s--bELGdL_2--/b_white,c_limit,cs_srgb,f_auto,fl_progressive.strip_profile,g_center,q_auto,w_972/https://reviewed-production.s3.amazonaws.com/1655235044230/341DA4D2-A0C7-4E24-AC12-04BD64CDC6E1_1_201_a.jpeg",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Sunrise"
-                        },
-                        new
-                        {
-                            Id = new Guid("3628f457-5d3e-4400-a8ee-dd13f501170d"),
-                            CategoryId = 7,
-                            City = "Madrid",
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("7cd705c4-c50a-45a2-ad5b-4fe7fdf3b009"),
-                            Description = "Discover the beauty of flowers with this stunning Found a Flower Bouquet in Heavy Textured 3d Abstract Art. The intricate botanical design is both abstract and realistic, capturing the essence of nature in a unique and eye-catching way. Measuring 12x18 inches, it's the perfect size to make a stateme...",
-                            ImageUrl = "https://images.saatchiart.com/saatchi/1883590/art/10134163/9196933-ZIJATGTD-6.jpg",
-                            IsActive = false,
-                            Price = 23m,
-                            Title = "Heavy Textured 3d Abstract Art Painting"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
@@ -277,9 +257,6 @@ namespace Blasco.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -287,81 +264,7 @@ namespace Blasco.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.ToTable("ProductProjectCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Animation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Architectural plan"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Furniture"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Glass sculpture"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Graphic design"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Illustration"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Interior design"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Metal designs"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Painting"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Photograph"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Print"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Sculpture"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Tapestry"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Video"
-                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -372,6 +275,9 @@ namespace Blasco.Data.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("ChallengeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
@@ -405,33 +311,37 @@ namespace Blasco.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ChallengeId");
+
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("edddcd68-84e5-4064-8aac-27bffe7af98e"),
-                            CategoryId = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Fallingwater is a house designed by the architect Frank Lloyd Wright in 1935 in the Laurel Highlands of southwest Pennsylvania, about 70 miles (110 km) southeast of Pittsburgh in the United States. It is built partly over a waterfall on Bear Run in the Mill Run section of Stewart Township, Fayette County, Pennsylvania.",
-                            ImageUrl = "https://en.wikipedia.org/wiki/Fallingwater#/media/File:Fallingwater3.jpg",
-                            IsActive = false,
-                            Title = "Fallingwater"
-                        },
-                        new
-                        {
-                            Id = new Guid("e3fc0ada-0f70-4513-a623-cfa810cea722"),
-                            CategoryId = 4,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("635e95ca-66d3-424b-a63b-6c17b36bbb42"),
-                            Description = "Sarpaneva made his and Finland's largest glass sculpture, Ahtojää (\"Pack Ice,\" renamed from Jäävuori, \"Iceberg\"), for the Finnish pavilion at Expo 67 in Montreal in 1967.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
-                            IsActive = false,
-                            Title = "The Year Zero"
-                        });
+            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicationUserWhoVotedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("ProjectCastOnId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserWhoVotedId");
+
+                    b.HasIndex("ProjectCastOnId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -569,6 +479,21 @@ namespace Blasco.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Blasco.Data.Models.CustomerType", "CustomerType")
@@ -577,6 +502,23 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CustomerType");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
+                        .WithMany("Challenges")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -604,13 +546,6 @@ namespace Blasco.Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
                 {
                     b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
@@ -618,6 +553,11 @@ namespace Blasco.Data.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
+                        .WithMany("Projects")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Blasco.Data.Models.ApplicationUser", "Creator")
                         .WithMany("Projects")
@@ -627,7 +567,28 @@ namespace Blasco.Data.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Challenge");
+
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUserWhoVoted")
+                        .WithMany("Votes")
+                        .HasForeignKey("ApplicationUserWhoVotedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
+                        .WithMany("Votes")
+                        .HasForeignKey("ProjectCastOnId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUserWhoVoted");
+
+                    b.Navigation("ProjectCastOn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -683,10 +644,15 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("Products");
 
+                    b.Navigation("Projects");
+
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
+                {
                     b.Navigation("Projects");
                 });
 
@@ -697,9 +663,16 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
                 {
+                    b.Navigation("Challenges");
+
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Project", b =>
+                {
+                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

@@ -74,7 +74,16 @@
     <div class="row">
         <div class="col-md-6">
             <div class="challenge-box">
-                <img src="@Model.ImageUrl" class="challenge-image" alt="Challenge Image">
+                @if (Model.ImageArray != null)
+                {
+                    var base64Image = Convert.ToBase64String(Model.ImageArray);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                }
+                else
+                {
+                    <p>Image not found</p>
+                }
+                
             </div>
         </div>
         <div class="col-md-6">
@@ -90,7 +99,7 @@
                         <form class="ml-2" asp-controller="Project" asp-action="AllProjects" asp-route-id="@Model.Id" method="get">
                             <input class="participate-button" type="submit" value="All Projects" />
                         </form>
-                        <form class="ml-2" asp-controller="Challenge" asp-action="Participate" asp-route-id="@Model.Id" method="post">
+                        <form class="ml-2" asp-controller="Project" asp-action="Participate" asp-route-id="@Model.Id" method="get">
                             <input class="participate-button" type="submit" value="Participate" />
                         </form>
                         <form class="ml-2" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ProjectAllViewModel>
+@{
+    ViewData["Title"] = "My Projects in that category";
+}
+
+<h2 calss="text-center"> @ViewData["Title"]</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <h2 calss="text-center">"You do not have any Projects with the given Category"</h2>
+}
+else
+{
+    <div class=" row">
+        @foreach (ProjectAllViewModel project in Model)
+        {
+            <partial name="_ProjectPartial" model="@project" />
+        }
+    </div>
+}

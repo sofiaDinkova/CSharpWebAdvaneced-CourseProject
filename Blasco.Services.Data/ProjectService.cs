@@ -1,6 +1,7 @@
 ﻿namespace Blasco.Services.Data
 {
     using Blasco.Data;
+    using Blasco.Data.Models;
     using Blasco.Web.ViewModels.Project;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@
     public class ProjectService : IProjectService
     {
         private readonly BlascoDbContext dbContext;
+
+
 
         public ProjectService(BlascoDbContext dbContext)
         {
@@ -25,7 +28,7 @@
                     Id = p.Id.ToString(),
                     Title = p.Title,
                     Description= p.Description,
-                    CreatorPseudonym = p.Creator.UserName_Pseudonym!,
+                    CreatorPseudonym = p.Creator.Pseudonym!,
                     ImageUrl = p.ImageUrl,
                     Votes = p.Votes.Count()
                 })
@@ -37,6 +40,25 @@
                 Projects = projectViewModels,
                 ProjectsCount = projectCount
             };
+        }
+
+        public async Task<IEnumerable<ProjectAllViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId)
+        {
+            IEnumerable<ProjectAllViewModel> projects = await this.dbContext
+                .Projects
+                .Where(p=>p.CreatorId.ToString() == userId || p.CategoryId == categoryId)
+                .Select(p=> new ProjectAllViewModel
+                {
+                    Id= p.Id.ToString(),
+                    Title= p.Title,
+                    Description = p.Description,
+                    CreatorPseudonym = p.Creator.Pseudonym!,
+                    ImageUrl = p.ImageUrl,
+                    Votes = p.Votes.Count()
+                })
+                .ToArrayAsync ();
+
+            return projects;
         }
 
         public async Task<IEnumerable<IndexViewModel>> LastThreeProjectAsync()

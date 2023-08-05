@@ -23,7 +23,7 @@ namespace Blasco.Data.Configurations
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(this.GenerateChallenges());
+            //builder.HasData(this.GenerateChallenges());
         }
         private Challenge[] GenerateChallenges()
         {

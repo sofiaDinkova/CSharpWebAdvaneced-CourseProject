@@ -36,7 +36,7 @@
                 .HasForeignKey(p => p.ChallengeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(this.GenerateProjects());
+            //builder.HasData(this.GenerateProjects());
         }
 
         private Project[] GenerateProjects()
