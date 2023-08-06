@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace Blasco.Data.BlascoMongoDbFactory
 {
-    public class MongoDbFactory :IMongoDbFactory
+    public class MongoDbFactory : IMongoDbFactory
     {
         private readonly MongoClient _client;
 
@@ -31,20 +31,41 @@ namespace Blasco.Data.BlascoMongoDbFactory
 
             var coll = GetCollection<Image>("blasco", "image");
 
+            //SeedChallengesImages
+            var filter = Builders<Image>.Filter.Eq("FileName", "Capturing Nature's Wonders: A Photographic Odyssey");
+            Image imageDocument = coll.Find(filter).FirstOrDefault();
 
-            byte[] binaryContent = File.ReadAllBytes("image.jpg");
-
-            var photos = new[]
+            if (imageDocument == null)
             {
-                new Image
-                {
-                    FileName = "Test",
-                    EntityCorrespondingId = "2871D55E-AE05-40CC-BBC3-E5EB8803EB70",
-                    ContentImage = binaryContent
-                }
-            };
+                byte[] binaryContent = File.ReadAllBytes("..\\Blasco.Web\\wwwroot\\ImagesToLoad\\PhotographNatureChallenge.PNG");
 
-            coll.InsertMany(photos);
+                Image image = new()
+                {
+                    FileName = "Capturing Nature's Wonders: A Photographic Odyssey",
+                    EntityCorrespondingId = "a84295eb-82fd-4aac-9330-505b88e228ff",
+                    ContentImage = binaryContent
+                };
+
+                coll.InsertOne(image);
+            }
+
+            filter = Builders<Image>.Filter.Eq("FileName", "Architectural Visions: Redesign Our Identity");
+            imageDocument = coll.Find(filter).FirstOrDefault();
+
+            if (imageDocument == null)
+            {
+                byte[] binaryContent = File.ReadAllBytes("..\\Blasco.Web\\wwwroot\\ImagesToLoad\\GraphicDesignChallenge.jpg");
+
+                Image image = new()
+                {
+                    FileName = "Architectural Visions: Redesign Our Identity",
+                    EntityCorrespondingId = "bd64aee7-19e4-4fc6-8db7-7388e3cc8191",
+                    ContentImage = binaryContent
+                };
+
+                coll.InsertOne(image);
+            }
+
 
 
 

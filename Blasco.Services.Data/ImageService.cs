@@ -24,7 +24,7 @@ namespace Blasco.Services.Data
             //var imageCollection = dbClient.GetCollection<Image>("blasco");
 
             // Retrieve the image data from MongoDB
-            var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", entityId);
+            var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", entityId.ToLower());
             Image imageDocument = toDoItems.Find(filter).FirstOrDefault();
 
             if (imageDocument != null)
