@@ -1,4 +1,5 @@
 ﻿
+using Blasco.Data.BlascoMongoDbFactory.Interfaces;
 using Blasco.Data.Models;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;

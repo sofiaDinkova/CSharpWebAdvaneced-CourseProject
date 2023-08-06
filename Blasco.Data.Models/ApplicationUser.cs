@@ -11,9 +11,10 @@
         {
             this.Id = Guid.NewGuid();
 
-            this.Categories = new HashSet<ProductProjectCategory>();
+            this.PPCategories = new HashSet<ApplicationUserPPCategory>();
             this.Products = new HashSet<Product>();
             this.Projects = new HashSet<Project>();
+            this.Votes = new HashSet<Vote>();
         }
 
         [Required]
@@ -35,7 +36,7 @@
         /// <summary>
         /// Categories to be associated with for user in role "Creator".
         /// </summary>
-        public ICollection<ProductProjectCategory> Categories { get; set; }
+        public ICollection<ApplicationUserPPCategory> PPCategories { get; set; }
 
         /// <summary>
         /// CustomerType for user in role "Customer".

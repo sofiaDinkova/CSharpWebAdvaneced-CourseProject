@@ -17,12 +17,6 @@ namespace Blasco.Data.Configurations
                 .WithMany(c => c.Customers)
                 .HasForeignKey(p => p.CustomerTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
-            //seed just Admin
-
-            builder
-                .HasMany(p => p.Categories)
-                .WithMany(c => c.Creators);
-
         }
 
     }

@@ -209,7 +209,12 @@ namespace Blasco.Data.Configurations.Seed
         {
             new Challenge
             {
-
+                Title = "Architectural Visions: Redesign Our Identity",
+                ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt_6cdJdGcppF55kqefSCDtaPuH9CFyZx1ktsjy1AX5GhsO4hGDYnZXtExPtahHlQkpdg&usqp=CAU",
+                Description = "Are you a creative mind with a flair for design? Put your artistic prowess to the test and join our exciting contest, \"Architectural Visions: Redesign Our Identity.\"\r\n\r\nAre you up for the challenge? Unleash your creativity and design a new logo that symbolizes the essence of Architecture, evoking elegance, forward-thinking concepts, and a seamless fusion of form and function.",
+                CategoryId = 5,
+                PriceToWin = 200,
+                IsOnGoing = true
             }
         };
 

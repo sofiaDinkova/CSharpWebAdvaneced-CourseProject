@@ -16,6 +16,7 @@ namespace Blasco.Web
     using MongoDB.Driver;
     using Blasco.Data.BlascoMongoDbFactory;
     using Microsoft.Extensions.DependencyInjection;
+    using Blasco.Data.BlascoMongoDbFactory.Interfaces;
 
     public class Program
     {

@@ -37,7 +37,7 @@ namespace Blasco.Data.Configurations.Seed
                 FirstName = "First",
                 LastName = "Creatorr",
                 Pseudonym = "veryCreativePseudonym",
-                Categories = categories
+                //Categories = categories
             };
             creators.Add(creator);
 
