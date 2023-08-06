@@ -9,5 +9,7 @@ namespace Blasco.Services.Data.Interfaces
     public interface IImageService
     {
         public byte[] GetImageBytesByEntityCorrespondingId(string entityId);
+
+        public List<byte[]> GetAllImagesBytesByEntityCorrespondingId(string entityId);
     }
 }

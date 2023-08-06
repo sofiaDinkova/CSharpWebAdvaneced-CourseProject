@@ -10,12 +10,13 @@
     public class ProjectService : IProjectService
     {
         private readonly BlascoDbContext dbContext;
+        private readonly IImageService imageService;
 
 
-
-        public ProjectService(BlascoDbContext dbContext)
+        public ProjectService(BlascoDbContext dbContext, IImageService imageService)
         {
             this.dbContext = dbContext;
+            this.imageService = imageService;
         }
 
         public async Task<AllProjectsViewModel> AllProjectsByChallengeIdAsync(string challengeId)
@@ -69,6 +70,7 @@
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
+                    ImageArray = imageService.GetImageBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 

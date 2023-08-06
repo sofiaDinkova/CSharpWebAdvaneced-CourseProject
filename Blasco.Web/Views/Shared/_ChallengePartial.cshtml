@@ -76,7 +76,7 @@
             <div class="challenge-box">
                 @if (Model.ImageArray != null)
                 {
-                    var base64Image = Convert.ToBase64String(Model.ImageArray);
+                    string base64Image = Convert.ToBase64String(Model.ImageArray);
                     <img src="data:image/jpeg;base64,@base64Image" alt="Image" />
                 }
                 else

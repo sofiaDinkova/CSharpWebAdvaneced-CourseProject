@@ -13,7 +13,18 @@
 
 <div class="col-md-4">
     <div class="card mb-3">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="Product Image">
+        @if (Model.ImagesArray != null)
+        {
+            for (int i = 0; i < Model.ImagesArray.Count; i++)
+            {
+                string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+            }
+        }
+        else
+        {
+            <p>Image not found</p>
+        }
         <div class="card-body text-center">
             <h4>@Model.Title</h4>
            

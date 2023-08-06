@@ -12,11 +12,11 @@ namespace Blasco.Services.Data
 {
     public class ImageService : IImageService
     {
-        private readonly IMongoCollection<Image> toDoItems;
+        private readonly IMongoCollection<Image> images;
 
         public ImageService(IMongoDbFactory mongoDbFactory)
         {
-            this.toDoItems = mongoDbFactory.GetCollection<Image>("blasco", "image");
+            this.images = mongoDbFactory.GetCollection<Image>("blasco", "image");
         }
 
         public byte[] GetImageBytesByEntityCorrespondingId(string entityId)
@@ -25,7 +25,7 @@ namespace Blasco.Services.Data
 
             // Retrieve the image data from MongoDB
             var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", entityId.ToLower());
-            Image imageDocument = toDoItems.Find(filter).FirstOrDefault();
+            Image imageDocument = images.Find(filter).FirstOrDefault();
 
             if (imageDocument != null)
             {
@@ -33,6 +33,30 @@ namespace Blasco.Services.Data
                 byte[] imageBytes = imageDocument.ContentImage;
 
                 return imageBytes;
+            }
+
+            return null; // Image not found
+        }
+
+        public List<byte[]> GetAllImagesBytesByEntityCorrespondingId(string entityId)
+        {
+            //var imageCollection = dbClient.GetCollection<Image>("blasco");
+
+            // Retrieve the image data from MongoDB
+            var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", entityId.ToLower());
+            var imageDocument = images.Find(filter).ToList();
+
+            List<byte[]> imagesBytes = new();
+
+            if (imageDocument != null)
+            {
+                // Extract binary data from the Image entity
+                foreach (var document in imageDocument)
+                {
+                    byte[] imageBytes = document.ContentImage;
+                    imagesBytes.Add(imageBytes);
+                }
+                return imagesBytes;
             }
 
             return null; // Image not found

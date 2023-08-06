@@ -4,6 +4,7 @@ using Blasco.Data.Models;
 using Blasco.Services.Data.Interfaces;
 using Blasco.Services.Data.Models.Product;
 using Blasco.Services.Data.Models.Statistics;
+using Blasco.Web.ViewModels.Challenge;
 using Blasco.Web.ViewModels.Home;
 using Blasco.Web.ViewModels.Product;
 using Blasco.Web.ViewModels.Product.Enums;
@@ -14,10 +15,12 @@ namespace Blasco.Services.Data
     public class ProductService : IProductService
     {
         private readonly BlascoDbContext dbContext;
+        private readonly IImageService imageService;
 
-        public ProductService(BlascoDbContext dbContext)
+        public ProductService(BlascoDbContext dbContext, IImageService imageService)
         {
             this.dbContext = dbContext;
+            this.imageService = imageService;
         }
 
         public async Task<IEnumerable<IndexViewModel>> LastThreeProductAsync()
@@ -31,9 +34,10 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
+                    ImageArray = imageService.GetImageBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
-
+            
             return lastThreeProducts;
         }
         public async Task<string> CreateAndReturnIdAsync(ProductFormModel formModel, string creatorId)
@@ -103,6 +107,11 @@ namespace Blasco.Services.Data
                 })
                 .ToArrayAsync();
             int totalProducts = productQuery.Count();
+            foreach (var product in allProducts)
+            {
+                List<byte[]> biteImg = imageService.GetAllImagesBytesByEntityCorrespondingId(product.Id);
+                product.ImagesArray = biteImg;
+            }
 
             return new AllProductsFilteredAndPagedModel()
             {
