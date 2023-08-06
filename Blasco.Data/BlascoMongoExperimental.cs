@@ -15,74 +15,54 @@ namespace Blasco.Data
 {
     public class BlascoMongoExperimental
     {
-        private MongoClient dbClient;
-        public BlascoMongoExperimental()
+        private IMongoDatabase dbClient;
+        private IMongoClient mongoClient;
+        public BlascoMongoExperimental(IMongoDatabase dbClient, IMongoClient mongoClient)
         {
-            dbClient = new MongoClient("mongodb://localhost:27017");
+            this.dbClient = dbClient;
+            this.mongoClient = mongoClient;
         }
 
-        public void ListDatabases()
-        {
-            var pack = new ConventionPack { new CamelCaseElementNameConvention() };
-            ConventionRegistry.Register("elementNameConvention", pack, x => true);
+        //public void ListDatabases()
+        //{
+        //    var pack = new ConventionPack { new CamelCaseElementNameConvention() };
+        //    ConventionRegistry.Register("elementNameConvention", pack, x => true);
 
-            IMongoDatabase db = dbClient.GetDatabase("testdb");
-
-            var coll = db.GetCollection<Image>("photo");
+        //    var coll = dbClient.GetCollection<Image>("blasco");
 
 
-            byte[] binaryContent = File.ReadAllBytes("image.jpg");
+        //    byte[] binaryContent = File.ReadAllBytes("image.jpg");
 
-            var photos = new[]
-            {
-                new Image
-                {
-                    FileName = "Test",
-                    EntityCorrespondingId = "2871D55E-AE05-40CC-BBC3-E5EB8803EB70",
-                    ContentImage = binaryContent
-                }
-            };
+        //    var photos = new[]
+        //    {
+        //        new Image
+        //        {
+        //            FileName = "Test",
+        //            EntityCorrespondingId = "2871D55E-AE05-40CC-BBC3-E5EB8803EB70",
+        //            ContentImage = binaryContent
+        //        }
+        //    };
 
-            coll.InsertMany(photos);
-
-
-            var results = coll.Find(g => g.FileName == "Test").ToList();
-            foreach (var doc in results)
-            {
-                Console.WriteLine(doc.ToBsonDocument());
-            }
-
-
-            foreach (var comet in photos)
-            {
-                Console.WriteLine(comet.ContentImage);
-            }
+        //    coll.InsertMany(photos);
 
 
 
-            var dbList = dbClient.ListDatabases().ToList();
-            Console.WriteLine("The list of databases are:");
+        //}
+        //public class Image
+        //{
+        //    //[BsonId]
+        //    //[BsonRepresentation(BsonType.ObjectId)]
+        //    public ObjectId Id { get; set; }
 
-            foreach (var item in dbList)
-            {
-                Console.WriteLine(item);
-            }
-        }
-        public class Image
-        {
-            //[BsonId]
-            //[BsonRepresentation(BsonType.ObjectId)]
-            public ObjectId Id { get; set; }
+        //    //[BsonRequired]
+        //    public string FileName { get; set; } = null!;
 
-            //[BsonRequired]
-            public string FileName { get; set; } = null!;
+        //    //[BsonRequired]
+        //    public byte[] ContentImage { get; set; } = null!;
 
-            //[BsonRequired]
-            public byte[] ContentImage { get; set; } = null!;
-
-            //[BsonRequired]
-            public string EntityCorrespondingId { get; set; } = null!;
-        }
+        //    //[BsonRequired]
+        //    public string EntityCorrespondingId { get; set; } = null!;
+        //}
 
     }
 }

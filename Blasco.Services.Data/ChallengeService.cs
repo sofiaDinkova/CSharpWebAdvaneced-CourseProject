@@ -14,19 +14,20 @@ namespace Blasco.Services.Data
     public class ChallengeService : IChallengeService
     {
         private readonly BlascoDbContext dbContext;
-        private MongoClient dbClient;
+        private readonly IImageService imageService;
+        //private IMongoDatabase dbClient;
         
-        public ChallengeService(BlascoDbContext dbContext)
+        public ChallengeService(BlascoDbContext dbContext, IImageService imageService)//, IMongoDatabase dbClient)
         {
             this.dbContext = dbContext;
-            dbClient = new MongoClient("mongodb://localhost:27017");
+            this.imageService = imageService;
+            //this.dbClient = dbClient;
         }
         public async Task<AllChallengesModel> AllChallengesAsync()
         {
-            IMongoDatabase db = dbClient.GetDatabase("testdb");
-
-            var imageCollection = db.GetCollection<Image>("photo");
-            var queryableCollection = imageCollection.AsQueryable();
+            
+            //var imageCollection = dbClient.GetCollection<Image>("photo");
+            //var queryableCollection = imageCollection.AsQueryable();
 
             IEnumerable<ChallangeAllViewModel> allChallengeModels = await this.dbContext
                 .Challenges
@@ -48,7 +49,7 @@ namespace Blasco.Services.Data
 
 
                 //var d = BsonSerializer.Deserialize < byte[]>(query.ToJson());
-                byte[] biteImg = GetImageBytes(challange.Id);
+                byte[] biteImg = imageService.GetImageBytesByEntityCorrespondingId(challange.Id);
                 challange.ImageArray = biteImg;
 
 
@@ -63,26 +64,24 @@ namespace Blasco.Services.Data
             };
         }
 
-        public byte[] GetImageBytes(string imageId)
-        {
-            IMongoDatabase db = dbClient.GetDatabase("testdb");
+        //public byte[] GetImageBytes(string imageId)
+        //{
+        //    var imageCollection = dbClient.GetCollection<Image>("blasco");
 
-            var imageCollection = db.GetCollection<Image>("photo");
+        //    // Retrieve the image data from MongoDB
+        //    var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", imageId);
+        //    var imageDocument = imageCollection.Find(filter).FirstOrDefault();
 
-            // Retrieve the image data from MongoDB
-            var filter = Builders<Image>.Filter.Eq("EntityCorrespondingId", imageId);
-            var imageDocument = imageCollection.Find(filter).FirstOrDefault();
+        //    if (imageDocument != null)
+        //    {
+        //        // Extract binary data from the Image entity
+        //        byte[] imageBytes = imageDocument.ContentImage;
 
-            if (imageDocument != null)
-            {
-                // Extract binary data from the Image entity
-                byte[] imageBytes = imageDocument.ContentImage;
+        //        return imageBytes;
+        //    }
 
-                return imageBytes;
-            }
-
-            return null; // Image not found
-        }
+        //    return null; // Image not found
+        //}
 
 
 

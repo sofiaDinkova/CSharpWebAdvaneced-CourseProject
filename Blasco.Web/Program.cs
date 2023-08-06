@@ -14,12 +14,19 @@ namespace Blasco.Web
     using Blasco.Data.Configurations.Seed;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using MongoDB.Driver;
+    using Blasco.Data.BlascoMongoDbFactory;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddSingleton<IMongoDbFactory>(new MongoDbFactory());
+
+            MongoDbFactory mongoDbFactory = new MongoDbFactory();
+            mongoDbFactory.SeedImage();
 
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -45,15 +52,15 @@ namespace Blasco.Web
                 cfg.LogoutPath = "/Creator/Login";
             });
 
-            //string mongoConnectionString = builder.Configuration.GetConnectionString("MongoDbConnectionString") ?? throw new InvalidOperationException("Connection string 'MongoDBConnection' not found.");
-            //MongoClientSettings mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
+            ////string mongoConnectionString = builder.Configuration.GetConnectionString("mongodb://localhost:27017") ?? throw new InvalidOperationException("Connection string 'MongoDBConnection' not found.");
+            //MongoClientSettings mongoClientSettings = MongoClientSettings.FromConnectionString("mongodb://localhost:27017");
             //IMongoClient mongoClient = new MongoClient(mongoClientSettings);
-            //IMongoDatabase mongoDatabase = mongoClient.GetDatabase("MongoDBConnection:Database");
+            //IMongoDatabase mongoDatabase = mongoClient.GetDatabase("blasco");
 
             //builder.Services.AddSingleton(mongoClient);
             //builder.Services.AddSingleton(mongoDatabase);
 
-           
+
             builder.Services
                 .AddControllersWithViews()
                 .AddMvcOptions(options =>
@@ -62,8 +69,10 @@ namespace Blasco.Web
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
-            BlascoMongoExperimental mongoDb = new BlascoMongoExperimental();
-            mongoDb.ListDatabases();
+            //BlascoMongoExperimental mongoDb = new BlascoMongoExperimental();
+            //mongoDb.ListDatabases();
+
+
 
             WebApplication app = builder.Build();
 
