@@ -14,13 +14,19 @@ namespace Blasco.Data.Configurations
         public void Configure(EntityTypeBuilder<Challenge> builder)
         {
             builder
-               .Property(p => p.CreatedOn)
+               .Property(c => c.CreatedOn)
                .HasDefaultValueSql("GETDATE()");
 
             builder
-                .HasOne(p => p.Category)
-                .WithMany(c => c.Challenges)
-                .HasForeignKey(p => p.CategoryId)
+                .HasOne(c => c.Category)
+                .WithMany(p => p.Challenges)
+                .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(c => c.CustomerCreatedChallenge)
+                .WithMany(u=>u.Challenges)
+                .HasForeignKey(c=>c.CustomerCreatedChallengeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //builder.HasData(this.GenerateChallenges());

@@ -14,6 +14,10 @@ namespace Blasco.Data.Models
         public Guid ProjectCastOnId { get; set; }
         public Project ProjectCastOn { get; set; } = null!;
 
+        public Guid ChallengeId { get; set; }
+
+        public Challenge Challenge { get; set; } = null!;
+
         public Guid ApplicationUserWhoVotedId { get; set; }
 
         public ApplicationUser ApplicationUserWhoVoted { get; set; } = null!;

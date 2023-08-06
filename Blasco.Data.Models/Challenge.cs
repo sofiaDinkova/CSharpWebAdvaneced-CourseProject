@@ -10,7 +10,9 @@ namespace Blasco.Data.Models
         public Challenge()
         {
             this.Id = Guid.NewGuid();
+
             this.Projects = new HashSet<Project>();
+            this.Votes = new HashSet<Vote>();
         }
 
         [Key]
@@ -28,11 +30,16 @@ namespace Blasco.Data.Models
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; } = null!;
 
+        public Guid CustomerCreatedChallengeId { get; set; }
+        public ApplicationUser CustomerCreatedChallenge { get; set; } = null!;
+
         public int CategoryId { get; set; }
 
         public virtual ProductProjectCategory Category { get; set; } = null!;
 
         public DateTime CreatedOn { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         public decimal PriceToWin { get; set; }
 
@@ -45,5 +52,7 @@ namespace Blasco.Data.Models
         public ApplicationUser? Winner { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

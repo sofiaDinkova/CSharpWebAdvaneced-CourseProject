@@ -51,5 +51,6 @@
 
         public ICollection<Vote> Votes { get; set; }
 
+        public ICollection<Challenge> Challenges { get; set; }
     }
 }
