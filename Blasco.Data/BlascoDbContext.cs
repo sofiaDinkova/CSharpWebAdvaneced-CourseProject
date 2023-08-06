@@ -1,11 +1,13 @@
 ﻿namespace Blasco.Data
 {
+    using Blasco.Data.Configurations.Seed;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
     using Models;
     using System.Reflection;
+    using System.Reflection.Emit;
 
     public class BlascoDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
@@ -114,8 +116,18 @@
                                                         Assembly.GetExecutingAssembly();
 
             builder.ApplyConfigurationsFromAssembly(configAssembly);
-
             base.OnModelCreating(builder);
+
+            DataSeeder.SeedPPCategory(builder);
+            DataSeeder.SeedCustomerTypes(builder);
+            DataSeeder.SeedUsers(builder);
+            DataSeeder.SeedRoles(builder);
+            DataSeeder.AsignRoles(builder);
+            DataSeeder.SeedChallenges(builder);
+            DataSeeder.SeedProjects(builder);
+            DataSeeder.SeedProducts(builder);
+            DataSeeder.SeedApplicationUserPPCategory(builder);
+            DataSeeder.SeedVotes(builder);
 
         }
         public DbSet<ProductProjectCategory> ProductProjectCategories { get; set; } = null!;

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    [Migration("20230805160636_AddedPhotoId")]
-    partial class AddedPhotoId
+    [Migration("20230806113656_SeedCustomerTypeAndUsersWithRoles")]
+    partial class SeedCustomerTypeAndUsersWithRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace Blasco.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("CreatorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CategoriesId", "CreatorsId");
-
-                    b.HasIndex("CreatorsId");
-
-                    b.ToTable("ApplicationUserProductProjectCategory");
-                });
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
@@ -125,6 +110,117 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "aff4a8d3-9094-42cd-bbbe-fb1a907c6670",
+                            Email = "admin@blasco.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            IsActive = true,
+                            LastName = "Admin",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@BLASCO.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH7+RM3EF/rC9GgGZpTyfI9osOG6SmdrWT/t/37xHg3Y5GdywiilW6oYhM89Or5rVg==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "eac2d247-4bf9-49f4-bae1-f0e7ad6bfb24",
+                            Email = "firstCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCREATOR@CREATOR.COM",
+                            NormalizedUserName = "FIRSTCREATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAECVRJG8Tgn0epEpZccTYLpC4U5J7MRGz3JWL6UpIUbhVzB1uCKYzcpzU8u161/nu7A==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "firstPseudonym",
+                            TwoFactorEnabled = false,
+                            UserName = "FirstCreator"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7b31fcce-f115-4b11-af3d-8aa93e9ebcd2",
+                            Email = "secondCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCREATOR@CREATOR.COM",
+                            NormalizedUserName = "SECONDCREATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM2VLDpvKEZQDJUZqI4/EoyDWRpp+hfCQnPySkV/TBUIiM6xrxfEO8GXPaRIMYmjBA==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "secondPseudonym",
+                            TwoFactorEnabled = false,
+                            UserName = "SecondCreator"
+                        },
+                        new
+                        {
+                            Id = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "17d38640-e640-4281-90c6-9b2b9c9ca472",
+                            CustomerTypeId = 2,
+                            Email = "firstCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "FIRSTCUSTOMER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJnWxXBO4UKiUVOzAObEzL1SzwcId8IFKE2mpdTk+BtLwBIbidjzIoR8HlQ4DsiRwQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "FirstCustomer"
+                        },
+                        new
+                        {
+                            Id = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "31324b70-48d8-4ffa-b6e5-1d437407615e",
+                            CustomerTypeId = 1,
+                            Email = "secondCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "SECONDCUSTOMER",
+                            PasswordHash = "AQAAAAEAACcQAAAAECDS+V7weHJxSkF0Ud23AH1uyCPv3pKaEfutQV+NvfDtj5N6WamPUdsWFd5IImkR7A==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "SecondCustomer"
+                        });
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUserPPCategory", b =>
+                {
+                    b.Property<int>("PPCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PPCategoryId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ApplicationUserPPCategories");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
@@ -141,10 +237,18 @@ namespace Blasco.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<Guid>("CustomerCreatedChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("EndDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(month, +2, GETDATE())");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -173,6 +277,8 @@ namespace Blasco.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("CustomerCreatedChallengeId");
+
                     b.HasIndex("WinnerId");
 
                     b.ToTable("Challenges");
@@ -193,6 +299,23 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Private Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Freelancer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Buisness"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -269,6 +392,78 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductProjectCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Animation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Architectural plan"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Furniture"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Glass sculpture"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Graphic design"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Illustration"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Interior design"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Metal designs"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Painting"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Photograph"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Print"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Sculpture"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Tapestry"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Video"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -331,6 +526,9 @@ namespace Blasco.Data.Migrations
                     b.Property<Guid>("ApplicationUserWhoVotedId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -342,6 +540,8 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserWhoVotedId");
+
+                    b.HasIndex("ChallengeId");
 
                     b.HasIndex("ProjectCastOnId");
 
@@ -374,6 +574,29 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744"),
+                            ConcurrencyStamp = "cb47610d-046e-451a-81cd-485e1cbeb379",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae"),
+                            ConcurrencyStamp = "efb2097b-b294-4023-bfc1-9ccdf622d8c0",
+                            Name = "Creator",
+                            NormalizedName = "CREATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a"),
+                            ConcurrencyStamp = "a1d17d8d-53b4-44ca-beb0-df5e4906ad35",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -460,6 +683,33 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            RoleId = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744")
+                        },
+                        new
+                        {
+                            UserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        },
+                        new
+                        {
+                            UserId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -483,21 +733,6 @@ namespace Blasco.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserProductProjectCategory", b =>
-                {
-                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("CreatorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Blasco.Data.Models.CustomerType", "CustomerType")
@@ -508,6 +743,25 @@ namespace Blasco.Data.Migrations
                     b.Navigation("CustomerType");
                 });
 
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUserPPCategory", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("PPCategories")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", "ProductProjectCategory")
+                        .WithMany("Creators")
+                        .HasForeignKey("PPCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("ProductProjectCategory");
+                });
+
             modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
                 {
                     b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
@@ -516,11 +770,19 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "CustomerCreatedChallenge")
+                        .WithMany("Challenges")
+                        .HasForeignKey("CustomerCreatedChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
                         .WithMany()
                         .HasForeignKey("WinnerId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("CustomerCreatedChallenge");
 
                     b.Navigation("Winner");
                 });
@@ -584,6 +846,12 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
+                        .WithMany("Votes")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
                         .WithMany("Votes")
                         .HasForeignKey("ProjectCastOnId")
@@ -591,6 +859,8 @@ namespace Blasco.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUserWhoVoted");
+
+                    b.Navigation("Challenge");
 
                     b.Navigation("ProjectCastOn");
                 });
@@ -648,6 +918,10 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Challenges");
+
+                    b.Navigation("PPCategories");
+
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
@@ -658,6 +932,8 @@ namespace Blasco.Data.Migrations
             modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
                 {
                     b.Navigation("Projects");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -668,6 +944,8 @@ namespace Blasco.Data.Migrations
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
                 {
                     b.Navigation("Challenges");
+
+                    b.Navigation("Creators");
 
                     b.Navigation("Products");
 

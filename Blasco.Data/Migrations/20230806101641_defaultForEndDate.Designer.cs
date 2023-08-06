@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    [Migration("20230806085020_AddedMappingTableForAppUserAndPPCategory")]
-    partial class AddedMappingTableForAppUserAndPPCategory
+    [Migration("20230806101641_defaultForEndDate")]
+    partial class defaultForEndDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -141,10 +141,18 @@ namespace Blasco.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<Guid>("CustomerCreatedChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("EndDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(month, +2, GETDATE())");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -172,6 +180,8 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CustomerCreatedChallengeId");
 
                     b.HasIndex("WinnerId");
 
@@ -269,6 +279,78 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductProjectCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Animation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Architectural plan"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Furniture"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Glass sculpture"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Graphic design"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Illustration"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Interior design"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Metal designs"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Painting"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Photograph"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Print"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Sculpture"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Tapestry"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Video"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -331,6 +413,9 @@ namespace Blasco.Data.Migrations
                     b.Property<Guid>("ApplicationUserWhoVotedId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -342,6 +427,8 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserWhoVotedId");
+
+                    b.HasIndex("ChallengeId");
 
                     b.HasIndex("ProjectCastOnId");
 
@@ -520,11 +607,19 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "CustomerCreatedChallenge")
+                        .WithMany("Challenges")
+                        .HasForeignKey("CustomerCreatedChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
                         .WithMany()
                         .HasForeignKey("WinnerId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("CustomerCreatedChallenge");
 
                     b.Navigation("Winner");
                 });
@@ -588,6 +683,12 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
+                        .WithMany("Votes")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
                         .WithMany("Votes")
                         .HasForeignKey("ProjectCastOnId")
@@ -595,6 +696,8 @@ namespace Blasco.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUserWhoVoted");
+
+                    b.Navigation("Challenge");
 
                     b.Navigation("ProjectCastOn");
                 });
@@ -652,6 +755,8 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Challenges");
+
                     b.Navigation("PPCategories");
 
                     b.Navigation("Products");
@@ -664,6 +769,8 @@ namespace Blasco.Data.Migrations
             modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
                 {
                     b.Navigation("Projects");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>

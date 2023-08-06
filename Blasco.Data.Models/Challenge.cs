@@ -26,10 +26,6 @@ namespace Blasco.Data.Models
         [MaxLength(DescriptionMaxLenght)]
         public string Description { get; set; } = null!;
 
-        [Required]
-        [MaxLength(ImageUrlMaxLength)]
-        public string ImageUrl { get; set; } = null!;
-
         public Guid CustomerCreatedChallengeId { get; set; }
         public ApplicationUser CustomerCreatedChallenge { get; set; } = null!;
 
@@ -43,9 +39,8 @@ namespace Blasco.Data.Models
 
         public decimal PriceToWin { get; set; }
 
-        public string PhotoId { get; set; }
-
         public bool IsOnGoing { get; set; }
+        public bool IsActive { get; set; }
 
         public Guid? WinnerId { get; set; }
 

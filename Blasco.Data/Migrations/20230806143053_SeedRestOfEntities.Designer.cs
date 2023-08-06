@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blasco.Data.Migrations
 {
     [DbContext(typeof(BlascoDbContext))]
-    [Migration("20230806091602_AddedToChallengeEndDateCustomerAndVotes")]
-    partial class AddedToChallengeEndDateCustomerAndVotes
+    [Migration("20230806143053_SeedRestOfEntities")]
+    partial class SeedRestOfEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,6 +110,102 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1639b434-14a4-43e3-91c0-2449a73285fb",
+                            Email = "admin@blasco.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            IsActive = true,
+                            LastName = "Admin",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@BLASCO.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO638E6EEHy5Y7uHHboLf2vfHKtdFsnoYiAIAZVl++2Mtab+JlSe/3MhwykMkzaJHQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3df58503-7a2c-47b0-8861-b03f9733558f",
+                            Email = "firstCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCREATOR@CREATOR.COM",
+                            NormalizedUserName = "FIRSTCREATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGJAC53DfNPKkciLKKr+BX4seqdDArO4rB+7XjMdIMFmPJrPkU7VZnx8qcND65yNNg==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "firstPseudonym",
+                            TwoFactorEnabled = false,
+                            UserName = "FirstCreator"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "0734ba57-0a04-49f6-b91f-ee079b248463",
+                            Email = "secondCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCREATOR@CREATOR.COM",
+                            NormalizedUserName = "SECONDCREATOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEC/Fv0TWiyhWVprvuivJEEB2DMgzO1HUrzO0QWk5QWEciAsx3ysAkBtl6yCfm6GICw==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "secondPseudonym",
+                            TwoFactorEnabled = false,
+                            UserName = "SecondCreator"
+                        },
+                        new
+                        {
+                            Id = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dc2cbc9b-f34d-4bec-9e7d-b8d499abbca2",
+                            CustomerTypeId = 2,
+                            Email = "firstCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "FIRSTCUSTOMER",
+                            PasswordHash = "AQAAAAEAACcQAAAAELULpm0SLkCFa2/60uNeac0PXvbyokunwayYTcxh4vF44Gujhh8JPEKA5Ii5MeNJqQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "FirstCustomer"
+                        },
+                        new
+                        {
+                            Id = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "22f52826-7aa6-460a-9119-23f5fce62443",
+                            CustomerTypeId = 1,
+                            Email = "secondCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "SECONDCUSTOMER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEApMy33fcrSHTajPLqFYAnQmyDvB77FsM0LgTkASOwZLKINoS4n/yJpDGxXCJtRxlA==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "SecondCustomer"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ApplicationUserPPCategory", b =>
@@ -125,6 +221,38 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("ApplicationUserPPCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            PPCategoryId = 10,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 13,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 9,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 5,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        },
+                        new
+                        {
+                            PPCategoryId = 8,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        },
+                        new
+                        {
+                            PPCategoryId = 11,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
@@ -150,19 +278,15 @@ namespace Blasco.Data.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(month, +2, GETDATE())");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsOnGoing")
                         .HasColumnType("bit");
-
-                    b.Property<string>("PhotoId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PriceToWin")
                         .HasColumnType("decimal(18,2)");
@@ -184,6 +308,34 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("WinnerId");
 
                     b.ToTable("Challenges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CategoryId = 5,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerCreatedChallengeId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            Description = "Are you a creative mind with a flair for design? Put your artistic prowess to the test and join our exciting contest, \"Architectural Visions: Redesign Our Identity.\"\r\n\r\nAre you up for the challenge? Unleash your creativity and design a new logo that symbolizes the essence of Architecture, evoking elegance, forward-thinking concepts, and a seamless fusion of form and function.",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsOnGoing = true,
+                            PriceToWin = 200m,
+                            Title = "Architectural Visions: Redesign Our Identity"
+                        },
+                        new
+                        {
+                            Id = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CategoryId = 10,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerCreatedChallengeId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            Description = "Calling all nature enthusiasts and photography enthusiasts alike! Embark on a visual journey of awe and wonder as we invite you to participate in our thrilling contest, \"Capturing Nature's Wonders: A Photographic Odyssey.\" Immerse yourself in the beauty of the natural world and showcase your talent by capturing the most mesmerizing moments in nature through your lens.",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsOnGoing = true,
+                            PriceToWin = 200m,
+                            Title = "Capturing Nature's Wonders: A Photographic Odyssey"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
@@ -201,6 +353,23 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Private Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Freelancer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Buisness"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -232,11 +401,6 @@ namespace Blasco.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -259,6 +423,57 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7cee0b9a-2b1a-49e1-bfa6-f3f3e63626de"),
+                            CategoryId = 10,
+                            City = "Buenos Aires",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            CustomerId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            Description = "A group of bees compete for the only female in the group. Climate change, pesticides and ever-dwindling habitat make it difficult for bees around the world to maintain their species.",
+                            IsActive = true,
+                            Price = 35m,
+                            Title = "Bees"
+                        },
+                        new
+                        {
+                            Id = new Guid("2700b45e-314b-4e66-b607-5f3cb9927852"),
+                            CategoryId = 8,
+                            City = "London",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            CustomerId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            Description = "Taking her art from life and nature, she breaks down forms simplifying and playing with the uses of light and shadows. Sometimes staying true to a likeness, which is always the starting point, but sometimes her work will take on a much more abstract nature.",
+                            IsActive = true,
+                            Price = 170m,
+                            Title = "Ornate vase with intricate floral pattern design"
+                        },
+                        new
+                        {
+                            Id = new Guid("e667cc6a-341f-4320-9fdc-3fdc60cc7fff"),
+                            CategoryId = 11,
+                            City = "Madrid",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "High-quality Print of a Spaceman dancing music poster flyer design element",
+                            IsActive = true,
+                            Price = 25m,
+                            Title = "Spaceman"
+                        },
+                        new
+                        {
+                            Id = new Guid("8eab24f6-7888-4aa6-9ecd-5eae3d3c110e"),
+                            CategoryId = 9,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "Discover the beauty of flowers with this stunning Found a Flower Bouquet in Heavy Textured 3d Abstract Art. The intricate botanical design is both abstract and realistic, capturing the essence of nature in a unique and eye-catching way. Measuring 12x18 inches, it's the perfect size to make a stateme...",
+                            IsActive = true,
+                            Price = 120m,
+                            Title = "Heavy Textured 3d Abstract Art Painting"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
@@ -277,6 +492,78 @@ namespace Blasco.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductProjectCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Animation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Architectural plan"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Furniture"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Glass sculpture"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Graphic design"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Illustration"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Interior design"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Metal designs"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Painting"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Photograph"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Print"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Sculpture"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Tapestry"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Video"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Project", b =>
@@ -304,11 +591,6 @@ namespace Blasco.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -328,6 +610,51 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("65786e09-08fc-4bb3-bf02-665ff651c8e5"),
+                            CategoryId = 10,
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "In Collaboration with the Zoo: Graceful Giants Unveiled - A Mesmerizing Giraffe Photoshoot\r\nStep into a world of wonder as our lens captures the mesmerizing charm of giraffes, revealing their elegant grace and captivating allure. Witness these gentle giants in their natural habitat, towering above the savanna, their majestic presence leaving an indelible mark on your heart. ",
+                            IsActive = true,
+                            Title = "Giraffe"
+                        },
+                        new
+                        {
+                            Id = new Guid("b10ce869-5388-47c4-88b8-0ebe7da7d7e3"),
+                            CategoryId = 10,
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "This endeavor seeks to encapsulate the enchanting allure of open landscapes, translating the serene expanse and delicate details of fields into a breathtaking visual experience. Immerse yourself in the essence of nature's tranquility and embrace the artistry that brings the field's beauty to life in a captivating display of creativity and awe-inspiring imagery.",
+                            IsActive = true,
+                            Title = "Fields"
+                        },
+                        new
+                        {
+                            Id = new Guid("5d3533b4-c059-47eb-9333-ae8cc728015d"),
+                            CategoryId = 5,
+                            ChallengeId = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "In my design I reimagined the identity by drawing inspiration from the mesmerizing patterns and structural elements of iconic architectural landmarks worldwide. Through a harmonious blend of modern aesthetics and timeless elegance, I created a visually captivating representation that symbolizes our collective journey towards a progressive and interconnected future.",
+                            IsActive = true,
+                            Title = "Architecture Brand Identity"
+                        },
+                        new
+                        {
+                            Id = new Guid("adeacb8d-6173-46ee-9b7b-c5696d55111a"),
+                            CategoryId = 13,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "Embark on a captivating journey through culture and history with my Oriental Tapestry Project. This creative endeavor weaves together intricate threads of Eastern traditions, vibrant colors, and timeless narratives, crafting a mesmerizing masterpiece that transports viewers to distant lands. Immerse yourself in the rich tapestry of Asia's heritage, where artistry and storytelling intertwine in a captivating display of beauty and meaning.",
+                            IsActive = true,
+                            Title = "Oriental Tapestry"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
@@ -359,6 +686,24 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("ProjectCastOnId");
 
                     b.ToTable("Votes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("953a5321-ee41-4397-9736-3972caa5aca4"),
+                            ApplicationUserWhoVotedId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            ChallengeId = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectCastOnId = new Guid("5d3533b4-c059-47eb-9333-ae8cc728015d")
+                        },
+                        new
+                        {
+                            Id = new Guid("5d6529bb-d319-45b6-b454-3d2c68da4633"),
+                            ApplicationUserWhoVotedId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectCastOnId = new Guid("65786e09-08fc-4bb3-bf02-665ff651c8e5")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -387,6 +732,29 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744"),
+                            ConcurrencyStamp = "267f65d9-492d-48ae-97f0-d98d8a04ae17",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae"),
+                            ConcurrencyStamp = "a1fbf371-537d-46d6-b28b-0529fe2d3695",
+                            Name = "Creator",
+                            NormalizedName = "CREATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a"),
+                            ConcurrencyStamp = "09efa818-4874-4203-90e3-7e10f26182d2",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -473,6 +841,33 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            RoleId = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744")
+                        },
+                        new
+                        {
+                            UserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        },
+                        new
+                        {
+                            UserId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

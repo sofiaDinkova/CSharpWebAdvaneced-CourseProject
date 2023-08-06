@@ -29,7 +29,6 @@
                     Title = p.Title,
                     Description= p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
-                    ImageUrl = p.ImageUrl,
                     Votes = p.Votes.Count()
                 })
                 .ToArrayAsync();
@@ -53,7 +52,6 @@
                     Title= p.Title,
                     Description = p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
-                    ImageUrl = p.ImageUrl,
                     Votes = p.Votes.Count()
                 })
                 .ToArrayAsync ();
@@ -71,7 +69,6 @@
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                 })
                 .ToArrayAsync();
 

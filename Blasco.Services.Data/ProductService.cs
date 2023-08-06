@@ -31,7 +31,6 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                 })
                 .ToArrayAsync();
 
@@ -43,7 +42,6 @@ namespace Blasco.Services.Data
             {
                 Title = formModel.Title,
                 Description = formModel.Description,
-                ImageUrl = formModel.ImageUrl,
                 Price = formModel.Price,
                 CategoryId = formModel.CategoryId,
                 CreatorId = Guid.Parse(creatorId),
@@ -99,7 +97,6 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     City = p.City,
                     Price = p.Price,
                     IsPurchased = p.CustomerId.HasValue,
@@ -123,11 +120,10 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     City = p.City,
                     IsPurchased = p.CustomerId.HasValue
-                })
+                })  
                 .ToArrayAsync();
 
             return allCustomerProducts;
@@ -142,7 +138,6 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     City = p.City,
                     IsPurchased = p.CustomerId.HasValue
@@ -168,7 +163,6 @@ namespace Blasco.Services.Data
             {
                 Id = product.Id.ToString(),
                 Title = product.Title,
-                ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 IsPurchased = product.CustomerId.HasValue,
                 Description = product.Description,
@@ -201,7 +195,6 @@ namespace Blasco.Services.Data
             {
                 Title = product.Title,
                 Description = product.Description,
-                ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 City = product.City,
                 CategoryId = product.CategoryId
@@ -227,7 +220,6 @@ namespace Blasco.Services.Data
 
             product.Title = formModel.Title;
             product.Description = formModel.Description;
-            product.ImageUrl = formModel.ImageUrl;
             product.Price = formModel.Price;
             product.City = formModel.City;
             product.CategoryId = formModel.CategoryId;
@@ -245,7 +237,6 @@ namespace Blasco.Services.Data
             return new ProductPreDeleteDetailsViewModel
             {
                 Title = product.Title,
-                ImageUrl = product.ImageUrl,
                 Price = product.Price,
             };
         }

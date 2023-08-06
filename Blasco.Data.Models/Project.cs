@@ -24,10 +24,6 @@
         [MaxLength(DescriptionMaxLenght)]
         public string Description { get; set; } = null!;
 
-        [Required]
-        [MaxLength(ImageUrlMaxLength)]
-        public string ImageUrl { get; set; } = null!;
-
         public DateTime CreatedOn { get; set; }
 
         public bool IsActive { get; set; }

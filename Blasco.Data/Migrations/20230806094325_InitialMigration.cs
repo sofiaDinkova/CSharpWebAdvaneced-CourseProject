@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Blasco.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,7 +77,8 @@ namespace Blasco.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    UserName_Pseudonym = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Pseudonym = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CustomerTypeId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -106,27 +107,27 @@ namespace Blasco.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserProductProjectCategory",
+                name: "ApplicationUserPPCategories",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    CreatorsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PPCategoryId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserProductProjectCategory", x => new { x.CategoriesId, x.CreatorsId });
+                    table.PrimaryKey("PK_ApplicationUserPPCategories", x => new { x.PPCategoryId, x.ApplicationUserId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserProductProjectCategory_AspNetUsers_CreatorsId",
-                        column: x => x.CreatorsId,
+                        name: "FK_ApplicationUserPPCategories_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserProductProjectCategory_ProductProjectCategories_CategoriesId",
-                        column: x => x.CategoriesId,
+                        name: "FK_ApplicationUserPPCategories_ProductProjectCategories_PPCategoryId",
+                        column: x => x.PPCategoryId,
                         principalTable: "ProductProjectCategories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,15 +223,24 @@ namespace Blasco.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    CustomerCreatedChallengeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PriceToWin = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PhotoId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsOnGoing = table.Column<bool>(type: "bit", nullable: false),
                     WinnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Challenges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Challenges_AspNetUsers_CustomerCreatedChallengeId",
+                        column: x => x.CustomerCreatedChallengeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Challenges_AspNetUsers_WinnerId",
                         column: x => x.WinnerId,
@@ -325,6 +335,7 @@ namespace Blasco.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProjectCastOnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChallengeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserWhoVotedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
@@ -338,6 +349,12 @@ namespace Blasco.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Votes_Challenges_ChallengeId",
+                        column: x => x.ChallengeId,
+                        principalTable: "Challenges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Votes_Projects_ProjectCastOnId",
                         column: x => x.ProjectCastOnId,
                         principalTable: "Projects",
@@ -345,10 +362,31 @@ namespace Blasco.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "ProductProjectCategories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Animation" },
+                    { 2, "Architectural plan" },
+                    { 3, "Furniture" },
+                    { 4, "Glass sculpture" },
+                    { 5, "Graphic design" },
+                    { 6, "Illustration" },
+                    { 7, "Interior design" },
+                    { 8, "Metal designs" },
+                    { 9, "Painting" },
+                    { 10, "Photograph" },
+                    { 11, "Print" },
+                    { 12, "Sculpture" },
+                    { 13, "Tapestry" },
+                    { 14, "Video" }
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserProductProjectCategory_CreatorsId",
-                table: "ApplicationUserProductProjectCategory",
-                column: "CreatorsId");
+                name: "IX_ApplicationUserPPCategories_ApplicationUserId",
+                table: "ApplicationUserPPCategories",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -400,6 +438,11 @@ namespace Blasco.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Challenges_CustomerCreatedChallengeId",
+                table: "Challenges",
+                column: "CustomerCreatedChallengeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Challenges_WinnerId",
                 table: "Challenges",
                 column: "WinnerId");
@@ -440,6 +483,11 @@ namespace Blasco.Data.Migrations
                 column: "ApplicationUserWhoVotedId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Votes_ChallengeId",
+                table: "Votes",
+                column: "ChallengeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Votes_ProjectCastOnId",
                 table: "Votes",
                 column: "ProjectCastOnId");
@@ -448,7 +496,7 @@ namespace Blasco.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationUserProductProjectCategory");
+                name: "ApplicationUserPPCategories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
