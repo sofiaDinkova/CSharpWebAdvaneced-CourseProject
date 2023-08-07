@@ -112,8 +112,8 @@ namespace Blasco.Data.Configurations.Seed
             Id = Guid.Parse(AdminId),
             FirstName = "Admin",
             LastName = "Admin",
-            UserName = "Admin",
-            NormalizedUserName = "ADMIN",
+            UserName = AdminEmail,
+            NormalizedUserName = "ADMIN@BLASCO.COM",
             Email = AdminEmail,
             NormalizedEmail = "ADMIN@BLASCO.COM",
             EmailConfirmed = false,
@@ -123,6 +123,7 @@ namespace Blasco.Data.Configurations.Seed
             AccessFailedCount = 0,
             TwoFactorEnabled = false,
             IsActive = true,
+            SecurityStamp = Guid.NewGuid().ToString().ToUpper()
         };
 
         private static IReadOnlyCollection<ApplicationUser> creators = new List<ApplicationUser>()
@@ -132,8 +133,8 @@ namespace Blasco.Data.Configurations.Seed
                 Id = Guid.Parse(FirstCreatorId),
                 FirstName = "First",
                 LastName = "Creator",
-                UserName = "FirstCreator",
-                NormalizedUserName = "FIRSTCREATOR",
+                UserName = FirstCreatorEmail,
+                NormalizedUserName = "FIRSTCREATOR@CREATOR.COM",
                 Email = FirstCreatorEmail,
                 NormalizedEmail = "FIRSTCREATOR@CREATOR.COM",
                 EmailConfirmed = false,
@@ -143,7 +144,8 @@ namespace Blasco.Data.Configurations.Seed
                 AccessFailedCount = 0,
                 TwoFactorEnabled = false,
                 IsActive = true,
-                Pseudonym = "firstPseudonym"
+                Pseudonym = "firstPseudonym",
+                SecurityStamp = Guid.NewGuid().ToString().ToUpper()
             },
 
             new ApplicationUser
@@ -151,8 +153,8 @@ namespace Blasco.Data.Configurations.Seed
                 Id = Guid.Parse(SecondCreatorId),
                 FirstName = "Second",
                 LastName = "Creator",
-                UserName = "SecondCreator",
-                NormalizedUserName = "SECONDCREATOR",
+                UserName = SecondCreatorEmail,
+                NormalizedUserName = "SECONDCREATOR@CREATOR.COM",
                 Email = SecondCreatorEmail,
                 NormalizedEmail = "SECONDCREATOR@CREATOR.COM",
                 EmailConfirmed = false,
@@ -162,7 +164,8 @@ namespace Blasco.Data.Configurations.Seed
                 AccessFailedCount = 0,
                 TwoFactorEnabled = false,
                 IsActive = true,
-                Pseudonym = "secondPseudonym"
+                Pseudonym = "secondPseudonym",
+                SecurityStamp = Guid.NewGuid().ToString().ToUpper()
             },
         };
 
@@ -173,8 +176,8 @@ namespace Blasco.Data.Configurations.Seed
                 Id = Guid.Parse(FirstCustomerId),
                 FirstName = "First",
                 LastName = "Customer",
-                UserName = "FirstCustomer",
-                NormalizedUserName = "FIRSTCUSTOMER",
+                UserName = FirstCustomerEmail, 
+                NormalizedUserName = "FIRSTCUSTOMER@CUSTOMER.COM",
                 Email = FirstCustomerEmail,
                 NormalizedEmail = "FIRSTCUSTOMER@CUSTOMER.COM",
                 EmailConfirmed = false,
@@ -185,6 +188,7 @@ namespace Blasco.Data.Configurations.Seed
                 TwoFactorEnabled = false,
                 IsActive = true,
                 CustomerTypeId = 2,
+                SecurityStamp = Guid.NewGuid().ToString().ToUpper()
             },
 
             new ApplicationUser
@@ -192,8 +196,8 @@ namespace Blasco.Data.Configurations.Seed
                 Id = Guid.Parse(SecondCustomerId),
                 FirstName = "Second",
                 LastName = "Customer",
-                UserName = "SecondCustomer",
-                NormalizedUserName = "SECONDCUSTOMER",
+                UserName = SecondCustomerEmail,
+                NormalizedUserName = "SECONDCUSTOMER@CUSTOMER.COM",
                 Email = SecondCustomerEmail,
                 NormalizedEmail = "SECONDCUSTOMER@CUSTOMER.COM",
                 EmailConfirmed = false,
@@ -204,6 +208,7 @@ namespace Blasco.Data.Configurations.Seed
                 TwoFactorEnabled = false,
                 IsActive = true,
                 CustomerTypeId = 1,
+                SecurityStamp = Guid.NewGuid().ToString().ToUpper()
             },
         };
 
@@ -512,6 +517,6 @@ namespace Blasco.Data.Configurations.Seed
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
 
             return passwordHasher.HashPassword(null!, password);
-        }
+        }        
     }
 }

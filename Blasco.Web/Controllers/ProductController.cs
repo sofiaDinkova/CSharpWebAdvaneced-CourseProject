@@ -49,9 +49,7 @@
         {
             try
             {
-                bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-                if (isCustomer && !this.User.IsAdmin())
+                if (this.User.IsCustomer())
                 {
                     this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                     return this.RedirectToAction("Home", "Index");
@@ -74,9 +72,7 @@
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductFormModel model)
         {
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            if (this.User.IsCustomer())
             {
                 this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                 return this.RedirectToAction("Home", "Index");
@@ -221,7 +217,7 @@
                         .DistinctBy(p => p.Id)
                         .ToList();
                 }
-                else if (isUserCustomer)
+                else if (this.User.IsCustomer())
                 {
                     string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
 

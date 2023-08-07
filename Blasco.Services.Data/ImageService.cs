@@ -2,6 +2,7 @@
 using Blasco.Data.Models;
 using Blasco.Services.Data.Interfaces;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,26 @@ namespace Blasco.Services.Data
             }
 
             return null; // Image not found
+        }
+        public async Task InsertImagesAsync(List<IFormFile> files, string entityCorrespondingId)
+        {
+            foreach (var file in files)
+            {
+                if (file != null && file.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        var image = new Image
+                        {
+                            FileName = file.FileName,
+                            ContentImage = memoryStream.ToArray(),
+                            EntityCorrespondingId = entityCorrespondingId
+                        };
+                        await images.InsertOneAsync(image);
+                    }
+                }
+            }
         }
     }
 }

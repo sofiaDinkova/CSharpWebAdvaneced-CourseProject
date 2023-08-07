@@ -22,6 +22,10 @@ namespace Blasco.Common
         public const string SecondCreatorEmail = "secondCreator@creator.com";
         public const string SecondCreatorPassword = "123456";
 
+        public const string TestCreatorId = "97c2e228-ed23-4033-b7c6-8d62d2e1aa52";
+        public const string TestCreatorEmail = "testCreator@creator.com";
+        public const string TestCreatorPassword = "123456";
+
         //Customers
         public const string FirstCustomerId = "307309dd-f039-48b2-835d-dca03aac807b";
         public const string FirstCustomerEmail = "firstCustomer@customer.com";

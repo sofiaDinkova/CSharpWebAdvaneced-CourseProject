@@ -37,13 +37,15 @@ namespace Blasco.Services.Data
                     ImageArray = imageService.GetImageBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
-            
+
             return lastThreeProducts;
         }
         public async Task<string> CreateAndReturnIdAsync(ProductFormModel formModel, string creatorId)
         {
+            Guid id = Guid.NewGuid();
             Product product = new Product
             {
+                Id = id,
                 Title = formModel.Title,
                 Description = formModel.Description,
                 Price = formModel.Price,
@@ -55,7 +57,9 @@ namespace Blasco.Services.Data
             await this.dbContext.Products.AddAsync(product);
             await this.dbContext.SaveChangesAsync();
 
-            return product.Id.ToString();
+            await this.imageService.InsertImagesAsync(formModel.Images, id.ToString());
+
+            return id.ToString();
         }
 
         public async Task<AllProductsFilteredAndPagedModel> AllAsync(AllProductsQueryModel queryModel)
@@ -84,7 +88,7 @@ namespace Blasco.Services.Data
                      .OrderByDescending(p => p.CreatedOn),
                 ProductSorting.Oldest => productQuery
                     .OrderBy(p => p.CreatedOn),
-                ProductSorting.PriceAscending => productQuery 
+                ProductSorting.PriceAscending => productQuery
                     .OrderBy(p => p.Price),
                 ProductSorting.PriceDescending => productQuery
                     .OrderByDescending(p => p.Price),
@@ -132,7 +136,7 @@ namespace Blasco.Services.Data
                     Price = p.Price,
                     City = p.City,
                     IsPurchased = p.CustomerId.HasValue
-                })  
+                })
                 .ToArrayAsync();
 
             return allCustomerProducts;
@@ -291,7 +295,7 @@ namespace Blasco.Services.Data
                 .Where(p => p.IsActive)
                 .FirstAsync(p => p.Id.ToString() == productId);
 
-            return product.CustomerId.HasValue && product.CustomerId.ToString()== customerId; 
+            return product.CustomerId.HasValue && product.CustomerId.ToString() == customerId;
         }
 
         public async Task CancelProductAsync(string productId, string customerId)

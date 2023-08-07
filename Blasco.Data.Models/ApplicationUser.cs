@@ -15,6 +15,7 @@
             this.Products = new HashSet<Product>();
             this.Projects = new HashSet<Project>();
             this.Votes = new HashSet<Vote>();
+            this.Challenges = new HashSet<Challenge>();
         }
 
         [Required]

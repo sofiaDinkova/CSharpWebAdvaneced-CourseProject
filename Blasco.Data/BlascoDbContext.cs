@@ -16,6 +16,7 @@
         {
 
         }
+        private ApplicationUser TestFifthh { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -129,6 +130,10 @@
             DataSeeder.SeedApplicationUserPPCategory(builder);
             DataSeeder.SeedVotes(builder);
 
+            SeedTest();
+            builder.Entity<ApplicationUser>()
+                .HasData(TestFifthh);
+
         }
         public DbSet<ProductProjectCategory> ProductProjectCategories { get; set; } = null!;
 
@@ -144,5 +149,30 @@
 
         public DbSet<ApplicationUserPPCategory> ApplicationUserPPCategories { get; set;} = null!;
 
+        private void SeedTest()
+        {
+            var hasher = new PasswordHasher<ApplicationUser>();
+
+            TestFifthh = new ApplicationUser()
+            {
+                Id = Guid.Parse("92cd8068-4155-48d7-8a6d-1c1ea6e7f2c5"),
+                FirstName = "TestFifthh",
+                LastName = "Testfifthovv",
+                UserName = "testFifthh@test.com",
+                NormalizedUserName = "TESTFIFTHH@TEST.COM",
+                Email = "testFifthH@test.com",
+                NormalizedEmail = "TESTFIFTHH@TEST.COM",
+                EmailConfirmed = false,
+                LockoutEnabled = true,
+                LockoutEnd = null,
+                AccessFailedCount = 0,
+                TwoFactorEnabled = false,
+                IsActive = true,
+                Pseudonym = "tastFifthh",
+                SecurityStamp = Guid.NewGuid().ToString().ToUpper()
+
+            };
+            TestFifthh.PasswordHash = hasher.HashPassword(TestFifthh, "123456");
+        }
     }
 }

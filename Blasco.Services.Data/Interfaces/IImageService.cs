@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Blasco.Services.Data.Interfaces
         public byte[] GetImageBytesByEntityCorrespondingId(string entityId);
 
         public List<byte[]> GetAllImagesBytesByEntityCorrespondingId(string entityId);
+
+        public Task InsertImagesAsync(List<IFormFile> files, string entityCorrespondingId);
     }
 }

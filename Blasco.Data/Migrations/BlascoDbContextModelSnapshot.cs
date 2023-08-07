@@ -114,7 +114,7 @@ namespace Blasco.Data.Migrations
                         {
                             Id = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1639b434-14a4-43e3-91c0-2449a73285fb",
+                            ConcurrencyStamp = "f416fb8e-cd98-437c-b647-7964543ea40f",
                             Email = "admin@blasco.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -122,17 +122,18 @@ namespace Blasco.Data.Migrations
                             LastName = "Admin",
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@BLASCO.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO638E6EEHy5Y7uHHboLf2vfHKtdFsnoYiAIAZVl++2Mtab+JlSe/3MhwykMkzaJHQ==",
+                            NormalizedUserName = "ADMIN@BLASCO.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKWDFmfRxoPgMpqANc5iWG1xD1gDLZBTxzmf+0dF9co/1YdejdA98NE6fA73ewEW2g==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "EDBFE8CB-1D4D-4397-8C67-72A91D240BC9",
                             TwoFactorEnabled = false,
-                            UserName = "Admin"
+                            UserName = "admin@blasco.com"
                         },
                         new
                         {
                             Id = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3df58503-7a2c-47b0-8861-b03f9733558f",
+                            ConcurrencyStamp = "ba8093f2-8f16-4e32-8039-814f76833a96",
                             Email = "firstCreator@creator.com",
                             EmailConfirmed = false,
                             FirstName = "First",
@@ -140,18 +141,19 @@ namespace Blasco.Data.Migrations
                             LastName = "Creator",
                             LockoutEnabled = true,
                             NormalizedEmail = "FIRSTCREATOR@CREATOR.COM",
-                            NormalizedUserName = "FIRSTCREATOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGJAC53DfNPKkciLKKr+BX4seqdDArO4rB+7XjMdIMFmPJrPkU7VZnx8qcND65yNNg==",
+                            NormalizedUserName = "FIRSTCREATOR@CREATOR.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO27GAb5QumhC3KzpknArGqyfkrIdMxDIvYmpL+nl7oBFW5zaLGTk8gn9284OwSGEQ==",
                             PhoneNumberConfirmed = false,
                             Pseudonym = "firstPseudonym",
+                            SecurityStamp = "D7BA4089-38F1-44C2-85A4-FFA63BCDC5ED",
                             TwoFactorEnabled = false,
-                            UserName = "FirstCreator"
+                            UserName = "firstCreator@creator.com"
                         },
                         new
                         {
                             Id = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0734ba57-0a04-49f6-b91f-ee079b248463",
+                            ConcurrencyStamp = "5bb1fb54-3cd7-4dad-b2ed-7417b231a8df",
                             Email = "secondCreator@creator.com",
                             EmailConfirmed = false,
                             FirstName = "Second",
@@ -159,18 +161,19 @@ namespace Blasco.Data.Migrations
                             LastName = "Creator",
                             LockoutEnabled = true,
                             NormalizedEmail = "SECONDCREATOR@CREATOR.COM",
-                            NormalizedUserName = "SECONDCREATOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAEC/Fv0TWiyhWVprvuivJEEB2DMgzO1HUrzO0QWk5QWEciAsx3ysAkBtl6yCfm6GICw==",
+                            NormalizedUserName = "SECONDCREATOR@CREATOR.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDU/2Pw3Zooe0Tmv/mjv0uMTmU/KMI5Z/onUwEynaU0Skbf/o0keUhh/HxxFpC4oLQ==",
                             PhoneNumberConfirmed = false,
                             Pseudonym = "secondPseudonym",
+                            SecurityStamp = "ECB32B29-1F5D-4350-B622-B5BB93E44A23",
                             TwoFactorEnabled = false,
-                            UserName = "SecondCreator"
+                            UserName = "secondCreator@creator.com"
                         },
                         new
                         {
                             Id = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc2cbc9b-f34d-4bec-9e7d-b8d499abbca2",
+                            ConcurrencyStamp = "2f78e998-503d-4771-a64c-d66d8179957d",
                             CustomerTypeId = 2,
                             Email = "firstCustomer@customer.com",
                             EmailConfirmed = false,
@@ -179,17 +182,18 @@ namespace Blasco.Data.Migrations
                             LastName = "Customer",
                             LockoutEnabled = true,
                             NormalizedEmail = "FIRSTCUSTOMER@CUSTOMER.COM",
-                            NormalizedUserName = "FIRSTCUSTOMER",
-                            PasswordHash = "AQAAAAEAACcQAAAAELULpm0SLkCFa2/60uNeac0PXvbyokunwayYTcxh4vF44Gujhh8JPEKA5Ii5MeNJqQ==",
+                            NormalizedUserName = "FIRSTCUSTOMER@CUSTOMER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAENfccAdYoQdoRoax9E8inrbNYsJv1hVYYdH9Z5Uk+nGPsopHW+C4xaLwDnuNgVj5oQ==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "D4168115-B36A-40A9-8752-4693BEB1660C",
                             TwoFactorEnabled = false,
-                            UserName = "FirstCustomer"
+                            UserName = "firstCustomer@customer.com"
                         },
                         new
                         {
                             Id = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "22f52826-7aa6-460a-9119-23f5fce62443",
+                            ConcurrencyStamp = "c5dd35f0-e01e-4b8d-8e6a-ed6cf5711430",
                             CustomerTypeId = 1,
                             Email = "secondCustomer@customer.com",
                             EmailConfirmed = false,
@@ -198,11 +202,32 @@ namespace Blasco.Data.Migrations
                             LastName = "Customer",
                             LockoutEnabled = true,
                             NormalizedEmail = "SECONDCUSTOMER@CUSTOMER.COM",
-                            NormalizedUserName = "SECONDCUSTOMER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEApMy33fcrSHTajPLqFYAnQmyDvB77FsM0LgTkASOwZLKINoS4n/yJpDGxXCJtRxlA==",
+                            NormalizedUserName = "SECONDCUSTOMER@CUSTOMER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELBhHzVP86aB8Gb73r9nsL+tSUTisgp35tT+8tzVT1tPyTBFyKbssjRNmbnaLWztIQ==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "98AE1C08-FF5D-4829-A974-2011EC46F801",
                             TwoFactorEnabled = false,
-                            UserName = "SecondCustomer"
+                            UserName = "secondCustomer@customer.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("92cd8068-4155-48d7-8a6d-1c1ea6e7f2c5"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "84f636e9-e2e3-4ffa-a096-5ab48a882d29",
+                            Email = "testFifthH@test.com",
+                            EmailConfirmed = false,
+                            FirstName = "TestFifthh",
+                            IsActive = true,
+                            LastName = "Testfifthovv",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "TESTFIFTHH@TEST.COM",
+                            NormalizedUserName = "TESTFIFTHH@TEST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKgFKaLnFL1nNc7DsPQTIIt0GTyQjIiVm8yZlve/yynAcw7O04qf6f6EQ7k9deImpA==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "tastFifthh",
+                            SecurityStamp = "FD32941E-175A-4DAA-969F-CE74F3C8FA41",
+                            TwoFactorEnabled = false,
+                            UserName = "testFifthh@test.com"
                         });
                 });
 
@@ -735,21 +760,21 @@ namespace Blasco.Data.Migrations
                         new
                         {
                             Id = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744"),
-                            ConcurrencyStamp = "267f65d9-492d-48ae-97f0-d98d8a04ae17",
+                            ConcurrencyStamp = "c80b0868-4ec6-4c43-9dfd-f4dfb20cdf70",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae"),
-                            ConcurrencyStamp = "a1fbf371-537d-46d6-b28b-0529fe2d3695",
+                            ConcurrencyStamp = "f93a0b33-a592-4b45-98b9-43d5ac310f71",
                             Name = "Creator",
                             NormalizedName = "CREATOR"
                         },
                         new
                         {
                             Id = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a"),
-                            ConcurrencyStamp = "09efa818-4874-4203-90e3-7e10f26182d2",
+                            ConcurrencyStamp = "50e16301-5b6f-4a12-98ae-d32b5b40acf6",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

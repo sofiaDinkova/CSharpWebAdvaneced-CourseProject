@@ -1,7 +1,7 @@
 ﻿@model ProductFormModel
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control" placeholder="Title...">
@@ -13,13 +13,26 @@
                           placeholder="..."></textarea>
                 <span asp-validation-for="Description" class="small textdanger"></span>
             </div>
+            @*<div class="form-group">
+            <label asp-for="ImageUrl"></label>
+            <input asp-for="ImageUrl" class="form-control" placeholder="Your
+            fine Link here...">
+
+            <span asp-validation-for="ImageUrl" class="small textdanger"></span>
+            </div>*@
+            @*<div class="form-group" enctype="multipart/form-data">
+            <label asp-for="Images"></label>
+            <input asp-for="Images" type="file" name="files" multiple />
+            <span asp-validation-for="Images"></span>
+            </div>*@
+
             <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Your
-fine Link here...">
-               
-                <span asp-validation-for="ImageUrl" class="small textdanger"></span>
+                <label asp-for="Images"></label>
+                <input asp-for="Images" type="file" multiple />
+                <span asp-validation-for="Images"></span>
             </div>
+
+
             <div class="form-group">
                 <label asp-for="Price"></label>
                 <input asp-for="Price" class="form-control">
