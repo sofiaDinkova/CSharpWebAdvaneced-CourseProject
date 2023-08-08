@@ -7,8 +7,9 @@
         public const int DefaultPage = 1;
         public const int EntitiesPerPage = 6;
 
+        public const string AdminAreaName = "Admin";
         public const string AdminRoleId = "7c929f80-e14d-4063-8b76-eebc9f2c3744";
-        public const string AdminRoleName = "Administrator";
+        public const string AdminRoleName = "Admin";
 
         public const string CreatorRoleId = "38cd07af-3542-4541-8f3c-efbefd3dcaae";
         public const string CreatorRoleName = "Creator";

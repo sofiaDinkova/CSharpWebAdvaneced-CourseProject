@@ -39,7 +39,7 @@ namespace Blasco.Services.Data
             return creator.Products.Any(p => p.Id.ToString() == productId);
         }
 
-        public async Task<string> GetFullNameByIdAsync(string email)
+        public async Task<string> GetFullNameByEmailAsync(string email)
         {
             ApplicationUser? creator = await this.dbContext
                 .Users

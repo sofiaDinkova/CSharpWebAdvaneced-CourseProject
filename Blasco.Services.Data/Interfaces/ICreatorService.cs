@@ -6,7 +6,7 @@
 
         Task<bool> HasProductWithIdAsync(string productId, string userId);
 
-        Task<string> GetFullNameByIdAsync(string email);
+        Task<string> GetFullNameByEmailAsync(string email);
 
         Task<string> GetCreatorPseudonymByIdAsync(string email);
 

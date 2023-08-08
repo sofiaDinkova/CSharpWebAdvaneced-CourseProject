@@ -17,6 +17,8 @@ namespace Blasco.Web
     using Blasco.Data.BlascoMongoDbFactory;
     using Microsoft.Extensions.DependencyInjection;
     using Blasco.Data.BlascoMongoDbFactory.Interfaces;
+    using Blasco.Web.ViewModels.Home;
+    using System.Reflection;
 
     public class Program
     {
@@ -48,9 +50,13 @@ namespace Blasco.Web
 
             builder.Services.AddApplicationServices(typeof(IProjectService));
 
+            builder.Services.AddMemoryCache();
+            builder.Services.AddResponseCaching();
+
             builder.Services.ConfigureApplicationCookie(cfg =>
             {
                 cfg.LogoutPath = "/Creator/Login";
+                cfg.AccessDeniedPath = "/Home/Error/401";
             });
 
             ////string mongoConnectionString = builder.Configuration.GetConnectionString("mongodb://localhost:27017") ?? throw new InvalidOperationException("Connection string 'MongoDBConnection' not found.");
@@ -95,8 +101,12 @@ namespace Blasco.Web
 
             app.UseRouting();
 
+            app.UseResponseCaching();
+
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //app.EnableOnlineUsersCheck();
 
             if (app.Environment.IsDevelopment())
             {
@@ -112,8 +122,22 @@ namespace Blasco.Web
             //name: "default",
             //pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.MapDefaultControllerRoute();
-            app.MapRazorPages();
+            app.UseEndpoints(config =>
+            {
+                config.MapControllerRoute(
+                  name: "Admin",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+                //?????
+                config.MapControllerRoute(
+                    name: "ProtectingUrlRoute",
+                    pattern: "{controller}/{action}/{id}/{information}",
+                    defaults: new {Controller = "Category", Action = "Details"});
+
+                config.MapDefaultControllerRoute();
+
+                config.MapRazorPages();
+            });
 
             app.Run();
         }

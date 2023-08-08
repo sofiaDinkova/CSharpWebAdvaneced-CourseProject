@@ -218,21 +218,21 @@ namespace Blasco.Data.Configurations.Seed
             new IdentityRole<Guid>
             {
                 Id = Guid.Parse(AdminRoleId),
-                Name = "Admin",
+                Name = AdminRoleName,
                 NormalizedName = "ADMIN"
             },
 
             new IdentityRole<Guid>
             {
                 Id = Guid.Parse(CreatorRoleId),
-                Name = "Creator",
+                Name = CreatorRoleName,
                 NormalizedName = "CREATOR"
             },
 
             new IdentityRole<Guid>
             {
                 Id = Guid.Parse(CustomerRoleId),
-                Name = "Customer",
+                Name = CustomerRoleName,
                 NormalizedName = "CUSTOMER"
             },
         }.AsReadOnly();
