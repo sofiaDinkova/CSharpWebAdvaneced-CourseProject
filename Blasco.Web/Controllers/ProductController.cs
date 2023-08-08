@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using static Common.NotificationMessagesConstents;
+    using static Common.GeneralApplicationConstants;
 
     [Authorize]
     public class ProductController : Controller
@@ -102,7 +103,8 @@
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, "Unexpected error occured while saving your Product. Please try again letar or contact an administrator.");
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
                 model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
 
                 return this.View(model);
@@ -111,9 +113,9 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteProduct(string id)
+        public async Task<IActionResult> DeleteProduct(string productId)
         {
-            bool productExists = await productService.ExistsByIdAsync(id);
+            bool productExists = await productService.ExistsByIdAsync(productId);
 
             if (!productExists)
             {
@@ -121,18 +123,16 @@
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
+                this.TempData[ErrorMessage] = "You must be Creator to delete Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = this.User.GetId()!;
-
+            
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(productId, this.User.GetId()!);
 
             if (!isCreatorOwner && !this.User.IsAdmin())
             {
@@ -142,7 +142,7 @@
 
             try
             {
-                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(id);
+                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(productId);
 
                 return this.View(viewmodel);
             }

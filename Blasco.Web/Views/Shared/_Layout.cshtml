@@ -2,11 +2,6 @@
 @using Blasco.Services.Data.Interfaces;
 @using Blasco.Web.Infrastructure.Extentions;
 
-@inject ICustomerService CustomerService
-@{
-    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
-}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,16 +28,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="AllProjects">All Projects</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="AllProjects">Projects</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">All Products</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChallenges">All Challenges</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MongoTest" asp-action="ReturnImage">Image</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChallenges">Challenges</a>
                         </li>
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {
@@ -78,8 +70,7 @@
         <div class="container">
             &copy; Blasco @releaseYear @if (DateTime.UtcNow.Year != releaseYear)
             {
-                @Html.Raw($" - {DateTime.UtcNow.Year}")
-                ;
+                @Html.Raw($" - {DateTime.UtcNow.Year}");
             }
         </div>
     </footer>

@@ -17,5 +17,6 @@
         public const string CustomerRoleId = "2559fb3c-8a95-4912-b0f6-0f2da973920a";
         public const string CustomerRoleName = "Customer";
 
+        public const string GeneralErronrMassage = "Unexpected error occured! Please try again letar or contact an administrator.";
     }
 }

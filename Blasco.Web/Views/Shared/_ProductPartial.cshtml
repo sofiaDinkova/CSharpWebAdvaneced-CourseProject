@@ -6,7 +6,7 @@
 @inject ICreatorService CreatorService
 
 @{
-    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+    
     bool isCreatorrOwnerOfProduct = await this.CreatorService.HasProductWithIdAsync(Model.Id, this.User.GetId());
     bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
 }
@@ -42,7 +42,7 @@
                class="btn btn-success">Details</a>
             @if (this.User.Identity?.IsAuthenticated ?? false)
             {
-                if ((!isUserCustomer && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
+                if ((!this.User.IsCustomer() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                 {
                     <a asp-controller="Product" asp-action="EditProduct" asp-route-id="@Model.Id"
                        class="btn btn-warning">EditProduct</a>
@@ -59,7 +59,7 @@
                         <input class="btn btn-primary" type="submit" value="PurchaseProduct" />
                     </form>
                 }
-                @if(isUserCustomer && isCustomerOwnerOfProduct)
+                @if(this.User.IsCustomer() && isCustomerOwnerOfProduct)
                 {
                     <form asp-controller="Product" asp-action="CancelProduct"
                   asp-route-id="@Model.Id" method="post">

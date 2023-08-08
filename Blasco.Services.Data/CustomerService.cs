@@ -36,6 +36,7 @@
             return result;
         }
 
+        //Delete
         public async Task<string?> GetCustomerByUserIdAsync(string userId)
         {
             ApplicationUser? customer = await this.dbContext
