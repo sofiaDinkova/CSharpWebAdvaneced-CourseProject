@@ -11,7 +11,6 @@
         public ProductFormModel()
         {
             this.ProductProjectCategories = new HashSet<ProductSelectCategoryFormModel>();
-            this.Images = new List<IFormFile>();
         }
 
         [Required]
@@ -28,12 +27,9 @@
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
-        public IEnumerable<ProductSelectCategoryFormModel> ProductProjectCategories { get; set; } = null!;
+        public IEnumerable<ProductSelectCategoryFormModel> ProductProjectCategories { get; set; }
 
         [StringLength(CityNameMaxLenght, MinimumLength =CityNameMinLenght)]
         public string? City { get; set; }
-
-        public List<IFormFile> Images { get; set; } = null!;
-
     }
 }

@@ -40,16 +40,16 @@
                 {
                     @if ((!isUserCustomer && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
-                        <a asp-controller="Product" asp-action="EditProduct"
-                   asp-route-id="@Model.Id" class="btn btn-warning">EditProduct</a>
-                        <a asp-controller="Product" asp-action="DeleteProduct"
-                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">DeleteProduct</a>
+                        <a asp-area="" asp-controller="Product" asp-action="EditProduct"
+                   asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-area="" asp-controller="Product" asp-action="DeleteProduct"
+                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">Delete</a>
 
                     }
 
                     @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
                     {
-                        <form class="ml-2" asp-controller="Product"
+                        <form class="ml-2" asp-area="" asp-controller="Product"
                       asp-action="PurchaseProduct" asp-route-id="@Model.Id"
                               method="post">
                             <input class="btn btn-primary" type="submit"
@@ -58,7 +58,7 @@
                     }
                     @if (isUserCustomer && isCustomerOwnerOfProduct)
                     {
-                        <form class="ml-2" asp-controller="Product" asp-action="CancelProduct"
+                        <form class="ml-2" asp-area="" asp-controller="Product" asp-action="CancelProduct"
                             asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit"
                                    value="CancelProduct" />

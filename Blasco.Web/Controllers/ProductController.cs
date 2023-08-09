@@ -16,13 +16,15 @@
         private readonly ICustomerService customerService;
         private readonly IProductService productService;
         private readonly ICreatorService creatorService;
+        private readonly IImageService imageService;
 
-        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService, ICreatorService creatorService)
+        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService, ICreatorService creatorService, IImageService imageService)
         {
             this.productProjectCategoryService = productProjectCategoryService;
             this.customerService = customerService;
             this.productService = productService;
             this.creatorService = creatorService;
+            this.imageService = imageService;
         }
 
         [HttpGet]
@@ -46,7 +48,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddProduct()
+        public async Task<IActionResult> Add()
         {
             try
             {
@@ -56,7 +58,7 @@
                     return this.RedirectToAction("Home", "Index");
                 }
 
-                ProductFormModel formModel = new ProductFormModel()
+                ProductAddFormModel formModel = new ProductAddFormModel()
                 {
                     ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync()
                 };
@@ -71,7 +73,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductFormModel model)
+        public async Task<IActionResult> Add(ProductAddFormModel model)
         {
             if (this.User.IsCustomer())
             {
@@ -99,7 +101,7 @@
 
                 this.TempData[SuccessMessage] = "Product was added successfully";
 
-                return this.RedirectToAction("Details", "Product", new { productId });
+                return this.RedirectToAction("Details", "Product", new { id = productId});
             }
             catch (Exception)
             {
@@ -113,9 +115,9 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteProduct(string productId)
+        public async Task<IActionResult> Delete(string id)
         {
-            bool productExists = await productService.ExistsByIdAsync(productId);
+            bool productExists = await productService.ExistsByIdAsync(id);
 
             if (!productExists)
             {
@@ -132,7 +134,7 @@
 
             
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(productId, this.User.GetId()!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
 
             if (!isCreatorOwner && !this.User.IsAdmin())
             {
@@ -142,7 +144,7 @@
 
             try
             {
-                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(productId);
+                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(id);
 
                 return this.View(viewmodel);
             }
@@ -151,10 +153,11 @@
                 return this.GeneralError();
             }
         }
+
         [HttpPost]
-        public async Task<IActionResult> DeleteProduct(string id, ProductPreDeleteDetailsViewModel model)
+        public async Task<IActionResult> Delete(ProductPreDeleteDetailsViewModel model)
         {
-            bool productExists = await productService.ExistsByIdAsync(id);
+            bool productExists = await productService.ExistsByIdAsync(model.Id);
 
             if (!productExists)
             {
@@ -162,18 +165,17 @@
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
+                this.TempData[ErrorMessage] = "You must be Creator to delete Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = this.User.GetId()!;
+            string creatorId = this.User.GetId()!;
 
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(model.Id, creatorId!);
 
             if (!isCreatorOwner && !this.User.IsAdmin())
             {
@@ -183,7 +185,8 @@
 
             try
             {
-                await this.productService.DeleteProductByIdAsync(id);
+                await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(model.Id);
+                await this.productService.DeleteProductByIdAsync(model.Id);
 
                 this.TempData[WarningMessage] = "The Product was successfully deleted";
                 return this.RedirectToAction("Mine", "Product");
@@ -260,9 +263,54 @@
                 return this.GeneralError();
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> EditProduct(string id, ProductFormModel model)
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
+            bool productExists = await productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            bool isCreatorOwner = await this.productService
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
+                return this.RedirectToAction("Mine", "Product");
+            }
+
+            try
+            {
+                ProductEditFormModel formModel = await this.productService
+                .GetProductForEditByIdAsync(id);
+                formModel.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
+
+                return this.View(formModel);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, ProductEditFormModel model)
+        {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+            
+
             if (!this.ModelState.IsValid)
             {
                 model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
@@ -277,16 +325,11 @@
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
-
-
-            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.creatorService.HasProductWithIdAsync(id, this.User.GetId()!);
 
@@ -308,54 +351,13 @@
                 return this.View(model);
 
             }
+
             this.TempData[SuccessMessage] = "Product was edited successfully";
 
-            return this.RedirectToAction("Details", "Product", new { id });
+            return this.RedirectToAction("Details", "Product", new { id = id });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditProduct(string id)
-        {
-            bool productExists = await productService.ExistsByIdAsync(id);
-
-            if (!productExists)
-            {
-                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
-
-            bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
-
-            if (!isCreatorOwner && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
-                return this.RedirectToAction("Mine", "Product");
-            }
-
-            try
-            {
-                ProductFormModel formModel = await this.productService
-                .GetProductForEditByIdAsync(id);
-                formModel.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
-
-                return this.View(formModel);
-            }
-            catch (Exception)
-            {
-                return this.GeneralError();
-            }
-        }
+        
 
         [HttpPost]
         public async Task<IActionResult> PurchaseProduct(string id)

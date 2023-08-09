@@ -8,7 +8,7 @@ namespace Blasco.Web.ViewModels.Product
         {
             this.ImagesArray = new List<byte[]>();
         }
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         public string Title { get; set; }
 

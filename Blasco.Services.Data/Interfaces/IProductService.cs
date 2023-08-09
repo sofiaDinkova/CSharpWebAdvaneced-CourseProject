@@ -9,7 +9,7 @@ namespace Blasco.Services.Data.Interfaces
     {
         Task<IEnumerable<IndexViewModel>> LastThreeProductAsync();
 
-        Task<string> CreateAndReturnIdAsync(ProductFormModel formModel, string creatorId);
+        Task<string> CreateAndReturnIdAsync(ProductAddFormModel formModel, string creatorId);
 
         Task<AllProductsFilteredAndPagedModel> AllAsync(AllProductsQueryModel queryModel);
 
@@ -21,11 +21,11 @@ namespace Blasco.Services.Data.Interfaces
 
         Task<bool> ExistsByIdAsync(string productId);
 
-        Task<ProductFormModel> GetProductForEditByIdAsync(string productId);
+        Task<ProductEditFormModel> GetProductForEditByIdAsync(string productId);
 
         Task<bool> IsCreatorWithIdOwnerOfProductWithIdAsync(string productId, string creatorId);
 
-        Task EditProductByIdAndFormModelAsync(string productId, ProductFormModel formModel);
+        Task EditProductByIdAndFormModelAsync(string productId, ProductEditFormModel formModel);
 
         Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productid);
 

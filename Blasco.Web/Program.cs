@@ -128,11 +128,13 @@ namespace Blasco.Web
                   name: "Admin",
                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
-                //?????
+
+
                 config.MapControllerRoute(
                     name: "ProtectingUrlRoute",
-                    pattern: "{controller}/{action}/{id}/{information}",
-                    defaults: new {Controller = "Category", Action = "Details"});
+                    pattern: "/{controller}/{action}/{id}/{information}",
+                    defaults: new { Controller = "Product", Action = "Details" });
+
 
                 config.MapDefaultControllerRoute();
 
