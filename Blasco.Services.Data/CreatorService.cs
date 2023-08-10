@@ -80,5 +80,21 @@ namespace Blasco.Services.Data
 
             return creator.Pseudonym!;
         }
+
+        public async Task<bool> HasProjectWithIdAsync(string productId, string userId)
+        {
+            ApplicationUser? creator = await this.dbContext
+                .Users
+                .Include(c => c.Projects)
+                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+
+            if (creator == null)
+            {
+                return false;
+            }
+
+            productId = productId.ToLower();
+            return creator.Projects.Any(p => p.Id.ToString() == productId);
+        }
     }
 }

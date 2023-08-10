@@ -16,5 +16,11 @@
         Task<IEnumerable<ProjectAllViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId);
 
         Task<string> CreateAndReturnIdAsync(ProjectAddFormModel formModel, string creatorId);
+
+        Task<bool> ExistsByIdAsync(string productId);
+
+        Task<ProjectEditFormModel> GetProjectForEditByIdAsync(string projectId);
+
+        Task EditProjectByIdAndFormModelAsync(string productId, ProjectEditFormModel formModel);
     }
 }

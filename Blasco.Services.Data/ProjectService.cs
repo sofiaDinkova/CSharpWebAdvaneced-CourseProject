@@ -26,6 +26,16 @@
             this.creatorService = creatorService;
         }
 
+        public async Task<bool> ExistsByIdAsync(string productId)
+        {
+            bool result = await this.dbContext
+                .Projects
+                .Where(p => p.IsActive)
+                .AnyAsync(p => p.Id.ToString() == productId);
+
+            return result;
+        }
+
         public async Task<AllProjectsFilteredAndPagedModel> AllAsync(AllProjectsQueryModel queryModel)
         {
             IQueryable<Project> projectQuery = this.dbContext
@@ -161,6 +171,51 @@
             await this.imageService.InsertImagesAsync(formModel.Images, product.Id.ToString());
 
             return product.Id.ToString();
+        }
+
+        public async Task<ProjectEditFormModel> GetProjectForEditByIdAsync(string projectId)
+        {
+            Project project = await this.dbContext
+                .Projects
+                .Include(p => p.Category)
+                .Where(p => p.IsActive)
+                .FirstAsync(h => h.Id.ToString() == projectId);
+
+            return new ProjectEditFormModel
+            {
+                Title = project.Title,
+                Description = project.Description,
+                CategoryId = project.CategoryId,
+                ImageDeleteFormModels = this.imageService.GetImagesToEditByEntityCorrespondingIdAsync(projectId)
+            };
+        }
+
+        public async Task EditProjectByIdAndFormModelAsync(string productId, ProjectEditFormModel formModel)
+        {
+            Project project = await this.dbContext
+                .Projects
+                .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == productId);
+
+            project.Title = formModel.Title;
+            project.Description = formModel.Description;
+            project.CategoryId = formModel.CategoryId;
+
+            for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
+            {
+                if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                {
+                    await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id);
+                }
+            }
+
+            if (formModel.NewImages.Any())
+            {
+                await this.imageService.InsertImagesAsync(formModel.NewImages, productId);
+            }
+
+
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }

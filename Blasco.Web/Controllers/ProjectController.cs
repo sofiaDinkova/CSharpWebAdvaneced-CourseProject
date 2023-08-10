@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Common.NotificationMessagesConstents;
     using static Common.GeneralApplicationConstants;
+    using Blasco.Services.Data;
 
 
     [Authorize]
@@ -16,13 +17,15 @@
         private readonly IProductProjectCategoryService productProjectCategoryService;
         private readonly IProjectService projectService;
         private readonly IChallengeService challengeService;
+        private readonly ICreatorService creatorService;
 
 
-        public ProjectController(IProjectService projectService, IChallengeService challengeService, IProductProjectCategoryService productProjectCategoryService)
+        public ProjectController(IProjectService projectService, IChallengeService challengeService, IProductProjectCategoryService productProjectCategoryService, ICreatorService creatorService)
         {
             this.projectService = projectService;
             this.challengeService = challengeService;
             this.productProjectCategoryService = productProjectCategoryService;
+            this.creatorService = creatorService;
         }
 
         [HttpGet]
@@ -116,6 +119,98 @@
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            bool productExists = await projectService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "ProdProjectuct");
+            }
+
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to edit Project";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            bool isCreatorOwner = await this.creatorService.HasProjectWithIdAsync(id, this.User.GetId()!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator owner to the Project in order to edit it.";
+                return this.RedirectToAction("Mine", "Project");
+            }
+
+            try
+            {
+                ProjectEditFormModel formModel = await this.projectService
+                .GetProjectForEditByIdAsync(id);
+                formModel.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
+
+                return this.View(formModel);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, ProjectEditFormModel model)
+        {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+
+            if (!this.ModelState.IsValid)
+            {
+                model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
+                return this.View(model);
+            }
+
+            bool productExists = await projectService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to edit Project";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            bool isCreatorOwner = await this.creatorService.HasProjectWithIdAsync(id, this.User.GetId()!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator owner to the Project in order to edit it.";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            try
+            {
+                await this.projectService.EditProjectByIdAndFormModelAsync(id, model);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
+                return this.View(model);
+
+            }
+
+            this.TempData[SuccessMessage] = "Project was edited successfully";
+
+            return this.RedirectToAction("Details", "Project", new { id = id });
+        }
 
         [HttpGet]
         [AllowAnonymous]

@@ -1,4 +1,14 @@
-﻿@model ProjectAllViewModel
+﻿@using Blasco.Services.Data.Interfaces;
+@using Blasco.Web.Infrastructure.Extentions;
+
+@model ProjectAllViewModel
+
+@inject ICreatorService CreatorService
+
+@{
+
+    bool isCreatorrOwnerOfProject = await this.CreatorService.HasProjectWithIdAsync(Model.Id, this.User.GetId());
+}
 <style>
     body {
         background-color: #f8f9fa;
@@ -70,8 +80,9 @@
         }
 
 </style>
-<div class="container mt-4" >
+<div class="container mt-4">
     <div class="row">
+
         <div class="col-md-6">
             <div class="challenge-box">
                 @if (Model.ImagesArray != null)
@@ -96,6 +107,21 @@
                         <strong>Creator</strong> @Model.CreatorPseudonym<br />
                     </p>
                     <p class="challenge-description">@Model.Description</p>
+
+                    <a asp-area="" asp-controller="Project" asp-action="Details" asp-route-id="@Model.Id.ToString()"
+                       class="btn btn-success">Details</a>
+
+                    @if (this.User.Identity?.IsAuthenticated ?? false)
+                    {
+                        if ((this.User.IsCreator() && isCreatorrOwnerOfProject) || this.User.IsAdmin())
+                        {
+                            <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
+                               class="btn btn-warning">Edit</a>
+
+                            <a asp-area="" asp-controller="Project" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
+                               class="btn btn-danger">Delete</a>
+                        }
+                    }
 
                 </div>
             </div>

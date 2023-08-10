@@ -103,7 +103,7 @@ namespace Blasco.Services.Data
                         {
                             FileName = file.FileName,
                             ContentImage = memoryStream.ToArray(),
-                            EntityCorrespondingId = entityCorrespondingId
+                            EntityCorrespondingId = entityCorrespondingId.ToLower()
                         };
                         await images.InsertOneAsync(image);
                     }
