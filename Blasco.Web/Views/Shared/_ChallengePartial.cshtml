@@ -96,7 +96,7 @@
                     </p>
                     <p class="challenge-description">@Model.Description</p>
                     <div class="form-container">
-                        <form class="ml-2" asp-controller="Project" asp-action="AllProjects" asp-route-id="@Model.Id" method="get">
+                        <form class="ml-2" asp-controller="Project" asp-action="AllProjectsInChallenge" asp-route-id="@Model.Id" method="get">
                             <input class="participate-button" type="submit" value="All Projects" />
                         </form>
                         <form class="ml-2" asp-controller="Project" asp-action="Participate" asp-route-id="@Model.Id" method="get">

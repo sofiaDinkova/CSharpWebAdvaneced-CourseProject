@@ -10,7 +10,7 @@
 @inject ICreatorService CreatorService
 @{
     bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
-    string creatorPseudonym = await CreatorService.GetCreatorPseudonymByIdAsync(User.Identity?.Name);
+    string creatorPseudonym = await CreatorService.GetCreatorPseudonymByEmailAsync(User.Identity?.Name);
 }
 
 <ul class="navbar-nav">

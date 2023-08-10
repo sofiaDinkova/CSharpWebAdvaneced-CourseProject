@@ -8,7 +8,9 @@
 
         Task<string> GetFullNameByEmailAsync(string email);
 
-        Task<string> GetCreatorPseudonymByIdAsync(string email);
+        Task<string> GetCreatorPseudonymByEmailAsync(string email);
+
+        Task<string> GetCreatorPseudonymByIdAsync(string userId);
 
     }
 }

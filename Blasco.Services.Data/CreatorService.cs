@@ -53,7 +53,7 @@ namespace Blasco.Services.Data
             return $"{creator.FirstName} {creator.LastName}";
         }
 
-        public async Task<string> GetCreatorPseudonymByIdAsync(string email)
+        public async Task<string> GetCreatorPseudonymByEmailAsync(string email)
         {
             ApplicationUser? creator = await this.dbContext
                 .Users
@@ -65,6 +65,20 @@ namespace Blasco.Services.Data
             }
 
             return creator.UserName;
+        }
+
+        public async Task<string> GetCreatorPseudonymByIdAsync(string userId)
+        {
+            ApplicationUser? creator = await this.dbContext
+                .Users
+                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+
+            if (creator == null)
+            {
+                return string.Empty;
+            }
+
+            return creator.Pseudonym!;
         }
     }
 }
