@@ -27,6 +27,7 @@
             await this.dbContext.SaveChangesAsync();
         }
 
+        //Do not need it enymore?
         public async Task<bool> CustomerExistsByCreatorId(string creatorId)
         {
             bool result = await this.dbContext

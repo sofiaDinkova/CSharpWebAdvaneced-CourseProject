@@ -50,9 +50,9 @@
                 {
                     @if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
-                        <a asp-area="" asp-controller="Product" asp-action="EditProduct"
+                        <a asp-area="" asp-controller="Product" asp-action="Edit"
                    asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                        <a asp-area="" asp-controller="Product" asp-action="DeleteProduct"
+                        <a asp-area="" asp-controller="Product" asp-action="Delete"
                    asp-route-id="@Model.Id" class="ml-2 btn btn-danger">Delete</a>
 
                     }

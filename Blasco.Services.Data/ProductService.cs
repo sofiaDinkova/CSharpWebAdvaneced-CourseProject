@@ -137,7 +137,8 @@ namespace Blasco.Services.Data
                     Title = p.Title,
                     Price = p.Price,
                     City = p.City,
-                    IsPurchased = p.CustomerId.HasValue
+                    IsPurchased = p.CustomerId.HasValue,
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 
@@ -155,7 +156,8 @@ namespace Blasco.Services.Data
                     Title = p.Title,
                     Price = p.Price,
                     City = p.City,
-                    IsPurchased = p.CustomerId.HasValue
+                    IsPurchased = p.CustomerId.HasValue,
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 

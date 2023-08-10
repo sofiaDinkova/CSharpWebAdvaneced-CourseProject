@@ -204,31 +204,30 @@
 
             try
             {
-                string creatorId = this.User.GetId();
+                string userId = this.User.GetId()!;
 
-                bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(creatorId);
-                if (this.User.IsAdmin())
+                bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
+
+                //if (this.User.IsAdmin())
+                //{
+                //    string customerId = await this.customerService.GetCustomerByUserIdAsync(userId);
+                //    //purchased Product as customer
+                //    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
+                //    //added Product as creator
+                //    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(userId));
+
+                //    //preventing doubles(Products)
+                //    myProducts = myProducts
+                //        .DistinctBy(p => p.Id)
+                //        .ToList();
+                //}
+                if (this.User.IsCustomer())
                 {
-                    string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
-                    //purchased Product as customer
-                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
-                    //added Product as creator
-                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(creatorId));
-
-                    //preventing doubles(Products)
-                    myProducts = myProducts
-                        .DistinctBy(p => p.Id)
-                        .ToList();
+                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(userId));
                 }
-                else if (this.User.IsCustomer())
+                else if(this.User.IsCreator())
                 {
-                    string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
-
-                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
-                }
-                else
-                {
-                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(creatorId));
+                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(userId));
                 }
             }
             catch (Exception)
