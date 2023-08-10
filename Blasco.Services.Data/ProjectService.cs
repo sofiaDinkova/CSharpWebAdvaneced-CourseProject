@@ -97,8 +97,9 @@
                     Title = p.Title,
                     Description= p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
-                    Votes = p.Votes.Count()
-                })
+                    Votes = p.Votes.Count(),
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
+        })
                 .ToArrayAsync();
             int projectCount = projectViewModels.Count();
 
@@ -142,6 +143,24 @@
                 .ToArrayAsync();
 
             return lastThreeProjects;
+        }
+
+        public async Task<string> CreateAndReturnIdAsync(ProjectAddFormModel formModel, string creatorId)
+        {
+            Project product = new Project
+            {
+                Title = formModel.Title,
+                Description = formModel.Description,
+                CategoryId = formModel.CategoryId,
+                CreatorId = Guid.Parse(creatorId),
+            };
+
+            await this.dbContext.Projects.AddAsync(product);
+            await this.dbContext.SaveChangesAsync();
+
+            await this.imageService.InsertImagesAsync(formModel.Images, product.Id.ToString());
+
+            return product.Id.ToString();
         }
     }
 }

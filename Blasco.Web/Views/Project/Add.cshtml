@@ -1,0 +1,27 @@
+﻿@model ProjectAddFormModel
+@{
+    ViewData["Title"] = "Add Project";
+}
+
+<h2 class="text-center"> @ViewData["Title"]</h2>
+<hr />
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post" enctype="multipart/form-data">
+
+            <partial name="_ProjectFormPartial" model="@Model" />
+
+
+            <div class="form-group">
+                <label asp-for="Images"></label>
+                <input asp-for="Images" type="file" multiple />
+                <span asp-validation-for="Images"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}
