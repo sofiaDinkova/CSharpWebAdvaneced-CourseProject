@@ -53,18 +53,12 @@
 
         public async Task<bool> HasProductWithIdAsync(string productId, string userId)
         {
-            ApplicationUser? customer = await this.dbContext
-                .Users
-                .Include(c => c.Products)
-                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+            bool result = await this.dbContext
+                .Products
+                .Where(p => p.Id.ToString() == productId)
+                .AnyAsync(p=>p.CustomerId.ToString()==userId);
 
-            if (customer == null)
-            {
-                return false;
-            }
-
-            productId = productId.ToLower();
-            return customer.Products.Any(p => p.Id.ToString() == productId);
+            return result;
         }
     }
 }

@@ -185,6 +185,7 @@ namespace Blasco.Services.Data
                 CreatorId = product.CreatorId.ToString(),
                 CreatorEmail = creatorEmail,
                 CreatorPseudonym = creatorPseudonym,
+                ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(product.Id.ToString())
             };
         }
 
