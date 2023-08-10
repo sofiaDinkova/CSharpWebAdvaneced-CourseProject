@@ -6,9 +6,9 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="list-group">
                 <a href="#" class="list-group-item disabled">Categories</a>
                 <a href="@Url.Action("AllProducts", new { category = "" })"
@@ -24,7 +24,7 @@
                 }
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <form method="get" asp-controller="Product" asp-action="AllProducts">
                 <div class="row">
 
@@ -38,13 +38,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 d-flex justify-content-between">
                         <div class="form-group mb-3">
                             <label asp-for="SearchString"></label>
                             <input asp-for="SearchString" class="form-control" placeholder="...">
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 d-flex justify-content-between">
                         <div class="form-group mb-3">
                             <label asp-for="ProductSorting"></label>
                             <select asp-for="ProductSorting" class="form-control">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 d-flex justify-content-between">
                         <div class="form-group mb-3">
                             <input type="submit" value="Search" class="btn btn-primary" />
                         </div>
