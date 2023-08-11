@@ -14,14 +14,14 @@ namespace Blasco.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task<bool> CreatorHasProductsAsync(string creatorId)
-        {
-            ApplicationUser creator = await this.dbContext
-                .Users
-                .FirstAsync(c => c.Id.ToString() == creatorId);
-
-            return creator.Products.Any();
-        }
+        //public async Task<bool> CreatorHasProductsAsync(string creatorId)
+        //{
+        //    ApplicationUser creator = await this.dbContext
+        //        .Users
+        //        .FirstAsync(c => c.Id.ToString() == creatorId);
+           
+        //    return creator.Products.Any();
+        //}
                 
         public async Task<bool> HasProductWithIdAsync(string productId, string userId)
         {

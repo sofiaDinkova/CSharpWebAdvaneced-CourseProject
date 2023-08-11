@@ -18,5 +18,7 @@
         public int? Votes { get; set; }
 
         public List<byte[]> ImagesArray { get; set; } = null!;
+
+        public string? ChallengeId { get; set; }
     }
 }

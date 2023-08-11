@@ -3,9 +3,9 @@
 @using Blasco.Web.Infrastructure.Extentions;
 
 @inject ICustomerService CustomerService
-@{
+@*@{
     bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
-}
+}*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -23,7 +23,7 @@
         <p class="lead">
             @if (User.Identity?.IsAuthenticated ?? false)
             {
-                @if (!isUserCustomer)
+                @if (this.User.IsCustomer())
                 {
                     <a asp-controller="Project" asp-action="Add" class="btn btn-primary btn-lg"
                        role="button">Add Project</a>

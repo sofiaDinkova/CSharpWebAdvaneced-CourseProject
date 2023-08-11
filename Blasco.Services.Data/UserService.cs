@@ -50,7 +50,18 @@
 
             return allUsers;
         }
-         //if not used DELETE
+
+        public async Task<bool> DidAllreadyVoteForChallengeAsync(string userId, string challengeId)
+        {
+            bool result = await this.dbContext
+                .Votes
+                .AnyAsync(c => c.ChallengeId.ToString() == challengeId &&
+                               c.ApplicationUserWhoVotedId.ToString()! == userId);
+
+            return result;
+        }
+
+        //if not used DELETE
         public async Task<string> GetFullNameByIdAsync(string id)
         {
             ApplicationUser? user = await this.dbContext

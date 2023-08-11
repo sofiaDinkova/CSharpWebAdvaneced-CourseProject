@@ -9,14 +9,14 @@
 @inject ICustomerService CustomerService
 @inject ICreatorService CreatorService
 @{
-    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+    //bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
     string creatorPseudonym = await CreatorService.GetCreatorPseudonymByEmailAsync(User.Identity?.Name);
 }
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        if (!isUserCustomer)
+        if (!this.User.IsCustomer())
         {
             <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Become" >Become Customer!</a>

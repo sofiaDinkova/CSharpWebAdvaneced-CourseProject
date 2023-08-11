@@ -30,50 +30,50 @@
 
         
 
-        [HttpGet]
-        public async Task<IActionResult> Become()
-        {
-            string? userId = this.User.GetId();
+        //[HttpGet]
+        //public async Task<IActionResult> Become()
+        //{
+        //    string? userId = this.User.GetId();
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
+        //    bool isCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
 
-            if (isCustomer)
-            {
-                TempData[ErrorMessage] = "You are already a customer!";
-                return this.RedirectToAction("Index", "Home");
-            }
+        //    if (isCustomer)
+        //    {
+        //        TempData[ErrorMessage] = "You are already a customer!";
+        //        return this.RedirectToAction("Index", "Home");
+        //    }
 
-            return this.View();
-        }
+        //    return this.View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Become(BecomeCustomerFormModel model)
-        {
-            string? userId = this.User.GetId();
+        //[HttpPost]
+        //public async Task<IActionResult> Become(BecomeCustomerFormModel model)
+        //{
+        //    string? userId = this.User.GetId();
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
+        //    bool isCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
 
-            if (isCustomer)
-            {
-                TempData[ErrorMessage] = "You are already a customer!";
-                return this.RedirectToAction("Index", "Home");
-            }
+        //    if (isCustomer)
+        //    {
+        //        TempData[ErrorMessage] = "You are already a customer!";
+        //        return this.RedirectToAction("Index", "Home");
+        //    }
 
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
-            try
-            {
-                await this.customerService.Create(userId, model);
-            }
-            catch (Exception)
-            {
-                this.TempData[ErrorMessage] = "Unexpected error occured! Please try again letar or contact an administrator.";
-                return this.RedirectToAction("Index", "Home");
-            }
+        //    if (!this.ModelState.IsValid)
+        //    {
+        //        return this.View(model);
+        //    }
+        //    try
+        //    {
+        //        await this.customerService.Create(userId, model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        this.TempData[ErrorMessage] = "Unexpected error occured! Please try again letar or contact an administrator.";
+        //        return this.RedirectToAction("Index", "Home");
+        //    }
 
-            return this.RedirectToAction("AllProducts", "Products");
-        }
+        //    return this.RedirectToAction("AllProducts", "Products");
+        //}
     }
 }

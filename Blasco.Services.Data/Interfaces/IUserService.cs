@@ -8,5 +8,6 @@ namespace Blasco.Services.Data.Interfaces
 
         Task<IEnumerable<UserViewModel>> AllUsersAsync();
 
+        Task<bool> DidAllreadyVoteForChallengeAsync(string userId, string challengeId);
     }
 }

@@ -8,22 +8,36 @@ using static Blasco.Common.NotificationMessagesConstents;
 using static Blasco.Common.GeneralApplicationConstants;
 using Blasco.Web.ViewModels.Customer;
 using Blasco.Services.Data.Interfaces;
+using Blasco.Services.Data;
+using Blasco.Web.Infrastructure.Extentions;
+using Blasco.Web.ViewModels.Project;
+using Microsoft.CodeAnalysis;
 
 namespace Blasco.Web.Controllers
 {
     public class CreatorController : Controller
     {
+        private readonly IProjectService projectService;
+        private readonly IUserService userService;
+        private readonly IVoteService voteService;
+        private readonly IChallengeService challengeService;
+        private readonly ICreatorService creatorService;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> creatorManager;
         private readonly ICustomerTypeService customerTypeService;
 
 
-        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager, ICustomerTypeService customerTypeService)
+        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager, ICustomerTypeService customerTypeService, IProjectService projectService, IUserService userService, IVoteService voteService, IChallengeService challengeService, ICreatorService creatorService)
         {
             this.signInManager = signInManager;
             this.creatorManager = creatorManager;
 
             this.customerTypeService = customerTypeService;
+            this.projectService = projectService;
+            this.userService = userService;
+            this.voteService = voteService;
+            this.challengeService = challengeService;
+            this.creatorService = creatorService;
         }
 
         [HttpGet]
@@ -198,6 +212,53 @@ namespace Blasco.Web.Controllers
             }
 
             return this.Redirect(model.ReturnUrl ?? "/Home/Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Vote(ProjectAllViewModel model)
+        {
+            bool projectExists = await projectService.ExistsByIdAsync(model.Id);
+
+            if (!projectExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            bool challengeExists = await this.challengeService.ExistsByIdAsync(model.ChallengeId!);
+
+            if (!challengeExists)
+            {
+                this.TempData[ErrorMessage] = "Challenge with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+            try
+            {
+                bool isCreatorOwner = await this.creatorService.HasProjectWithIdAsync(model.Id, this.User.GetId()!);
+                if (isCreatorOwner)
+                {
+                    this.TempData[ErrorMessage] = "You can not vote for your own Project";
+                    return this.RedirectToAction("AllChallenges", "Challenge");
+                }
+
+                bool didVoteForChallenge = await this.userService.DidAllreadyVoteForChallengeAsync(this.User.GetId()!, model.ChallengeId!);
+                if (didVoteForChallenge)
+                {
+                    this.TempData[ErrorMessage] = "You can vote only for one Project in a Challenge";
+                    return this.RedirectToAction("AllChallenges", "Challenge");
+                }
+
+                await this.voteService.CreateVote(this.User.GetId()!, model.Id, model.ChallengeId!);
+
+                this.TempData[WarningMessage] = "You voted successfully for the project";
+                return this.RedirectToAction("AllChallenges", "Challenge");
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
         }
     }
 }

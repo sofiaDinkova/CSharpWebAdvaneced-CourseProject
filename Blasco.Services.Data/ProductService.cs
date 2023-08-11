@@ -243,17 +243,20 @@ namespace Blasco.Services.Data
             product.City = formModel.City;
             product.CategoryId = formModel.CategoryId;
 
-            for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
+            if (formModel.ImageDeleteFormModels.Count()>0)
             {
-                if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
                 {
-                    await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id);
+                    if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                    {
+                        await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id!);
+                    }
                 }
             }
 
-            if (formModel.NewImages.Any())
+            if (formModel.NewImages!.Any())
             {
-                await this.imageService.InsertImagesAsync(formModel.NewImages, productId);
+                await this.imageService.InsertImagesAsync(formModel.NewImages!, productId);
             }
             
 

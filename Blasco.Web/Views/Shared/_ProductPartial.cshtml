@@ -8,7 +8,7 @@
 @{
 
     bool isCreatorrOwnerOfProduct = await this.CreatorService.HasProductWithIdAsync(Model.Id, this.User.GetId());
-    //bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
+    bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
 }
 
 <div class="col-mb-4" style="max-width: 640px;">
@@ -75,8 +75,11 @@
                                         @*<div class="form-group">
                                             <input type="submit" value="Delete" class="btn btn-danger" />
                                         </div>*@
-                                        <a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
-                                           type="button" class="btn btn-outline-dark">Delete</a>
+                                        <form asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()" method="post">
+                                            <input class="btn btn-outline-dark" type="submit" value="Delete" />
+                                        </form>
+                                        @*<a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
+                                           type="button" class="btn btn-outline-dark">Delete</a>*@
                                     </div>
                                 </div>
                             </div>
@@ -87,11 +90,11 @@
                     @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
                     {
                         <form asp-controller="Product"
-                      asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
+                             asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
                             <input class="btn btn-outline-dark" type="submit" value="Purchase" />
                         </form>
                     }
-                    @if (this.User.IsCustomer() && isCreatorrOwnerOfProduct)
+                    @if (this.User.IsCustomer() && isCustomerOwnerOfProduct)
                     {
                         <form asp-controller="Product" asp-action="CancelProduct"
                       asp-route-id="@Model.Id.ToString()" method="post">

@@ -8,78 +8,7 @@
 {
     <h2 class="text-center">There are no Challenges yet!</h2>
 }
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
 
-    .challenge-box {
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-
-    .challenge-image {
-        width: 100%;
-        height: auto;
-    }
-
-    .challenge-details {
-        padding: 20px;
-    }
-
-    .challenge-title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .challenge-info {
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    .challenge-description {
-        font-size: 18px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .challenge-price {
-        font-size: 24px;
-        color: #6c757d; /* Gray color for price */
-        font-weight: bold;
-    }
-
-    .form-container {
-        display: flex;
-        align-items: center;
-    }
-
-        .form-container form {
-            margin-right: 10px;
-        }
-
-    .participate-button {
-        color: #6c757d; /* Gray color for button text */
-        border: 2px solid #6c757d; /* Gray outline for button */
-        background-color: transparent; /* Transparent background for button */
-        border-radius: 4px;
-        padding: 10px 20px;
-        text-decoration: none;
-        font-size: 18px;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-        .participate-button:hover {
-            color: #fff; /* White text on hover */
-            background-color: #6c757d; /* Gray background on hover */
-        }
-
-
-</style>
 <div class="row">
     @foreach (var challenge in Model.Challenges)
     {

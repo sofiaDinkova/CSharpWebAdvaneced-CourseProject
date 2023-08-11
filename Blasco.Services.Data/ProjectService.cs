@@ -112,7 +112,8 @@
                     Description = p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
                     Votes = p.Votes.Count(),
-                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString()),
+                    ChallengeId = challengeId
                 })
                 .ToArrayAsync();
             int projectCount = projectViewModels.Count();
@@ -283,6 +284,17 @@
                 .FirstAsync(p => p.Id.ToString() == id);
 
             projectToDelete.IsActive = false;
+
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task WithdrawProjectWithIdFromChalengeAsync(string projectId)
+        {
+            Project project = await this.dbContext
+                .Projects
+                .FirstAsync(p => p.Id.ToString() == projectId);
+
+            project.ChallengeId = null;
 
             await this.dbContext.SaveChangesAsync();
         }

@@ -114,7 +114,7 @@
 
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             bool productExists = await productService.ExistsByIdAsync(id);
@@ -209,7 +209,7 @@
             {
                 string userId = this.User.GetId()!;
 
-                bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
+                //bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
 
                 //if (this.User.IsAdmin())
                 //{
@@ -365,6 +365,7 @@
         public async Task<IActionResult> PurchaseProduct(string id)
         {
             bool productExists = await this.productService.ExistsByIdAsync(id);
+
             if (!productExists)
             {
                 this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
@@ -389,9 +390,9 @@
             //    return this.RedirectToAction("AllProducts", "Product");
             //}
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
+            //bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (!isCustomer && !this.User.IsAdmin())
+            if (!this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be a customer to purchase Products";
                 return this.RedirectToAction("Index", "Home");
@@ -399,8 +400,8 @@
 
             try
             {
-                string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
-                await this.productService.PuchaseProductAsync(id, customerId);
+                //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
+                await this.productService.PuchaseProductAsync(id, this.User.GetId()!);
             }
             catch (Exception)
             {
@@ -428,9 +429,9 @@
                 return this.RedirectToAction("Mine", "Product");
             }
 
-            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
+            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
 
-            bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, customerId);
+            bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, this.User.GetId()!);
 
             if (!didTheCurrCustomerPurchaseTheProduct)
             {
@@ -440,7 +441,7 @@
 
             try
             {
-                await this.productService.CancelProductAsync(id, customerId);
+                await this.productService.CancelProductAsync(id, this.User.GetId()!);
             }
             catch (Exception)
             {

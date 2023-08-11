@@ -9,6 +9,7 @@
     using static Common.NotificationMessagesConstents;
     using static Common.GeneralApplicationConstants;
     using Blasco.Services.Data;
+    using Microsoft.CodeAnalysis;
 
 
     [Authorize]
@@ -19,15 +20,17 @@
         private readonly IChallengeService challengeService;
         private readonly ICreatorService creatorService;
         private readonly IImageService imageService;
+        private readonly IUserService userService;
 
 
-        public ProjectController(IProjectService projectService, IChallengeService challengeService, IProductProjectCategoryService productProjectCategoryService, ICreatorService creatorService, IImageService imageService)
+        public ProjectController(IProjectService projectService, IChallengeService challengeService, IProductProjectCategoryService productProjectCategoryService, ICreatorService creatorService, IImageService imageService, IUserService userService)
         {
             this.projectService = projectService;
             this.challengeService = challengeService;
             this.productProjectCategoryService = productProjectCategoryService;
             this.creatorService = creatorService;
             this.imageService = imageService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -355,12 +358,12 @@
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            bool productExists = await projectService.ExistsByIdAsync(id);
+            bool projectExists = await projectService.ExistsByIdAsync(id);
 
-            if (!productExists)
+            if (!projectExists)
             {
                 this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
                 return this.RedirectToAction("AllProjects", "Project");
@@ -372,8 +375,6 @@
                 this.TempData[ErrorMessage] = "You must be Creator to delete Projects";
                 return this.RedirectToAction("AllProjects", "Project");
             }
-
-            string creatorId = this.User.GetId()!;
 
             bool isCreatorOwner = await this.creatorService.HasProjectWithIdAsync(id, this.User.GetId()!);
 
@@ -399,6 +400,48 @@
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Withdaw(string id)
+        {
+            bool projectExists = await projectService.ExistsByIdAsync(id);
 
+            if (!projectExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to withdraw Projects";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            bool isCreatorOwner = await this.creatorService.HasProjectWithIdAsync(id, this.User.GetId()!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator of the Project to withdraw it";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            try
+            {
+                await this.projectService.WithdrawProjectWithIdFromChalengeAsync(id);
+
+                this.TempData[WarningMessage] = "The Project was successfully withdrawn";
+                return this.RedirectToAction("AllChallenges", "Challenge");
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+
+        }
+
+       
     }
 }
