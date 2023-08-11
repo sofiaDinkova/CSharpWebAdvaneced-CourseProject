@@ -260,22 +260,7 @@ namespace Blasco.Services.Data
             await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productId)
-        {
-            Product product = await this.dbContext
-            .Products
-            .Where(p => p.IsActive)
-                .FirstAsync(p => p.Id.ToString() == productId);
-
-            return new ProductPreDeleteDetailsViewModel
-            {
-                Id = product.Id.ToString(),
-                Title = product.Title,
-                Price = product.Price,
-                ImageArray = imageService.GetImageBytesByEntityCorrespondingId(productId)
-            };
-        }
-
+        
         public async Task DeleteProductByIdAsync(string id)
         {
             Product productToDelete = await this.dbContext

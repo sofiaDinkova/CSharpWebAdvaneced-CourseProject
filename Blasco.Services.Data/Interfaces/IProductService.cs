@@ -27,8 +27,6 @@ namespace Blasco.Services.Data.Interfaces
 
         Task EditProductByIdAndFormModelAsync(string productId, ProductEditFormModel formModel);
 
-        Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productid);
-
         Task DeleteProductByIdAsync(string id);
 
         Task<bool> IsPurchasedByIdAsync(string productId);

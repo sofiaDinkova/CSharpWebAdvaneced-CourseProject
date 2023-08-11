@@ -24,5 +24,7 @@
         Task EditProjectByIdAndFormModelAsync(string productId, ProjectEditFormModel formModel);
 
         Task<ProjectDetailsViewModel> GetDetailsByIdAsync(string productId);
+
+        Task<IEnumerable<ProjectAllViewModel>> GetAllByCreatorIdAsync(string creatorId);
     }
 }

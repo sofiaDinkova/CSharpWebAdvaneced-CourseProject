@@ -1,4 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// If not needed DELETEEEEEEEE
+
+
+
+
+
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace Blasco.Web.ViewModels.Product

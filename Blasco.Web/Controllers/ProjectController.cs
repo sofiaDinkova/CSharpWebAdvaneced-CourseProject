@@ -265,6 +265,12 @@
         [HttpPost]
         public async Task<IActionResult> Participate(ProjectParticipateViewModel model)
         {
+            if (!this.User.IsCreator())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to participate in challenges";
+                return this.RedirectToAction("Index", "Home");
+            }
+
             bool projectExists = await projectService.ExistsByIdAsync(model.Id);
 
             if (!projectExists)
@@ -297,7 +303,28 @@
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Mine()
+        {
+            if (!this.User.IsCreator())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to have Projects";
+                return this.RedirectToAction("Index", "Home");
+            }
 
+            try
+            {
+                IEnumerable<ProjectAllViewModel> allProjects = await this.projectService.GetAllByCreatorIdAsync(this.User.GetId()!);
+                return this.View(allProjects);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+
+        }
 
         [HttpGet]
         [AllowAnonymous]

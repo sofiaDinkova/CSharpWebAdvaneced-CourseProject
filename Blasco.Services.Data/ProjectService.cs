@@ -12,6 +12,7 @@
     using Blasco.Services.Data.Models.Project;
     using Blasco.Web.ViewModels.Project.Enum;
     using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+    using System.Collections.Generic;
 
     public class ProjectService : IProjectService
     {
@@ -130,8 +131,8 @@
 
             IEnumerable<ProjectParticipateViewModel> projects = await this.dbContext
                 .Projects
-                .Where(p => p.IsActive == true && 
-                            p.CreatorId.ToString() == userId && 
+                .Where(p => p.IsActive == true &&
+                            p.CreatorId.ToString() == userId &&
                             p.CategoryId == categoryId && p.ChallengeId.ToString() != challengeId)
                 .Select(p => new ProjectParticipateViewModel
                 {
@@ -253,6 +254,25 @@
                 CreatorPseudonym = creatorPseudonym,
                 ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(project.Id.ToString())
             };
+        }
+
+        public async Task<IEnumerable<ProjectAllViewModel>> GetAllByCreatorIdAsync(string creatorId)
+        {
+            IEnumerable<ProjectAllViewModel> allProjects = await this.dbContext
+                .Projects
+                .Include(p=>p.Creator)
+                .Where(p=>p.CreatorId.ToString() == creatorId)
+                .Select(p => new ProjectAllViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Title = p.Title,
+                    Description = p.Description,
+                    CreatorPseudonym = p.Creator.Pseudonym!,
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
+                })
+                .ToArrayAsync();
+
+            return allProjects;
         }
     }
 }
