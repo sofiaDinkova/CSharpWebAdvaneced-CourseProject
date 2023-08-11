@@ -125,47 +125,7 @@
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            
-            if (this.User.IsCustomer() && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be Creator to delete Products";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
 
-            
-            bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
-
-            if (!isCreatorOwner && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
-                return this.RedirectToAction("Mine", "Product");
-            }
-
-            try
-            {
-                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(id);
-
-                return this.View(viewmodel);
-            }
-            catch (Exception)
-            {
-                return this.GeneralError();
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(ProductPreDeleteDetailsViewModel model)
-        {
-            bool productExists = await productService.ExistsByIdAsync(model.Id);
-
-            if (!productExists)
-            {
-                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            
             if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to delete Products";
@@ -175,7 +135,7 @@
             string creatorId = this.User.GetId()!;
 
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(model.Id, creatorId!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, creatorId!);
 
             if (!isCreatorOwner && !this.User.IsAdmin())
             {
@@ -185,8 +145,8 @@
 
             try
             {
-                await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(model.Id);
-                await this.productService.DeleteProductByIdAsync(model.Id);
+                await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(id);
+                await this.productService.DeleteProductByIdAsync(id);
 
                 this.TempData[WarningMessage] = "The Product was successfully deleted";
                 return this.RedirectToAction("Mine", "Product");
@@ -196,6 +156,49 @@
                 return this.GeneralError();
             }
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Delete(ProductPreDeleteDetailsViewModel model)
+        //{
+        //    bool productExists = await productService.ExistsByIdAsync(model.Id);
+
+        //    if (!productExists)
+        //    {
+        //        this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
+        //        return this.RedirectToAction("AllProducts", "Product");
+        //    }
+
+            
+        //    if (this.User.IsCustomer() && !this.User.IsAdmin())
+        //    {
+        //        this.TempData[ErrorMessage] = "You must be Creator to delete Products";
+        //        return this.RedirectToAction("AllProducts", "Product");
+        //    }
+
+        //    string creatorId = this.User.GetId()!;
+
+        //    bool isCreatorOwner = await this.productService
+        //        .IsCreatorWithIdOwnerOfProductWithIdAsync(model.Id, creatorId!);
+
+        //    if (!isCreatorOwner && !this.User.IsAdmin())
+        //    {
+        //        this.TempData[ErrorMessage] = "You must be the Creator of the Product to delete it";
+        //        return this.RedirectToAction("AllProducts", "Product");
+        //    }
+
+        //    try
+        //    {
+        //        await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(model.Id);
+        //        await this.productService.DeleteProductByIdAsync(model.Id);
+
+        //        this.TempData[WarningMessage] = "The Product was successfully deleted";
+        //        return this.RedirectToAction("Mine", "Product");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return this.GeneralError();
+        //    }
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Mine()

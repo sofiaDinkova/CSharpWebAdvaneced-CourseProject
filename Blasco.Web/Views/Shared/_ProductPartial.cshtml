@@ -52,8 +52,35 @@
                         <a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
                            type="button" class="btn btn-outline-dark">Edit</a>
 
-                        <a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
-                           type="button" class="btn btn-outline-dark">Delete</a>
+                        
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you wan to delete product: @Model.Title
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                        @*<div class="form-group">
+                                            <input type="submit" value="Delete" class="btn btn-danger" />
+                                        </div>*@
+                                        <a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
+                                           type="button" class="btn btn-outline-dark">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
 
                     <p></p>
