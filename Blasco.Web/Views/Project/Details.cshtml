@@ -1,0 +1,74 @@
+﻿@model ProjectDetailsViewModel
+@using Blasco.Services.Data.Interfaces
+@using Blasco.Web.Infrastructure.Extentions;
+
+@inject ICustomerService CustomerService
+@inject ICreatorService CreatorService
+
+@{
+
+    bool isCreatorrOwnerOfProject = await this.CreatorService.HasProjectWithIdAsync(Model.Id, this.User.GetId());
+}
+
+@{
+    ViewBag.Title = "Project Details";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            @if (Model.ImagesArray != null)
+            {
+                for (int i = 0; i < Model.ImagesArray.Count; i++)
+                {
+                    string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                    <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                }
+            }
+            else
+            {
+                <p>Image not found</p>
+            }
+        </div>
+        <div class="card col-8 border-0">
+            <p style="font-size:25px;"><u>@Model.Title</u></p>
+            
+            <p>@Model.Description</p>
+            <p>Category: <b>@Model.Category</b></p>
+            
+            <div class="form-inline">
+                @if (this.User.Identity?.IsAuthenticated ?? false)
+                {
+                    @if ((this.User.IsCreator() && isCreatorrOwnerOfProject) || this.User.IsAdmin())
+                    {
+                        <a asp-area="" asp-controller="Project" asp-action="Edit"
+                   asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-area="" asp-controller="Project" asp-action="Delete"
+                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">Delete</a>
+
+                    }
+
+                    @if (!isCreatorrOwnerOfProject)
+                    {
+                        <form class="ml-2" asp-area="" asp-controller="Project"
+                      asp-action="Contact" asp-route-id="@Model.Id"
+                              method="post">
+                            <input class="btn btn-primary" type="submit"
+                                   value="Contact Creator" />
+                        </form>
+                    }
+                }
+            </div>
+
+            <p></p>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Creator Info</h5>
+                    <p class="card-text">Email: @Model.CreatorEmail</p>
+                    <p class="card-text">Pseudonym: @Model.CreatorPseudonym</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

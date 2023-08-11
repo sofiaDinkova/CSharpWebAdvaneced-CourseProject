@@ -11,19 +11,22 @@
     using Web.ViewModels.Home;
     using Blasco.Services.Data.Models.Project;
     using Blasco.Web.ViewModels.Project.Enum;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
     public class ProjectService : IProjectService
     {
         private readonly BlascoDbContext dbContext;
         private readonly IImageService imageService;
         private readonly ICreatorService creatorService;
+        private readonly IChallengeService challengeService;
 
 
-        public ProjectService(BlascoDbContext dbContext, IImageService imageService, ICreatorService creatorService)
+        public ProjectService(BlascoDbContext dbContext, IImageService imageService, ICreatorService creatorService, IChallengeService challengeService)
         {
             this.dbContext = dbContext;
             this.imageService = imageService;
             this.creatorService = creatorService;
+            this.challengeService = challengeService;
         }
 
         public async Task<bool> ExistsByIdAsync(string productId)
@@ -57,11 +60,11 @@
             }
 
             projectQuery = queryModel.ProjectSorting switch
-            {   
+            {
                 ProjectSorting.Newest => projectQuery
                      .OrderByDescending(p => p.CreatedOn),
                 ProjectSorting.Oldest => projectQuery
-                    .OrderBy(p => p.CreatedOn),                
+                    .OrderBy(p => p.CreatedOn),
                 _ => projectQuery
                     .OrderBy(p => p.CreatedOn)
             };
@@ -105,11 +108,11 @@
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    Description= p.Description,
+                    Description = p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
                     Votes = p.Votes.Count(),
                     ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
-        })
+                })
                 .ToArrayAsync();
             int projectCount = projectViewModels.Count();
 
@@ -120,20 +123,29 @@
             };
         }
 
-        public async Task<IEnumerable<ProjectAllViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId)
+        public async Task<IEnumerable<ProjectParticipateViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId, string challengeId)
         {
-            IEnumerable<ProjectAllViewModel> projects = await this.dbContext
+            string challengeTitle = await this.challengeService.ChallengeTitleByIdAsync(challengeId);
+            string challengeCategoryName = await this.challengeService.ChallengeCategoryNameByIdAsync(challengeId);
+
+            IEnumerable<ProjectParticipateViewModel> projects = await this.dbContext
                 .Projects
-                .Where(p=>p.CreatorId.ToString() == userId || p.CategoryId == categoryId)
-                .Select(p=> new ProjectAllViewModel
+                .Where(p => p.IsActive == true && 
+                            p.CreatorId.ToString() == userId && 
+                            p.CategoryId == categoryId && p.ChallengeId.ToString() != challengeId)
+                .Select(p => new ProjectParticipateViewModel
                 {
-                    Id= p.Id.ToString(),
-                    Title= p.Title,
+                    Id = p.Id.ToString(),
+                    Title = p.Title,
                     Description = p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
-                    Votes = p.Votes.Count()
+                    Votes = p.Votes.Count(),
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString()),
+                    ChallengeId = challengeId,
+                    ChallengeName = challengeTitle,
+                    ChallengeCategory = challengeCategoryName
                 })
-                .ToArrayAsync ();
+                .ToArrayAsync();
 
             return projects;
         }
@@ -216,6 +228,31 @@
 
 
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ProjectDetailsViewModel> GetDetailsByIdAsync(string productId)
+        {
+            Project project = await this.dbContext
+                .Projects
+                .Include(p => p.Category)
+                .Include(p => p.Creator)
+                .Where(p => p.IsActive)
+                .FirstAsync(h => h.Id.ToString() == productId);
+
+            string creatorEmail = project.Creator.Email;
+            string creatorPseudonym = project.Creator.Pseudonym;
+
+            return new ProjectDetailsViewModel
+            {
+                Id = project.Id.ToString(),
+                Title = project.Title,
+                Description = project.Description,
+                Category = project.Category.Name,
+                CreatorId = project.CreatorId.ToString(),
+                CreatorEmail = creatorEmail,
+                CreatorPseudonym = creatorPseudonym,
+                ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(project.Id.ToString())
+            };
         }
     }
 }

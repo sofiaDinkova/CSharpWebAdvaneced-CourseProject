@@ -11,7 +11,7 @@
     //bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
 }
 
-<div class="col-mb-3" style="max-width: 540px;">
+<div class="col-mb-4" style="max-width: 640px;">
     <div class="row g-0">
         <div class="col-md-4">
             @if (Model.ImagesArray != null)
@@ -19,7 +19,9 @@
                 for (int i = 0; i < Model.ImagesArray.Count; i++)
                 {
                     string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
-                    <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                    <div class="image-container">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                    </div>
                 }
             }
             else
@@ -42,31 +44,31 @@
                 }
                 <br />
                 <a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id.ToString()"
-                   class="btn btn-success">Details</a>
+                   class="btn btn-outline-dark">Details</a>
                 @if (this.User.Identity?.IsAuthenticated ?? false)
                 {
                     if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
                         <a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
-                           class="btn btn-warning">Edit</a>
+                           type="button" class="btn btn-outline-dark">Edit</a>
 
                         <a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
-                           class="btn btn-danger">Delete</a>
+                           type="button" class="btn btn-outline-dark">Delete</a>
                     }
 
                     <p></p>
                     @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
                     {
-                        <form class="input-group-sm" asp-controller="Product"
+                        <form asp-controller="Product"
                       asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
-                            <input class="btn btn-primary" type="submit" value="PurchaseProduct" />
+                            <input class="btn btn-outline-dark" type="submit" value="Purchase" />
                         </form>
                     }
                     @if (this.User.IsCustomer() && isCreatorrOwnerOfProduct)
                     {
                         <form asp-controller="Product" asp-action="CancelProduct"
                       asp-route-id="@Model.Id.ToString()" method="post">
-                            <input class="btn btn-primary" type="submit" value="CancelProduct" />
+                            <input class="btn btn-outline-dark" type="submit" value="Cancel" />
                         </form>
                     }
                 }

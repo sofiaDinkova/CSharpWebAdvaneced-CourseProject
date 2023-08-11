@@ -13,7 +13,7 @@
 
         Task<AllProjectsViewModel> AllProjectsByChallengeIdAsync(string challengeId);
 
-        Task<IEnumerable<ProjectAllViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId);
+        Task<IEnumerable<ProjectParticipateViewModel>> AllProjectsByCreatorIdAndChallengeCategorayIdAsync(string userId, int categoryId, string challengeId);
 
         Task<string> CreateAndReturnIdAsync(ProjectAddFormModel formModel, string creatorId);
 
@@ -22,5 +22,7 @@
         Task<ProjectEditFormModel> GetProjectForEditByIdAsync(string projectId);
 
         Task EditProjectByIdAndFormModelAsync(string productId, ProjectEditFormModel formModel);
+
+        Task<ProjectDetailsViewModel> GetDetailsByIdAsync(string productId);
     }
 }

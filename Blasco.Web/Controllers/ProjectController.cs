@@ -230,7 +230,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Participate(string challengeId)
+        public async Task<IActionResult> Participate(string id)
         {
             if (!this.User.IsCreator()) 
             {
@@ -241,22 +241,92 @@
             try
             {
                 string userId = this.User.GetId()!;
-                int categoryId = await this.challengeService.ReturnCategoryIdByChallengeIdAsync(challengeId);
+                int categoryId = await this.challengeService.ReturnCategoryIdByChallengeIdAsync(id);
 
-                IEnumerable<ProjectAllViewModel> projectsAllowed = await this.projectService.AllProjectsByCreatorIdAndChallengeCategorayIdAsync(userId, categoryId);
+                IEnumerable<ProjectParticipateViewModel> projectsAllowed = await this.projectService.AllProjectsByCreatorIdAndChallengeCategorayIdAsync(userId, categoryId, id);
+
+                if (!projectsAllowed.Any())
+                {
+                    this.TempData[ErrorMessage] = "You do not have any projects for this challenge category";
+                    return this.RedirectToAction("Index", "Home");
+                }
 
                 return this.View(projectsAllowed);
             }
             catch (Exception)
             {
-                //TODO GeneralError
-                this.TempData[ErrorMessage] = "Unexpected error occured! Please try again letar or contact an administrator.";
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
 
                 return this.RedirectToAction("Index", "Home");
             }
         }
 
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Participate(ProjectParticipateViewModel model)
+        {
+            bool projectExists = await projectService.ExistsByIdAsync(model.Id);
+
+            if (!projectExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            bool challengeExists = await challengeService.ExistsByIdAsync(model.ChallengeId);
+
+            if (!challengeExists)
+            {
+                this.TempData[ErrorMessage] = "Challenge with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            try
+            {
+                await this.challengeService.AddProductToChallengeAsync(model);
+
+                this.TempData[SuccessMessage] = "Project entered successfully the Challenge";
+
+                return this.RedirectToAction("AllProjectsInChallenge", "Project", new { id = model.ChallengeId });
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+        }
+
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(string id)
+        {
+            bool projectExists = await projectService.ExistsByIdAsync(id);
+
+            if (!projectExists)
+            {
+                this.TempData[ErrorMessage] = "Project with the provided ID does not exist";
+                return this.RedirectToAction("AllProjects", "Project");
+            }
+
+            try
+            {
+                ProjectDetailsViewModel viewModel = await this.projectService
+                 .GetDetailsByIdAsync(id);
+
+                return View(viewModel);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+        }
+
+
+
     }
 }

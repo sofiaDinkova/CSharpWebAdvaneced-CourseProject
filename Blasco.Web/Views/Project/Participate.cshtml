@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjectAllViewModel>
+﻿@model IEnumerable<ProjectParticipateViewModel>
 @{
     ViewData["Title"] = "My Projects in that category";
 }
@@ -6,16 +6,13 @@
 <h2 calss="text-center"> @ViewData["Title"]</h2>
 <hr />
 
-@if (!Model.Any())
+
+
+@foreach (ProjectParticipateViewModel project in Model)
 {
-    <h2 calss="text-center">"You do not have any Projects with the given Category"</h2>
+    
+    <partial name="_ProjectParticipatePartial" model="@project" />
+    
 }
-else
-{
-    <div class=" row">
-        @foreach (ProjectAllViewModel project in Model)
-        {
-            <partial name="_ProjectPartial" model="@project" />
-        }
-    </div>
-}
+
+
