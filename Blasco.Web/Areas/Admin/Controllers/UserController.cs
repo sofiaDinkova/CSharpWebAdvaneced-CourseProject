@@ -4,22 +4,38 @@
 
     using Blasco.Services.Data.Interfaces;
     using Blasco.Web.ViewModels.Creator;
+    using Microsoft.Extensions.Caching.Memory;
+
+    using static Common.GeneralApplicationConstants;
 
     public class UserController : BaseAdminController
     {
         private readonly IUserService userService;
+        private readonly IMemoryCache memoryCache;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMemoryCache memoryCache)
         {
             this.userService = userService;
+            this.memoryCache = memoryCache;
         }
 
         [Route("User/All")]
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> All()
         {
-            IEnumerable<UserViewModel> viewModel = await this.userService.AllUsersAsync();
+            IEnumerable<UserViewModel> users = this.memoryCache.Get<IEnumerable<UserViewModel>>(UserCacheKey);
 
-            return View(viewModel);
+            if (users == null)
+            {
+                users = await this.userService.AllUsersAsync();
+
+                MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(UsersChacheDurationMinutes));
+
+                this.memoryCache.Set(UserCacheKey, User, cacheOptions);
+            }
+
+            return View(users);
         }
     }
 }

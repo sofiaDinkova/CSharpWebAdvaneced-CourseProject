@@ -12,6 +12,7 @@ using Blasco.Services.Data;
 using Blasco.Web.Infrastructure.Extentions;
 using Blasco.Web.ViewModels.Project;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blasco.Web.Controllers
 {
@@ -25,9 +26,10 @@ namespace Blasco.Web.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> creatorManager;
         private readonly ICustomerTypeService customerTypeService;
+        private readonly IMemoryCache memoryCache;
 
 
-        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager, ICustomerTypeService customerTypeService, IProjectService projectService, IUserService userService, IVoteService voteService, IChallengeService challengeService, ICreatorService creatorService)
+        public CreatorController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> creatorManager, ICustomerTypeService customerTypeService, IProjectService projectService, IUserService userService, IVoteService voteService, IChallengeService challengeService, ICreatorService creatorService, IMemoryCache memoryCache)
         {
             this.signInManager = signInManager;
             this.creatorManager = creatorManager;
@@ -38,6 +40,8 @@ namespace Blasco.Web.Controllers
             this.voteService = voteService;
             this.challengeService = challengeService;
             this.creatorService = creatorService;
+
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -115,6 +119,7 @@ namespace Blasco.Web.Controllers
             }
 
             await this.signInManager.SignInAsync(creator, false);
+            this.memoryCache.Remove(UserCacheKey);
 
             return this.RedirectToAction("Index", "Home");
 

@@ -18,5 +18,9 @@
         public const string CustomerRoleName = "Customer";
 
         public const string GeneralErronrMassage = "Unexpected error occured! Please try again letar or contact an administrator.";
+
+        public const string UserCacheKey = "UsersChache";
+        public const string ProductCacheKey = "ProductChache";
+        public const int UsersChacheDurationMinutes = 5;
     }
 }
