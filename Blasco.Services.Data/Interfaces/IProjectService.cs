@@ -26,5 +26,7 @@
         Task<ProjectDetailsViewModel> GetDetailsByIdAsync(string productId);
 
         Task<IEnumerable<ProjectAllViewModel>> GetAllByCreatorIdAsync(string creatorId);
+
+        Task DeleteProductByIdAsync(string id);
     }
 }

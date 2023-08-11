@@ -274,5 +274,17 @@
 
             return allProjects;
         }
+
+        public async Task DeleteProductByIdAsync(string id)
+        {
+            Project projectToDelete = await this.dbContext
+            .Projects
+            .Where(p => p.IsActive)
+                .FirstAsync(p => p.Id.ToString() == id);
+
+            projectToDelete.IsActive = false;
+
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }
