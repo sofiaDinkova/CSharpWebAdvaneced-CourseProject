@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Data.Models
+﻿namespace Blasco.Data.Models
 {
+    using System;
+
     public class Vote
     {
         public Guid Id { get; set; }

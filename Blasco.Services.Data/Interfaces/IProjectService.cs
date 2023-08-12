@@ -1,8 +1,7 @@
 ﻿namespace Blasco.Services.Data.Interfaces
 {
-    using Blasco.Services.Data.Models.Project;
-    using Blasco.Web.ViewModels.Product;
-    using Blasco.Web.ViewModels.Project;
+    using Models.Project;
+    using Web.ViewModels.Project;
     using Web.ViewModels.Home;
 
     public interface IProjectService

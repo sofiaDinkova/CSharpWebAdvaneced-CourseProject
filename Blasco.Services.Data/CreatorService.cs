@@ -1,10 +1,11 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-using Blasco.Services.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+
     public class CreatorService : ICreatorService
     {
         private readonly BlascoDbContext dbContext;
@@ -14,15 +15,6 @@ namespace Blasco.Services.Data
             this.dbContext = dbContext;
         }
 
-        //public async Task<bool> CreatorHasProductsAsync(string creatorId)
-        //{
-        //    ApplicationUser creator = await this.dbContext
-        //        .Users
-        //        .FirstAsync(c => c.Id.ToString() == creatorId);
-           
-        //    return creator.Products.Any();
-        //}
-                
         public async Task<bool> HasProductWithIdAsync(string productId, string userId)
         {
             ApplicationUser? creator = await this.dbContext
@@ -43,7 +35,7 @@ namespace Blasco.Services.Data
         {
             ApplicationUser? creator = await this.dbContext
                 .Users
-                .FirstOrDefaultAsync(c=>c.Email == email);
+                .FirstOrDefaultAsync(c => c.Email == email);
 
             if (creator == null)
             {

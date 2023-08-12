@@ -2,8 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Blasco.Web.ViewModels.ProductProjectCategory;
+    using ProductProjectCategory;
+
     using static Common.EntityValidationConstants.Project;
+
     public class ProjectFormModel
     {
         public ProjectFormModel()

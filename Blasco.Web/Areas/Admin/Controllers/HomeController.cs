@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Blasco.Web.Areas.Admin.Controllers
+﻿namespace Blasco.Web.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class HomeController : BaseAdminController
     {
         //[Route("Admin/Index")]

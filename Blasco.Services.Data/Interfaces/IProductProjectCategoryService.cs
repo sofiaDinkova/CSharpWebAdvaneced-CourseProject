@@ -1,7 +1,7 @@
-﻿using Blasco.Web.ViewModels.ProductProjectCategory;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using Web.ViewModels.ProductProjectCategory;
+
     public interface IProductProjectCategoryService
     {
         Task<IEnumerable<ProductSelectCategoryFormModel>> AllProductProjectCategoryAsync();

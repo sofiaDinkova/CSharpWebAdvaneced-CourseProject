@@ -1,7 +1,7 @@
-﻿using MongoDB.Bson;
-
-namespace Blasco.Data.Models
+﻿namespace Blasco.Data.Models
 {
+    using MongoDB.Bson;
+
     public class Image
     {
 

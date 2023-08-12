@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace Blasco.Web.ViewModels.Product
+﻿namespace Blasco.Web.ViewModels.Product
 {
+    using Microsoft.AspNetCore.Http;
+    using System.ComponentModel.DataAnnotations;
+
     public class ProductAddFormModel : ProductFormModel
     {
         public ProductAddFormModel()

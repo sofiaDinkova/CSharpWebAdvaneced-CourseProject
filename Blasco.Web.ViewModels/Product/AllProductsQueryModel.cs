@@ -1,9 +1,11 @@
 ﻿namespace Blasco.Web.ViewModels.Product
 {
-    using Blasco.Web.ViewModels.Product.Enums;
+    using System.ComponentModel.DataAnnotations;
+
+    using Enums;
+
     using static Common.GeneralApplicationConstants;
 
-using System.ComponentModel.DataAnnotations;
     public class AllProductsQueryModel
     {
         public AllProductsQueryModel()

@@ -1,7 +1,7 @@
-﻿using Blasco.Web.ViewModels.Creator;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using Web.ViewModels.Creator;
+
     public interface IUserService
     {
         Task<string> GetFullNameByIdAsync(string id);

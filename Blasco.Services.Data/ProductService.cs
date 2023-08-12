@@ -1,18 +1,15 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-
-using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data.Models.Product;
-using Blasco.Services.Data.Models.Statistics;
-using Blasco.Web.ViewModels.Challenge;
-using Blasco.Web.ViewModels.Home;
-using Blasco.Web.ViewModels.Image;
-using Blasco.Web.ViewModels.Product;
-using Blasco.Web.ViewModels.Product.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+    using Models.Product;
+    using Models.Statistics;
+    using Web.ViewModels.Home;
+    using Web.ViewModels.Product;
+    using Web.ViewModels.Product.Enums;
     public class ProductService : IProductService
     {
         private readonly BlascoDbContext dbContext;
@@ -243,7 +240,7 @@ namespace Blasco.Services.Data
             product.City = formModel.City;
             product.CategoryId = formModel.CategoryId;
 
-            if (formModel.ImageDeleteFormModels.Count()>0)
+            if (formModel.ImageDeleteFormModels.Count() > 0)
             {
                 for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
                 {
@@ -258,12 +255,11 @@ namespace Blasco.Services.Data
             {
                 await this.imageService.InsertImagesAsync(formModel.NewImages!, productId);
             }
-            
+
 
             await this.dbContext.SaveChangesAsync();
         }
 
-        
         public async Task DeleteProductByIdAsync(string id)
         {
             Product productToDelete = await this.dbContext

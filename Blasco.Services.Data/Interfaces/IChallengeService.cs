@@ -1,10 +1,8 @@
-﻿using Blasco.Data.Models;
-using Blasco.Web.ViewModels.Challenge;
-using Blasco.Web.ViewModels.Product;
-using Blasco.Web.ViewModels.Project;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using Web.ViewModels.Challenge;
+    using Web.ViewModels.Project;
+
     public interface IChallengeService
     {
         Task<AllChallengesModel> AllChallengesAsync();

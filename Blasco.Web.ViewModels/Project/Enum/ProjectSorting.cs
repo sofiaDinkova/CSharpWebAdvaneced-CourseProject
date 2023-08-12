@@ -1,5 +1,4 @@
-﻿
-namespace Blasco.Web.ViewModels.Project.Enum
+﻿namespace Blasco.Web.ViewModels.Project.Enum
 {
     public enum ProjectSorting
     {

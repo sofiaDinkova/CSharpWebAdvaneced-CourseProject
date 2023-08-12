@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-
-namespace Blasco.Web.ViewModels.Creator
+﻿namespace Blasco.Web.ViewModels.Creator
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class LoginFormModel
     {
         [Required]

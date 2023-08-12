@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     using static Common.EntityValidationConstants.Product;
-
     public class Product
     {
         public Product()

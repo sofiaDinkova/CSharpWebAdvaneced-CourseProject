@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace Blasco.Web.ViewModels.Project
+﻿namespace Blasco.Web.ViewModels.Project
 {
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
+
     public class ProjectAddFormModel : ProjectFormModel
     {
         public ProjectAddFormModel()

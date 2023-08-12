@@ -1,11 +1,13 @@
 ﻿namespace Blasco.Web.Controllers
 {
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Services.Data.Models.Product;
-    using Blasco.Web.Infrastructure.Extentions;
-    using Blasco.Web.ViewModels.Product;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
+    using Services.Data.Interfaces;
+    using Services.Data.Models.Product;
+    using Infrastructure.Extentions;
+    using ViewModels.Product;
+
     using static Common.NotificationMessagesConstents;
     using static Common.GeneralApplicationConstants;
 
@@ -157,49 +159,6 @@
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Delete(ProductPreDeleteDetailsViewModel model)
-        //{
-        //    bool productExists = await productService.ExistsByIdAsync(model.Id);
-
-        //    if (!productExists)
-        //    {
-        //        this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
-        //        return this.RedirectToAction("AllProducts", "Product");
-        //    }
-
-            
-        //    if (this.User.IsCustomer() && !this.User.IsAdmin())
-        //    {
-        //        this.TempData[ErrorMessage] = "You must be Creator to delete Products";
-        //        return this.RedirectToAction("AllProducts", "Product");
-        //    }
-
-        //    string creatorId = this.User.GetId()!;
-
-        //    bool isCreatorOwner = await this.productService
-        //        .IsCreatorWithIdOwnerOfProductWithIdAsync(model.Id, creatorId!);
-
-        //    if (!isCreatorOwner && !this.User.IsAdmin())
-        //    {
-        //        this.TempData[ErrorMessage] = "You must be the Creator of the Product to delete it";
-        //        return this.RedirectToAction("AllProducts", "Product");
-        //    }
-
-        //    try
-        //    {
-        //        await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(model.Id);
-        //        await this.productService.DeleteProductByIdAsync(model.Id);
-
-        //        this.TempData[WarningMessage] = "The Product was successfully deleted";
-        //        return this.RedirectToAction("Mine", "Product");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return this.GeneralError();
-        //    }
-        //}
-
         [HttpGet]
         public async Task<IActionResult> Mine()
         {
@@ -209,21 +168,6 @@
             {
                 string userId = this.User.GetId()!;
 
-                //bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(userId);
-
-                //if (this.User.IsAdmin())
-                //{
-                //    string customerId = await this.customerService.GetCustomerByUserIdAsync(userId);
-                //    //purchased Product as customer
-                //    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
-                //    //added Product as creator
-                //    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(userId));
-
-                //    //preventing doubles(Products)
-                //    myProducts = myProducts
-                //        .DistinctBy(p => p.Id)
-                //        .ToList();
-                //}
                 if (this.User.IsCustomer())
                 {
                     myProducts.AddRange(await this.productService.AllByCustomerIdAsync(userId));
@@ -310,8 +254,6 @@
         [HttpPost]
         public async Task<IActionResult> Edit(string id, ProductEditFormModel model)
         {
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
-            
 
             if (!this.ModelState.IsValid)
             {
@@ -379,19 +321,6 @@
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            //TODO: change ProductEntity to have Buyer instead of Customer; Change logic so that creators can also buy Products!
-            //string userId = this.User.GetId()!;
-
-            //bool isTheCreatorOfTheProductTheUser = await this.productService.IsCreatorWithIdOwnerOfProductWithIdAsync(id, userId);
-
-            //if (isTheCreatorOfTheProductTheUser)
-            //{
-            //    this.TempData[ErrorMessage] = "Creators of products can not purchase their own products!";
-            //    return this.RedirectToAction("AllProducts", "Product");
-            //}
-
-            //bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
             if (!this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be a customer to purchase Products";
@@ -400,7 +329,6 @@
 
             try
             {
-                //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
                 await this.productService.PuchaseProductAsync(id, this.User.GetId()!);
             }
             catch (Exception)
@@ -428,8 +356,6 @@
                 this.TempData[ErrorMessage] = "Product is not purchesed";
                 return this.RedirectToAction("Mine", "Product");
             }
-
-            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
 
             bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, this.User.GetId()!);
 

@@ -1,23 +1,19 @@
-﻿
-using Blasco.Data.BlascoMongoDbFactory.Interfaces;
-using Blasco.Data.Models;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Driver;
-
-namespace Blasco.Data.BlascoMongoDbFactory
+﻿namespace Blasco.Data.BlascoMongoDbFactory
 {
+    using MongoDB.Bson.Serialization.Conventions;
+    using MongoDB.Driver;
+
+    using Interfaces;
+    using Data.Models;
+
     public class MongoDbFactory : IMongoDbFactory
     {
         private readonly MongoClient _client;
 
         public MongoDbFactory()
         {
-            //var settings = MongoClientSettings.FromConnectionString(connectionString);
-            //settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-
             _client = new MongoClient("mongodb://localhost:27017");
         }
-
 
         public IMongoCollection<T> GetCollection<T>(string databaseName, string collectionNme)
         {

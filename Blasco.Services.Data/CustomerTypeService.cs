@@ -1,16 +1,14 @@
-﻿using Blasco.Data;
-using Blasco.Services.Data.Interfaces;
-using Blasco.Web.ViewModels.CustomerType;
-using Blasco.Web.ViewModels.ProductProjectCategory;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Web.ViewModels.CustomerType;
+
     public class CustomerTypeService : ICustomerTypeService
     {
         private readonly BlascoDbContext dbContext;

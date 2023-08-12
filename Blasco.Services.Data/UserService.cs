@@ -1,10 +1,11 @@
 ﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
     using Blasco.Data;
     using Blasco.Data.Models;
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Web.ViewModels.Creator;
-    using Microsoft.EntityFrameworkCore;
+    using Web.ViewModels.Creator;
 
     public class UserService : IUserService
     {
@@ -40,7 +41,7 @@
                 {
                     Id = u.Id.ToString(),
                     Email = u.Email,
-                    CustomerType = u.CustomerType.Name,
+                    CustomerType = u.CustomerType!.Name,
                     FullName = $"{u.FirstName} {u.LastName}",
                     Pseudonym = string.Empty
                 })
@@ -61,7 +62,6 @@
             return result;
         }
 
-        //if not used DELETE
         public async Task<string> GetFullNameByIdAsync(string id)
         {
             ApplicationUser? user = await this.dbContext
@@ -75,7 +75,5 @@
 
             return $"{user.FirstName} {user.LastName}";
         }
-
-        
     }
 }

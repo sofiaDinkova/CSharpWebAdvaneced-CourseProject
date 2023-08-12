@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blasco.Data.Models;
-
-namespace Blasco.Data.Configurations
+﻿namespace Blasco.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Microsoft.EntityFrameworkCore;
+
+    using Models;
+
     public class VoteConfiguration : IEntityTypeConfiguration<Vote>
     {
         public void Configure(EntityTypeBuilder<Vote> builder)

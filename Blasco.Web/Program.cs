@@ -3,22 +3,15 @@ namespace Blasco.Web
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
 
     using Data;
     using Data.Models;
     using Services.Data.Interfaces;
     using Infrastructure.Extentions;
     using Infrastructure.ModelBinders;
-
-    using static Common.GeneralApplicationConstants;
-    using Blasco.Data.Configurations.Seed;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using MongoDB.Driver;
-    using Blasco.Data.BlascoMongoDbFactory;
-    using Microsoft.Extensions.DependencyInjection;
-    using Blasco.Data.BlascoMongoDbFactory.Interfaces;
-    using Blasco.Web.ViewModels.Home;
-    using System.Reflection;
+    using Data.BlascoMongoDbFactory;
+    using Data.BlascoMongoDbFactory.Interfaces;
 
     public class Program
     {
@@ -59,15 +52,6 @@ namespace Blasco.Web
                 cfg.AccessDeniedPath = "/Home/Error/401";
             });
 
-            ////string mongoConnectionString = builder.Configuration.GetConnectionString("mongodb://localhost:27017") ?? throw new InvalidOperationException("Connection string 'MongoDBConnection' not found.");
-            //MongoClientSettings mongoClientSettings = MongoClientSettings.FromConnectionString("mongodb://localhost:27017");
-            //IMongoClient mongoClient = new MongoClient(mongoClientSettings);
-            //IMongoDatabase mongoDatabase = mongoClient.GetDatabase("blasco");
-
-            //builder.Services.AddSingleton(mongoClient);
-            //builder.Services.AddSingleton(mongoDatabase);
-
-
             builder.Services
                 .AddControllersWithViews()
                 .AddMvcOptions(options =>
@@ -76,14 +60,9 @@ namespace Blasco.Web
                     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
                 });
 
-            //BlascoMongoExperimental mongoDb = new BlascoMongoExperimental();
-            //mongoDb.ListDatabases();
-
-
 
             WebApplication app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -106,22 +85,6 @@ namespace Blasco.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.EnableOnlineUsersCheck();
-
-            if (app.Environment.IsDevelopment())
-            {
-                //app.CreateRolesAdminCreatorAndCustomer();
-
-                //var dataSeeder = new DataSeeder(app.Services);
-                //dataSeeder.SeedData();
-
-            }
-            
-
-            //app.MapControllerRoute(
-            //name: "default",
-            //pattern: "{controller=Home}/{action=Index}/{id?}");
-
             app.UseEndpoints(config =>
             {
                 config.MapControllerRoute(
@@ -129,12 +92,10 @@ namespace Blasco.Web
                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
 
-
                 config.MapControllerRoute(
                     name: "ProtectingUrlRoute",
                     pattern: "/{controller}/{action}/{id}/{information}",
                     defaults: new { Controller = "Product", Action = "Details" });
-
 
                 config.MapDefaultControllerRoute();
 

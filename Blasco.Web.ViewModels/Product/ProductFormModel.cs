@@ -1,10 +1,10 @@
 ﻿namespace Blasco.Web.ViewModels.Product
 {
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.ComponentModel.DataAnnotations;
-    using Blasco.Web.ViewModels.ProductProjectCategory;
+
+    using ProductProjectCategory;
+
     using static Common.EntityValidationConstants.Product;
-    using Microsoft.AspNetCore.Http;
 
     public class ProductFormModel
     {

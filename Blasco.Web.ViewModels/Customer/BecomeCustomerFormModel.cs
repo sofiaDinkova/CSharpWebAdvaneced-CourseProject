@@ -2,8 +2,6 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static Common.EntityValidationConstants.Customer;
-
     public class BecomeCustomerFormModel
     {
         [Required]

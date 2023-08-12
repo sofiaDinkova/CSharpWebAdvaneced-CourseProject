@@ -1,10 +1,10 @@
-﻿using Blasco.Services.Data.Models.Product;
-using Blasco.Services.Data.Models.Statistics;
-using Blasco.Web.ViewModels.Home;
-using Blasco.Web.ViewModels.Product;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using Models.Product;
+    using Models.Statistics;
+    using Web.ViewModels.Home;
+    using Web.ViewModels.Product;
+
     public interface IProductService
     {
         Task<IEnumerable<IndexViewModel>> LastThreeProductAsync();
@@ -38,6 +38,5 @@ namespace Blasco.Services.Data.Interfaces
         Task CancelProductAsync(string productId, string customerId);
 
         Task<StatisticsServiceModel> GetStatisticsAsync();
-
     }
 }

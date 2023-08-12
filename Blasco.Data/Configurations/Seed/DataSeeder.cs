@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Blasco.Data.Models;
-using static Blasco.Common.DataSeederConstatnts;
-using static Blasco.Common.GeneralApplicationConstants;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Data.Configurations.Seed
+﻿namespace Blasco.Data.Configurations.Seed
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
+    using Models;
+
+    using static Common.DataSeederConstatnts;
+    using static Common.GeneralApplicationConstants;
+
     internal static class DataSeeder
     {
         //ProductProjectCategory

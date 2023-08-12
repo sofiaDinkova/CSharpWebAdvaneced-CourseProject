@@ -1,14 +1,10 @@
-﻿using Blasco.Data.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Data.Configurations
+﻿namespace Blasco.Data.Configurations
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Models;
+
     public class ApplicationUserPPCategoryConfiguration : IEntityTypeConfiguration<ApplicationUserPPCategory>
     {
         public void Configure(EntityTypeBuilder<ApplicationUserPPCategory> builder)
@@ -27,7 +23,6 @@ namespace Blasco.Data.Configurations
                 .WithMany(a=>a.PPCategories)
                 .HasForeignKey(ac =>ac.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
         }
     }
 }

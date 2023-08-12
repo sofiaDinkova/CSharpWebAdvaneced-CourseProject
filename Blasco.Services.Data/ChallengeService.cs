@@ -1,16 +1,14 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data.Models.Product;
-using Blasco.Web.ViewModels.Challenge;
-using Blasco.Web.ViewModels.Project;
-using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+    using MongoDB.Driver;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+    using Blasco.Web.ViewModels.Challenge;
+    using Blasco.Web.ViewModels.Project;
+
     public class ChallengeService : IChallengeService
     {
         private readonly BlascoDbContext dbContext;
@@ -30,7 +28,6 @@ namespace Blasco.Services.Data
                     Id = c.Id.ToString(),
                     Title = c.Title,
                     Description = c.Description,
-                    //ImageUrl = c.ImageUrl,
                     Category = c.Category.Name,
                     PriceToWin = c.PriceToWin,
                 })

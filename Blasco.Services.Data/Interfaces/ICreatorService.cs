@@ -2,8 +2,6 @@
 {
     public interface ICreatorService
     {
-        //Task<bool> CreatorHasProductsAsync(string creatorId);
-
         Task<bool> HasProductWithIdAsync(string productId, string userId);
 
         Task<bool> HasProjectWithIdAsync(string productId, string userId);
@@ -13,6 +11,5 @@
         Task<string> GetCreatorPseudonymByEmailAsync(string email);
 
         Task<string> GetCreatorPseudonymByIdAsync(string userId);
-
     }
 }

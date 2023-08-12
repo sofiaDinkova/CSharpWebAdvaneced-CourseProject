@@ -13,6 +13,7 @@
             this.Products = new HashSet<Product>();
             this.Challenges = new HashSet<Challenge>();
         }
+
         [Key]
         public int Id { get; set; }
 

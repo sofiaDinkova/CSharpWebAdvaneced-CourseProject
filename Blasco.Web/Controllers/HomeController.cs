@@ -1,12 +1,12 @@
 ﻿namespace Blasco.Web.Controllers
 {
-    using System.Diagnostics;
-    using Blasco.Services.Data.Interfaces;
     using Microsoft.AspNetCore.Mvc;
+
+    using Services.Data.Interfaces;
+    using ViewModels.Home;
 
     using static Common.GeneralApplicationConstants;
 
-    using ViewModels.Home;
     public class HomeController : Controller
     {
         private readonly IProjectService projectService;

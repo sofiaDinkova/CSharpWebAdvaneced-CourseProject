@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static Blasco.Common.EntityValidationConstants.ApplicationUser;
-using System.Xml.Linq;
-
-namespace Blasco.Web.ViewModels.Creator
+﻿namespace Blasco.Web.ViewModels.Creator
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using static Common.EntityValidationConstants.ApplicationUser;
+
     public class RegisterCreatorStepTwoFormModel
     {
         [Required]
@@ -31,7 +31,7 @@ namespace Blasco.Web.ViewModels.Creator
         public string LastName { get; set; } = null!;
 
         [Required]
-        [StringLength(PseudonymMaxLenght, MinimumLength =PseudonymMinLenght)]
+        [StringLength(PseudonymMaxLenght, MinimumLength = PseudonymMinLenght)]
         public string UserName_Pseudonym { get; set; } = null!;
 
     }

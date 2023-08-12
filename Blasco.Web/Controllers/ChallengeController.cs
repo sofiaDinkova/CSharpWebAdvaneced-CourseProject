@@ -1,12 +1,11 @@
-﻿using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data.Models.Product;
-using Blasco.Web.ViewModels.Product;
-using Blasco.Web.ViewModels.Challenge;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Blasco.Web.Controllers
+﻿namespace Blasco.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Services.Data.Interfaces;
+    using ViewModels.Challenge;
+
     [Authorize]
     public class ChallengeController : Controller
     {

@@ -1,21 +1,20 @@
-﻿using Blasco.Data.Models;
-using Blasco.Web.ViewModels.Creator;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using static Blasco.Common.NotificationMessagesConstents;
-using static Blasco.Common.GeneralApplicationConstants;
-using Blasco.Web.ViewModels.Customer;
-using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data;
-using Blasco.Web.Infrastructure.Extentions;
-using Blasco.Web.ViewModels.Project;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace Blasco.Web.Controllers
+﻿namespace Blasco.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
+
+    using Data.Models;
+    using ViewModels.Creator;
+    using ViewModels.Customer;
+    using Services.Data.Interfaces;
+    using Infrastructure.Extentions;
+    using ViewModels.Project;
+
+    using static Common.NotificationMessagesConstents;
+    using static Common.GeneralApplicationConstants;
+
     public class CreatorController : Controller
     {
         private readonly IProjectService projectService;
@@ -96,8 +95,6 @@ namespace Blasco.Web.Controllers
                 Pseudonym = registerStepTwoFormModel.UserName_Pseudonym,
             };
 
-            //await this.creatorManager.AddClaimAsync(creator, new Claim("SomeClaim", model.SomeClaim));
-
             await this.creatorManager.SetUserNameAsync(creator, registerStepTwoFormModel.Email);
             await this.creatorManager.SetEmailAsync(creator, registerStepTwoFormModel.Email);
 
@@ -138,7 +135,6 @@ namespace Blasco.Web.Controllers
             {
                 return this.RedirectToAction("Index", "Home");
             }
-            //return this.View();
         }
 
         [HttpPost]
@@ -156,8 +152,6 @@ namespace Blasco.Web.Controllers
                 LastName = registerStepTwoFormModel.LastName,
                 CustomerTypeId = registerStepTwoFormModel.CustomerTypeId,
             };
-
-            //await this.creatorManager.AddClaimAsync(creator, new Claim("SomeClaim", model.SomeClaim));
 
             await this.creatorManager.SetUserNameAsync(customer, registerStepTwoFormModel.Email);
             await this.creatorManager.SetEmailAsync(customer, registerStepTwoFormModel.Email);

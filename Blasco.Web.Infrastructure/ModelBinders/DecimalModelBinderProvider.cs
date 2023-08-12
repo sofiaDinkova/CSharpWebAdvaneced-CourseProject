@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Blasco.Web.Infrastructure.ModelBinders
+﻿namespace Blasco.Web.Infrastructure.ModelBinders
 {
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+
     public class DecimalModelBinderProvider : IModelBinderProvider
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)

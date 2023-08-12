@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Blasco.Web.ViewModels.Product
+﻿namespace Blasco.Web.ViewModels.Product
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ProductAllViewModel
     {
         public ProductAllViewModel()

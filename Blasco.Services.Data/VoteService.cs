@@ -1,9 +1,9 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-using Blasco.Services.Data.Interfaces;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+
     public class VoteService : IVoteService
     {
         private readonly BlascoDbContext dbContext;

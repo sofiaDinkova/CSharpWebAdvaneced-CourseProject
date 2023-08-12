@@ -1,13 +1,11 @@
-﻿using Blasco.Web.ViewModels.Image;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+
+    using Web.ViewModels.Image;
+
     public interface IImageService
     {
         public byte[] GetImageBytesByEntityCorrespondingId(string entityId);

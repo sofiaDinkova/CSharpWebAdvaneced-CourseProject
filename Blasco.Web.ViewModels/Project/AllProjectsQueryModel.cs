@@ -1,14 +1,11 @@
-﻿
-namespace Blasco.Web.ViewModels.Project
+﻿namespace Blasco.Web.ViewModels.Project
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Product.Enums;
-    using Product;
+    using Enum;
 
     using static Common.GeneralApplicationConstants;
-    using Enum;
 
     public class AllProjectsQueryModel
     {

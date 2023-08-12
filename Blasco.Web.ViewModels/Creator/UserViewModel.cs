@@ -1,6 +1,4 @@
-﻿using System.Security;
-
-namespace Blasco.Web.ViewModels.Creator
+﻿namespace Blasco.Web.ViewModels.Creator
 {
     public class UserViewModel
     {

@@ -1,16 +1,12 @@
-﻿
-using Blasco.Web.ViewModels.CustomerType;
-using Blasco.Web.ViewModels.ProductProjectCategory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Blasco.Common.EntityValidationConstants.ApplicationUser;
-
-namespace Blasco.Web.ViewModels.Customer
+﻿namespace Blasco.Web.ViewModels.Customer
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using CustomerType;
+
+    using static Blasco.Common.EntityValidationConstants.ApplicationUser;
+
     public class RegisterCustomerStepTwoFormModel
     {
         public RegisterCustomerStepTwoFormModel()

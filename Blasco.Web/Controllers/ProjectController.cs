@@ -1,16 +1,16 @@
 ﻿namespace Blasco.Web.Controllers
 {
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Services.Data.Models.Project;
-    using Blasco.Web.Infrastructure.Extentions;
-    using Blasco.Web.ViewModels.Project;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using static Common.NotificationMessagesConstents;
-    using static Common.GeneralApplicationConstants;
-    using Blasco.Services.Data;
     using Microsoft.CodeAnalysis;
 
+    using Services.Data.Interfaces;
+    using Services.Data.Models.Project;
+    using Infrastructure.Extentions;
+    using ViewModels.Project;
+
+    using static Common.NotificationMessagesConstents;
+    using static Common.GeneralApplicationConstants;
 
     [Authorize]
     public class ProjectController : Controller
@@ -168,8 +168,6 @@
         [HttpPost]
         public async Task<IActionResult> Edit(string id, ProjectEditFormModel model)
         {
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
-
 
             if (!this.ModelState.IsValid)
             {
@@ -221,7 +219,6 @@
         [AllowAnonymous]
         public async Task<IActionResult> AllProjectsInChallenge(string id)
         {
-            //check if EXISTSSS!!!!
             try
             {
                 AllProjectsViewModel model = await this.projectService.AllProjectsByChallengeIdAsync(id);
@@ -439,9 +436,6 @@
 
                 return this.RedirectToAction("Index", "Home");
             }
-
         }
-
-       
     }
 }

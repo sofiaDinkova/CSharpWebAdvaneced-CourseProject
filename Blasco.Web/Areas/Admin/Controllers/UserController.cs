@@ -1,10 +1,10 @@
 ﻿namespace Blasco.Web.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Web.ViewModels.Creator;
     using Microsoft.Extensions.Caching.Memory;
+
+    using Services.Data.Interfaces;
+    using ViewModels.Creator;
 
     using static Common.GeneralApplicationConstants;
 

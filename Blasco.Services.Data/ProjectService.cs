@@ -1,18 +1,15 @@
 ﻿namespace Blasco.Services.Data
 {
+    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
     using Blasco.Data;
     using Blasco.Data.Models;
-    using Blasco.Services.Data.Models.Product;
-    using Blasco.Web.ViewModels.Product.Enums;
-    using Blasco.Web.ViewModels.Product;
-    using Blasco.Web.ViewModels.Project;
-    using Interfaces;
-    using Microsoft.EntityFrameworkCore;
+    using Models.Project;
+    using Web.ViewModels.Project;
     using Web.ViewModels.Home;
-    using Blasco.Services.Data.Models.Project;
-    using Blasco.Web.ViewModels.Project.Enum;
-    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-    using System.Collections.Generic;
+    using Web.ViewModels.Project.Enum;
 
     public class ProjectService : IProjectService
     {
@@ -20,7 +17,6 @@
         private readonly IImageService imageService;
         private readonly ICreatorService creatorService;
         private readonly IChallengeService challengeService;
-
 
         public ProjectService(BlascoDbContext dbContext, IImageService imageService, ICreatorService creatorService, IChallengeService challengeService)
         {
@@ -215,17 +211,21 @@
             project.Description = formModel.Description;
             project.CategoryId = formModel.CategoryId;
 
-            for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
+            if (formModel.ImageDeleteFormModels.Count() >0)
             {
-                if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
                 {
-                    await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id);
+                    if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                    {
+                        await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id!);
+                    }
                 }
             }
+            
 
-            if (formModel.NewImages.Any())
+            if (formModel.NewImages!.Any())
             {
-                await this.imageService.InsertImagesAsync(formModel.NewImages, productId);
+                await this.imageService.InsertImagesAsync(formModel.NewImages!, productId);
             }
 
 
@@ -242,7 +242,7 @@
                 .FirstAsync(h => h.Id.ToString() == productId);
 
             string creatorEmail = project.Creator.Email;
-            string creatorPseudonym = project.Creator.Pseudonym;
+            string creatorPseudonym = project.Creator.Pseudonym!;
 
             return new ProjectDetailsViewModel
             {

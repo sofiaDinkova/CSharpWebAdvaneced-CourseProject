@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blasco.Web.ViewModels.Creator
+﻿namespace Blasco.Web.ViewModels.Creator
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class RegisterStepOneFormModel
     {
         [Required]

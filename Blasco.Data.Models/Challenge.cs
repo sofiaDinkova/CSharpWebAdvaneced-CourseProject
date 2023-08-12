@@ -1,10 +1,9 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-using static Blasco.Common.EntityValidationConstants.Challenge;
-
-namespace Blasco.Data.Models
+﻿namespace Blasco.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using static Common.EntityValidationConstants.Challenge;
+
     public class Challenge
     {
         public Challenge()
