@@ -10,7 +10,7 @@
     bool isCreatorrOwnerOfProject = await this.CreatorService.HasProjectWithIdAsync(Model.Id, this.User.GetId());
 }
 <style>
-   
+
 
 </style>
 <div class="container mt-4">
@@ -46,6 +46,12 @@
 
                     @if (this.User.Identity?.IsAuthenticated ?? false)
                     {
+                        if (!isCreatorrOwnerOfProject || this.User.IsAdmin())
+                        {
+                            <a asp-area="" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.CreatorId.ToString()"
+                               class="btn btn-outline-dark">Contact</a>
+                        }
+
                         if ((this.User.IsCreator() && isCreatorrOwnerOfProject) || this.User.IsAdmin())
                         {
                             <a asp-area="" asp-controller="Project" asp-action="Edit" asp-route-id="@Model.Id.ToString()"

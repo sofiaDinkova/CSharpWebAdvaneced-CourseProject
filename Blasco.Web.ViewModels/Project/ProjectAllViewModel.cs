@@ -20,5 +20,7 @@
         public List<byte[]> ImagesArray { get; set; } = null!;
 
         public string? ChallengeId { get; set; }
+
+        public string CreatorId { get; set; } = null!;
     }
 }

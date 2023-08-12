@@ -76,7 +76,8 @@
                     Id = p.Id.ToString(),
                     Title = p.Title,
                     Description = p.Description,
-                    CreatorPseudonym = p.Creator.Pseudonym!
+                    CreatorPseudonym = p.Creator.Pseudonym!,
+                    CreatorId = p.CreatorId.ToString(),
                 })
                 .ToArrayAsync();
 
@@ -109,7 +110,8 @@
                     CreatorPseudonym = p.Creator.Pseudonym!,
                     Votes = p.Votes.Count(),
                     ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString()),
-                    ChallengeId = challengeId
+                    ChallengeId = challengeId,
+                    CreatorId = p.CreatorId.ToString(),
                 })
                 .ToArrayAsync();
             int projectCount = projectViewModels.Count();
@@ -211,7 +213,7 @@
             project.Description = formModel.Description;
             project.CategoryId = formModel.CategoryId;
 
-            if (formModel.ImageDeleteFormModels.Count() >0)
+            if (formModel.ImageDeleteFormModels.Count() > 0)
             {
                 for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
                 {
@@ -221,7 +223,7 @@
                     }
                 }
             }
-            
+
 
             if (formModel.NewImages!.Any())
             {
@@ -261,15 +263,16 @@
         {
             IEnumerable<ProjectAllViewModel> allProjects = await this.dbContext
                 .Projects
-                .Include(p=>p.Creator)
-                .Where(p=>p.CreatorId.ToString() == creatorId)
+                .Include(p => p.Creator)
+                .Where(p => p.CreatorId.ToString() == creatorId)
                 .Select(p => new ProjectAllViewModel
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
                     Description = p.Description,
                     CreatorPseudonym = p.Creator.Pseudonym!,
-                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString()),
+                    CreatorId = p.CreatorId.ToString(),
                 })
                 .ToArrayAsync();
 

@@ -11,11 +11,14 @@
 
             <partial name="_ProjectFormPartial" model="@Model" />
 
-
-            <div class="form-group">
-                <label asp-for="Images"></label>
-                <input asp-for="Images" type="file" multiple />
+            <div class="form-group p-2">
+                <label asp-for="Images" class="form-label">Your Images</label>
+                <input class="form-control" asp-for="Images" type="file" id="formFile" multiple />
                 <span asp-validation-for="Images"></span>
+            </div>
+
+            <div class="text-center">
+                <input class="btn btn-outline-dark mt-3" type="submit" value="Save" />
             </div>
         </form>
     </div>

@@ -11,98 +11,92 @@
     bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
 }
 
-<div class="col-mb-4" style="max-width: 640px;">
-    <div class="row g-0">
-        <div class="col-md-4">
-            @if (Model.ImagesArray != null)
-            {
-                for (int i = 0; i < Model.ImagesArray.Count; i++)
+<div class="container-mb-4 p-5" style="max-width: 800px;">
+    <div class="row g-0" style="border:1px solid #cecece;">
+            <div class="col-md-4">
+                @if (Model.ImagesArray != null)
                 {
-                    string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
-                    <div class="image-container">
-                        <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
-                    </div>
-                }
-            }
-            else
-            {
-                <p>Image not found</p>
-            }
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h4>@Model.Title</h4>
-
-                <h6>
-                    Price:
-                    <b>@String.Format("{0:f2}", Model.Price) BGN</b>
-                </h6>
-                <h6>(@(Model.IsPurchased ? "Purchased" : "Not Purchased"))</h6>
-                @if (!String.IsNullOrWhiteSpace(Model.City))
-                {
-                    <h6>City: <b>@Model.City</b></h6>
-                }
-                <br />
-                <a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id.ToString()"
-                   class="btn btn-outline-dark">Details</a>
-                @if (this.User.Identity?.IsAuthenticated ?? false)
-                {
-                    if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
+                    for (int i = 0; i < Model.ImagesArray.Count; i++)
                     {
-                        <a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
-                           type="button" class="btn btn-outline-dark">Edit</a>
+                        string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                        <div class="image-container">
+                            <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Image not found</p>
+                }
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4>@Model.Title</h4>
 
-                        
+                    <h6>
+                        Price:
+                        <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+                    </h6>
+                    <h6>(@(Model.IsPurchased ? "Purchased" : "Not Purchased"))</h6>
+                    @if (!String.IsNullOrWhiteSpace(Model.City))
+                    {
+                        <h6>City: <b>@Model.City</b></h6>
+                    }
+                    <br />
+                    <a asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id.ToString()"
+                       class="btn btn-outline-dark">Details</a>
 
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            Delete
-                        </button>
+                    @if (this.User.Identity?.IsAuthenticated ?? false)
+                    {
+                        if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
+                        {
+                            <a asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id.ToString()"
+                               type="button" class="btn btn-outline-dark">Edit</a>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you wan to delete product: @Model.Title
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-                                        @*<div class="form-group">
-                                            <input type="submit" value="Delete" class="btn btn-danger" />
-                                        </div>*@
-                                        <form asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()" method="post">
-                                            <input class="btn btn-outline-dark" type="submit" value="Delete" />
-                                        </form>
-                                        @*<a asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()"
-                                           type="button" class="btn btn-outline-dark">Delete</a>*@
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                Delete
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you wan to delete product: @Model.Title
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                            <form asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()" method="post">
+                                                <input class="btn btn-outline-dark" type="submit" value="Delete" />
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
 
-                    <p></p>
-                    @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct && !this.User.IsAdmin())
-                    {
-                        <form asp-controller="Product"
-                             asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
-                            <input class="btn btn-outline-dark" type="submit" value="Purchase" />
-                        </form>
+
+                        @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct && !this.User.IsAdmin())
+                        {
+                            <form asp-controller="Product"
+                          asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
+                                <input class="btn btn-outline-dark" type="submit" value="Purchase" />
+                            </form>
+                        }
+                        @if (this.User.IsCustomer() && isCustomerOwnerOfProduct && !this.User.IsAdmin())
+                        {
+                            <form asp-controller="Product" asp-action="CancelProduct"
+                          asp-route-id="@Model.Id.ToString()" method="post">
+                                <input class="btn btn-outline-dark" type="submit" value="Cancel" />
+                            </form>
+                        }
                     }
-                    @if (this.User.IsCustomer() && isCustomerOwnerOfProduct && !this.User.IsAdmin())
-                    {
-                        <form asp-controller="Product" asp-action="CancelProduct"
-                      asp-route-id="@Model.Id.ToString()" method="post">
-                            <input class="btn btn-outline-dark" type="submit" value="Cancel" />
-                        </form>
-                    }
-                }
+                </div>
             </div>
         </div>
-    </div>
 </div>

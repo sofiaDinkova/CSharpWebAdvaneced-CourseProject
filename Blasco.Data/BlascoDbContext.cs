@@ -49,5 +49,6 @@
 
         public DbSet<ApplicationUserPPCategory> ApplicationUserPPCategories { get; set;} = null!;
 
+        public DbSet<Message> Messages { get; set;} = null!;
     }
 }

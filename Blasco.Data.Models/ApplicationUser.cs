@@ -17,6 +17,8 @@
             this.Projects = new HashSet<Project>();
             this.Votes = new HashSet<Vote>();
             this.Challenges = new HashSet<Challenge>();
+            this.MessagesSent = new HashSet<Message>();
+            this.MessagesReceived = new HashSet<Message>();
         }
 
         [Required]
@@ -49,5 +51,9 @@
         public ICollection<Vote> Votes { get; set; }
 
         public ICollection<Challenge> Challenges { get; set; }
+
+        public ICollection<Message> MessagesSent { get; set; }
+
+        public ICollection<Message> MessagesReceived { get; set; }
     }
 }

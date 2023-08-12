@@ -28,6 +28,7 @@
 
         public IEnumerable<ProductSelectCategoryFormModel> ProductProjectCategories { get; set; }
 
+        [Display(Name = "Giveaway Price")]
         public decimal PriceToWin { get; set; }
        
         [Required]

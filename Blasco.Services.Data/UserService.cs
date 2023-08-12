@@ -75,5 +75,14 @@
 
             return $"{user.FirstName} {user.LastName}";
         }
+
+        public async Task<bool> ExistByIdAsync(string userId)
+        {
+            bool result = await this.dbContext
+                .Users
+                .AnyAsync(u => u.Id.ToString() == userId);
+
+            return result;
+        }
     }
 }

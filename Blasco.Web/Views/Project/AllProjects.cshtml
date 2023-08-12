@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-2">
             <div class="list-group">
-                <a href="#" class="list-group-item disabled">Categories</a>
+                <a href="#" class="list-group-item list-group-item-dark disabled">Categories</a>
                 <a href="@Url.Action("AllProjects", new { category = "" })"
                    class="list-group-item @(string.IsNullOrEmpty(Model.Category) ? "active" : string.Empty)">
                     All
@@ -28,8 +28,8 @@
             <form method="get" asp-controller="Project" asp-action="AllProjects">
                 <div class="row">
 
-                    <div class="form-group col-md-3 d-flex justify-content-between">
-                        <div class="form-group mb-3">
+                    <div class="form-group col-md-3 d-flex p-1">
+                        <div class="form-group mb-3" style=" flex-basis: 250px;">
                             <label asp-for="PrjectsPerPage"></label>
                             <select asp-for="PrjectsPerPage" class="form-control">
                                 <option value="3">3</option>
@@ -38,14 +38,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-md-3 d-flex justify-content-between">
-                        <div class="form-group mb-3">
+                    <div class="form-group col-md-3 d-flex p-1">
+                        <div class="form-group mb-3" style=" flex-basis: 250px;">
                             <label asp-for="SearchString"></label>
                             <input asp-for="SearchString" class="form-control" placeholder="...">
                         </div>
                     </div>
-                    <div class="form-group col-md-3 d-flex justify-content-between">
-                        <div class="form-group mb-3">
+                    <div class="form-group col-md-3 d-flex p-1">
+                        <div class="form-group mb-3" style=" flex-basis: 250px;">
                             <label asp-for="ProjectSorting"></label>
                             <select asp-for="ProjectSorting" class="form-control">
                                 <option value="0">Newest</option>
@@ -54,9 +54,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-md-3 d-flex justify-content-between">
+                    <div class="form-group col-md-2 p-1 d-flex align-items-end">
                         <div class="form-group mb-3">
-                            <input type="submit" value="Search" class="btn btn-primary" />
+                            <input type="submit" value="Search" class="btn btn-outline-dark" />
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
             }
             <div class="row mb-5">
                 <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
-                    <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+                    <a class="btn btn-outline-dark @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
                        asp-controller="Project"
                        asp-action="AllProjects"
                        asp-route-currentPage="@previousPage"
@@ -86,7 +86,7 @@
                     !Model.Projects.Any();
                 }
                 <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a class="btn btn-primary
+                    <a class="btn btn-outline-dark
                         @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
                        asp-controller="Product"
                        asp-action="AllProducts"

@@ -11,10 +11,9 @@
 
             <partial name="_ProjectFormPartial" model="@Model" />
 
-
-            <div class="form-group">
-                <label asp-for="NewImages"></label>
-                <input asp-for="NewImages" type="file" multiple />
+            <div class="form-group p-2">
+                <label asp-for="NewImages" class="form-label">Your Images</label>
+                <input class="form-control" asp-for="NewImages" type="file" id="formFile" multiple />
                 <span asp-validation-for="NewImages"></span>
             </div>
 
@@ -26,7 +25,7 @@
 
                     <div class="form-check">
                         <input type="hidden" asp-for="@Model.ImageDeleteFormModels[i].Id" />
-                        <input class="form-check-input" type="checkbox" asp-for="@Model.ImageDeleteFormModels[i].ToBeDeleted" id="flexCheckDefault_@i" />
+                        <input class="form-check-input p-2" type="checkbox" asp-for="@Model.ImageDeleteFormModels[i].ToBeDeleted" id="flexCheckDefault_@i" />
                         <label class="form-check-label" for="flexCheckDefault_@i">
                             Delete Image
                         </label>
@@ -39,6 +38,9 @@
             {
                 <p>Image not found</p>
             }
+            <div class="text-center p-2">
+                <input class="btn btn-outline-dark mt-3" type="submit" value="Save" />
+            </div>
         </form>
     </div>
 </div>

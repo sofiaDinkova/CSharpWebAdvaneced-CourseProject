@@ -1,0 +1,45 @@
+﻿@model MessageFormModel
+
+@{
+    ViewData["Title"] = $"Message";
+}
+
+<h2 class="text-center"> @ViewData["Title"]</h2>
+<hr />
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post" >
+            <div class="form-group p-2">
+                <label asp-for="ReceiverName"></label>
+                <input asp-for="ReceiverName" class="form-control" type="text" value="@Model.ReceiverName" disabled readonly>
+                <span asp-validation-for="ReceiverName" class="small text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" placeholder="Title..." >
+                <span asp-validation-for="Title" class="small text-danger"></span>
+            </div>
+            <div class="form-group p-2">
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" rows="4" class="form-control"
+                          placeholder="..."></textarea>
+                <span asp-validation-for="Content" class="small textdanger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ReceiverId" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="SenderId" type="hidden" />
+            </div>
+            <div class="text-center p-2">
+                <input class="btn btn-outline-dark mt-3" type="submit" value="Save" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+}

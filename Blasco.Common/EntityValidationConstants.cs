@@ -67,5 +67,14 @@
             public const int ImageUrlMaxLength = 2048;
 
         }
+
+        public static class Message
+        {
+            public const int TitleMinLenght = 2;
+            public const int TitleMaxLenght = 50;
+
+            public const int ContentMinLenght = 10;
+            public const int ContentMaxLenght = 1000;
+        }
     }
 }
