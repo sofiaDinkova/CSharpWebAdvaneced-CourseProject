@@ -1,0 +1,111 @@
+﻿@using Blasco.Services.Data.Interfaces;
+@using Blasco.Web.Infrastructure.Extentions;
+
+@model ProjectAllViewModel
+
+@inject ICreatorService CreatorService
+@inject IUserService userService
+
+@{
+
+    bool isCreatorrOwnerOfProject = await this.CreatorService.HasProjectWithIdAsync(Model.Id, this.User.GetId());
+    bool didVoteForChallenge = await this.userService.DidAllreadyVoteForChallengeAsync(this.User.GetId()!, Model.ChallengeId!);
+}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="challenge-box">
+                @if (Model.ImagesArray != null)
+                {
+                    for (int i = 0; i < Model.ImagesArray.Count; i++)
+                    {
+                        string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                        <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                    }
+                }
+                else
+                {
+                    <p>Image not found</p>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <div class="challenge-details">
+                    <h5 class="challenge-title">@Model.Title</h5>
+                    <p class="challenge-info">
+                        <strong>Creator</strong> @Model.CreatorPseudonym<br />
+                    </p>
+                    <p class="challenge-description">@Model.Description</p>
+                    <p <strong>Votes:</strong> <span class="challenge-price">@Model.Votes</span></p>
+
+                    <a asp-area="" asp-controller="Project" asp-action="Details" asp-route-id="@Model.Id.ToString()"
+                       class="btn btn-outline-dark">Details</a>
+
+                    @if (this.User.Identity?.IsAuthenticated ?? false)
+                    {
+                        if (!isCreatorrOwnerOfProject && !didVoteForChallenge)
+                        {
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#voteModal">
+                                Vote
+                            </button>
+
+                            <div class="modal fade" id="voteModal" tabindex="-1" aria-labelledby="voteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="voteModalLabel">Vote for Project</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            You can vote only for one Prochect per Challenge!
+                                            Are you sure you wan to vote this project: @Model.Title?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                            <form asp-area="" asp-controller="Creator" asp-action="Vote" asp-route-id="@Model.Id.ToString()" method="post">
+                                                <input class="btn btn-outline-dark" type="submit" value="Vote" />
+                                                <input type="hidden" name="ChallengeId" value="@Model.ChallengeId" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+                        if ((this.User.IsCreator() && isCreatorrOwnerOfProject) || this.User.IsAdmin())
+                        {
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                                Withdaw
+                            </button>
+
+                            <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="withdrawModalLabel">Withdraw Project</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you wan to withdraw this project: @Model.Title
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                            <form asp-area="" asp-controller="Project" asp-action="Withdaw" asp-route-id="@Model.Id.ToString()" method="post">
+                                                <input class="btn btn-outline-dark" type="submit" value="Withdaw" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

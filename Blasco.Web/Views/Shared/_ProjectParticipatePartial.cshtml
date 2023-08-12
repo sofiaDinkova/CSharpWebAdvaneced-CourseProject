@@ -1,0 +1,50 @@
+﻿@model ProjectParticipateViewModel
+
+
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="challenge-box">
+                @if (Model.ImagesArray != null)
+                {
+                    for (int i = 0; i < Model.ImagesArray.Count; i++)
+                    {
+                        string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                        <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                    }
+                }
+                else
+                {
+                    <p>Image not found</p>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="challenge-box">
+                <div class="challenge-details">
+                    <form method="post" asp-action="Participate">
+                        <h5 class="challenge-title">@Model.Title</h5>
+                        <p class="challenge-info">
+                            <strong>Creator</strong> @Model.CreatorPseudonym<br />
+                        </p>
+                        <p class="challenge-description">@Model.Description</p>
+                        <h5 class="challenge-title">@Model.ChallengeName</h5>
+                        <p class="challenge-info">
+                            <strong>Creator</strong> @Model.ChallengeCategory<br />
+                        </p>
+
+                        <div class="form-group">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" name="ChallengeId" value="@Model.ChallengeId" />
+
+                            <input type="submit" value="Participate" class="btn btn-outline-dark" />
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -6,7 +6,7 @@
 @inject ICreatorService CreatorService
 
 @{
-    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
+    
     bool isCreatorrOwnerOfProduct = await this.CreatorService.HasProductWithIdAsync(Model.Id, this.User.GetId());
     bool isCustomerOwnerOfProduct = await this.CustomerService.HasProductWithIdAsync(Model.Id, this.User.GetId());
 }
@@ -19,8 +19,18 @@
 <div class="container" style="display:inline">
     <div class="row">
         <div class="col-4">
-            <img class="card-img-top" style="width: 20rem;"
-                 src="@Model.ImageUrl" alt="Product Image">
+            @if (Model.ImagesArray != null)
+            {
+                for (int i = 0; i < Model.ImagesArray.Count; i++)
+                {
+                    string base64Image = Convert.ToBase64String(Model.ImagesArray[i]);
+                    <img class="card-img-top" src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                }
+            }
+            else
+            {
+                <p>Image not found</p>
+            }
         </div>
         <div class="card col-8 border-0">
             <p style="font-size:25px;"><u>@Model.Title</u></p>
@@ -38,28 +48,28 @@
             <div class="form-inline">
                 @if (this.User.Identity?.IsAuthenticated ?? false)
                 {
-                    @if ((!isUserCustomer && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
+                    @if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
-                        <a asp-controller="Product" asp-action="EditProduct"
-                   asp-route-id="@Model.Id" class="btn btn-warning">EditProduct</a>
-                        <a asp-controller="Product" asp-action="DeleteProduct"
-                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">DeleteProduct</a>
+                        <a asp-area="" asp-controller="Product" asp-action="Edit"
+                   asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-area="" asp-controller="Product" asp-action="Delete"
+                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">Delete</a>
 
                     }
 
                     @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
                     {
-                        <form class="ml-2" asp-controller="Product"
+                        <form class="ml-2" asp-area="" asp-controller="Product"
                       asp-action="PurchaseProduct" asp-route-id="@Model.Id"
                               method="post">
                             <input class="btn btn-primary" type="submit"
                                    value="PurchaseProduct" />
                         </form>
                     }
-                    @if (isUserCustomer && isCustomerOwnerOfProduct)
+                    @if (this.User.IsCustomer() && isCustomerOwnerOfProduct)
                     {
-                        <form class="ml-2" asp-controller="Product" asp-action="CancelProduct"
-                            asp-route-id="@Model.Id" method="post">
+                        <form class="ml-2" asp-area="" asp-controller="Product" asp-action="CancelProduct"
+                      asp-route-id="@Model.Id" method="post">
                             <input class="btn btn-primary" type="submit"
                                    value="CancelProduct" />
                         </form>

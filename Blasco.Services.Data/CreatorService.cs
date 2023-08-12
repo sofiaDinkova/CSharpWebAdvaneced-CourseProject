@@ -1,10 +1,11 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-using Blasco.Services.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+
     public class CreatorService : ICreatorService
     {
         private readonly BlascoDbContext dbContext;
@@ -14,18 +15,9 @@ namespace Blasco.Services.Data
             this.dbContext = dbContext;
         }
 
-        public async Task<bool> CreatorHasProductsAsync(string creatorId)
-        {
-            Creator creator = await this.dbContext
-                .Users
-                .FirstAsync(c => c.Id.ToString() == creatorId);
-
-            return creator.Products.Any();
-        }
-                
         public async Task<bool> HasProductWithIdAsync(string productId, string userId)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
@@ -39,11 +31,11 @@ namespace Blasco.Services.Data
             return creator.Products.Any(p => p.Id.ToString() == productId);
         }
 
-        public async Task<string> GetFullNameByIdAsync(string email)
+        public async Task<string> GetFullNameByEmailAsync(string email)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
-                .FirstOrDefaultAsync(c=>c.Email == email);
+                .FirstOrDefaultAsync(c => c.Email == email);
 
             if (creator == null)
             {
@@ -53,9 +45,9 @@ namespace Blasco.Services.Data
             return $"{creator.FirstName} {creator.LastName}";
         }
 
-        public async Task<string> GetCreatorPseudonymByIdAsync(string email)
+        public async Task<string> GetCreatorPseudonymByEmailAsync(string email)
         {
-            Creator? creator = await this.dbContext
+            ApplicationUser? creator = await this.dbContext
                 .Users
                 .FirstOrDefaultAsync(c => c.Email == email);
 
@@ -64,7 +56,37 @@ namespace Blasco.Services.Data
                 return string.Empty;
             }
 
-            return creator.Pseudonym;
+            return creator.UserName;
+        }
+
+        public async Task<string> GetCreatorPseudonymByIdAsync(string userId)
+        {
+            ApplicationUser? creator = await this.dbContext
+                .Users
+                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+
+            if (creator == null)
+            {
+                return string.Empty;
+            }
+
+            return creator.Pseudonym!;
+        }
+
+        public async Task<bool> HasProjectWithIdAsync(string productId, string userId)
+        {
+            ApplicationUser? creator = await this.dbContext
+                .Users
+                .Include(c => c.Projects)
+                .FirstOrDefaultAsync(c => c.Id.ToString() == userId);
+
+            if (creator == null)
+            {
+                return false;
+            }
+
+            productId = productId.ToLower();
+            return creator.Projects.Any(p => p.Id.ToString() == productId);
         }
     }
 }

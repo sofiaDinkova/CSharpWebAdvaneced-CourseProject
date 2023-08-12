@@ -3,14 +3,15 @@ namespace Blasco.Web
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
 
     using Data;
     using Data.Models;
     using Services.Data.Interfaces;
     using Infrastructure.Extentions;
     using Infrastructure.ModelBinders;
-
-    using static Common.GeneralApplicationConstants;
+    using Data.BlascoMongoDbFactory;
+    using Data.BlascoMongoDbFactory.Interfaces;
 
     public class Program
     {
@@ -18,12 +19,17 @@ namespace Blasco.Web
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddSingleton<IMongoDbFactory>(new MongoDbFactory());
+
+            MongoDbFactory mongoDbFactory = new MongoDbFactory();
+            mongoDbFactory.SeedImage();
+
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<BlascoDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<Creator>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 
@@ -37,9 +43,13 @@ namespace Blasco.Web
 
             builder.Services.AddApplicationServices(typeof(IProjectService));
 
+            builder.Services.AddMemoryCache();
+            builder.Services.AddResponseCaching();
+
             builder.Services.ConfigureApplicationCookie(cfg =>
             {
                 cfg.LogoutPath = "/Creator/Login";
+                cfg.AccessDeniedPath = "/Home/Error/401";
             });
 
             builder.Services
@@ -51,10 +61,8 @@ namespace Blasco.Web
                 });
 
 
-
             WebApplication app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -72,20 +80,27 @@ namespace Blasco.Web
 
             app.UseRouting();
 
+            app.UseResponseCaching();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            if (app.Environment.IsDevelopment())
+            app.UseEndpoints(config =>
             {
-                app.SeedAdministrator(DevelopmentAdminEmail);
-            }
+                config.MapControllerRoute(
+                  name: "Admin",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
 
-            //app.MapControllerRoute(
-            //name: "default",
-            //pattern: "{controller=Home}/{action=Index}/{id?}");
+                config.MapControllerRoute(
+                    name: "ProtectingUrlRoute",
+                    pattern: "/{controller}/{action}/{id}/{information}",
+                    defaults: new { Controller = "Product", Action = "Details" });
 
-            app.MapDefaultControllerRoute();
-            app.MapRazorPages();
+                config.MapDefaultControllerRoute();
+
+                config.MapRazorPages();
+            });
 
             app.Run();
         }

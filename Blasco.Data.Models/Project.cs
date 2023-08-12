@@ -10,7 +10,7 @@
         public Project()
         {
             this.Id = Guid.NewGuid();
-
+            this.Votes = new HashSet<Vote>();  
         }
 
         [Key]
@@ -24,22 +24,22 @@
         [MaxLength(DescriptionMaxLenght)]
         public string Description { get; set; } = null!;
 
-        [Required]
-        [MaxLength(ImageUrlMaxLength)]
-        public string ImageUrl { get; set; } = null!;
-
         public DateTime CreatedOn { get; set; }
 
         public bool IsActive { get; set; }
 
-        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
         public virtual ProductProjectCategory Category { get; set; } = null!;
 
-        [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
-        public virtual Creator Creator { get; set; } = null!;
+        public virtual ApplicationUser Creator { get; set; } = null!;
+
+        public virtual ICollection<Vote> Votes { get; set; }
+
+        public Guid? ChallengeId { get; set; }
+
+        public Challenge? Challenge { get; set; }
     }
 }

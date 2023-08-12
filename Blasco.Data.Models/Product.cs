@@ -4,7 +4,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     using static Common.EntityValidationConstants.Product;
-
     public class Product
     {
         public Product()
@@ -24,10 +23,6 @@
         [MaxLength(DescriptionMaxLenght)]
         public string Description { get; set; } = null!;
 
-        [Required]
-        [MaxLength(ImageUrlMaxLength)]
-        public string ImageUrl { get; set; } = null!;
-
         public decimal Price { get; set; }
         public DateTime CreatedOn { get; set; }
 
@@ -41,14 +36,14 @@
         [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
-        public virtual Creator Creator { get; set; } = null!;
+        public virtual ApplicationUser Creator { get; set; } = null!;
 
         [MaxLength(CityNameMaxLenght)]
         public string? City { get; set; }
 
         [ForeignKey(nameof(Customer))]
         public Guid? CustomerId { get; set; }
-        public Customer? Customer { get; set; }
+        public virtual ApplicationUser? Customer { get; set; }
 
     }
 }

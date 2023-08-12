@@ -1,10 +1,11 @@
-﻿using Blasco.Data;
-using Blasco.Services.Data.Interfaces;
-using Blasco.Web.ViewModels.ProductProjectCategory;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Web.ViewModels.ProductProjectCategory;
+
     public class ProductProjectCategoryService : IProductProjectCategoryService
     {
         private readonly BlascoDbContext dbContext;
@@ -27,7 +28,6 @@ namespace Blasco.Services.Data
 
             return allProductProjectCategories;
         }
-
 
         public async Task<bool> ExsistsByIdAsync(int id)
         {

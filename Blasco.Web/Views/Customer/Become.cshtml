@@ -1,5 +1,5 @@
 ﻿@model BecomeCustomerFormModel
-@using Blasco.Data.Models.Enums
+@using Blasco.Data.Models
 @{
     ViewBag.Title = "Become Customer";
 }
@@ -17,9 +17,9 @@
             <div class="form-group">
                 <label asp-for="CustomerType"></label>
                 <select name="CustomerType">
-                <option value="0">@CustomerType.Freelancer</option>
-                <option value="1">@CustomerType.Business</option>
-                <option value="2">@CustomerType.Private</option>
+                <option value="0">Freelancer</option>
+                <option value="1">Business</option>
+                <option value="2">Private</option>
                 </select>
             </div>
             <div class="text-center">

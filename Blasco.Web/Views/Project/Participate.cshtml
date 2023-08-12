@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ProjectParticipateViewModel>
+@{
+    ViewData["Title"] = "My Projects in that category";
+}
+
+<h2 calss="text-center"> @ViewData["Title"]</h2>
+<hr />
+
+
+
+@foreach (ProjectParticipateViewModel project in Model)
+{
+    
+    <partial name="_ProjectParticipatePartial" model="@project" />
+    
+}
+
+

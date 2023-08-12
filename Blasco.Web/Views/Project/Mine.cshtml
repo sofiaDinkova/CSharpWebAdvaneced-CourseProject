@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ProjectAllViewModel>
+@{
+    ViewData["Title"] = "My Projects";
+}
+
+<h2 calss="text-center"> @ViewData["Title"]</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <h2 calss="text-center">"You do not have any Projects yet"</h2>
+}
+else
+{
+    <div class=" row">
+        @foreach (ProjectAllViewModel product in Model)
+        {
+            <partial name="_ProjectPartial" model="@product" />
+        }
+    </div>
+}

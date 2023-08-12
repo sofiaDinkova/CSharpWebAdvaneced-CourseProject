@@ -1,23 +1,24 @@
-﻿using Blasco.Data;
-using Blasco.Data.Models;
-
-using Blasco.Services.Data.Interfaces;
-using Blasco.Services.Data.Models.Product;
-using Blasco.Services.Data.Models.Statistics;
-using Blasco.Web.ViewModels.Home;
-using Blasco.Web.ViewModels.Product;
-using Blasco.Web.ViewModels.Product.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace Blasco.Services.Data
+﻿namespace Blasco.Services.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Interfaces;
+    using Blasco.Data;
+    using Blasco.Data.Models;
+    using Models.Product;
+    using Models.Statistics;
+    using Web.ViewModels.Home;
+    using Web.ViewModels.Product;
+    using Web.ViewModels.Product.Enums;
     public class ProductService : IProductService
     {
         private readonly BlascoDbContext dbContext;
+        private readonly IImageService imageService;
 
-        public ProductService(BlascoDbContext dbContext)
+        public ProductService(BlascoDbContext dbContext, IImageService imageService)
         {
             this.dbContext = dbContext;
+            this.imageService = imageService;
         }
 
         public async Task<IEnumerable<IndexViewModel>> LastThreeProductAsync()
@@ -31,19 +32,20 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
+                    ImageArray = imageService.GetImageBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 
             return lastThreeProducts;
         }
-        public async Task<string> CreateAndReturnIdAsync(ProductFormModel formModel, string creatorId)
+        public async Task<string> CreateAndReturnIdAsync(ProductAddFormModel formModel, string creatorId)
         {
+            Guid id = Guid.NewGuid();
             Product product = new Product
             {
+                Id = id,
                 Title = formModel.Title,
                 Description = formModel.Description,
-                ImageUrl = formModel.ImageUrl,
                 Price = formModel.Price,
                 CategoryId = formModel.CategoryId,
                 CreatorId = Guid.Parse(creatorId),
@@ -53,7 +55,9 @@ namespace Blasco.Services.Data
             await this.dbContext.Products.AddAsync(product);
             await this.dbContext.SaveChangesAsync();
 
-            return product.Id.ToString();
+            await this.imageService.InsertImagesAsync(formModel.Images, id.ToString());
+
+            return id.ToString();
         }
 
         public async Task<AllProductsFilteredAndPagedModel> AllAsync(AllProductsQueryModel queryModel)
@@ -82,7 +86,7 @@ namespace Blasco.Services.Data
                      .OrderByDescending(p => p.CreatedOn),
                 ProductSorting.Oldest => productQuery
                     .OrderBy(p => p.CreatedOn),
-                ProductSorting.PriceAscending => productQuery 
+                ProductSorting.PriceAscending => productQuery
                     .OrderBy(p => p.Price),
                 ProductSorting.PriceDescending => productQuery
                     .OrderByDescending(p => p.Price),
@@ -99,13 +103,18 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     City = p.City,
                     Price = p.Price,
                     IsPurchased = p.CustomerId.HasValue,
                 })
                 .ToArrayAsync();
             int totalProducts = productQuery.Count();
+
+            foreach (var product in allProducts)
+            {
+                List<byte[]> biteImg = imageService.GetAllImagesBytesByEntityCorrespondingId(product.Id);
+                product.ImagesArray = biteImg;
+            }
 
             return new AllProductsFilteredAndPagedModel()
             {
@@ -123,10 +132,10 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     City = p.City,
-                    IsPurchased = p.CustomerId.HasValue
+                    IsPurchased = p.CustomerId.HasValue,
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 
@@ -142,10 +151,10 @@ namespace Blasco.Services.Data
                 {
                     Id = p.Id.ToString(),
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     City = p.City,
-                    IsPurchased = p.CustomerId.HasValue
+                    IsPurchased = p.CustomerId.HasValue,
+                    ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(p.Id.ToString())
                 })
                 .ToArrayAsync();
 
@@ -162,13 +171,12 @@ namespace Blasco.Services.Data
                 .FirstAsync(h => h.Id.ToString() == productId);
 
             string creatorEmail = product.Creator.Email;
-            string creatorPseudonym = product.Creator.Pseudonym;
+            string creatorPseudonym = product.Creator.Pseudonym!;
 
             return new ProductDetailsViewModel
             {
                 Id = product.Id.ToString(),
                 Title = product.Title,
-                ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 IsPurchased = product.CustomerId.HasValue,
                 Description = product.Description,
@@ -176,6 +184,7 @@ namespace Blasco.Services.Data
                 CreatorId = product.CreatorId.ToString(),
                 CreatorEmail = creatorEmail,
                 CreatorPseudonym = creatorPseudonym,
+                ImagesArray = imageService.GetAllImagesBytesByEntityCorrespondingId(product.Id.ToString())
             };
         }
 
@@ -189,7 +198,7 @@ namespace Blasco.Services.Data
             return result;
         }
 
-        public async Task<ProductFormModel> GetProductForEditByIdAsync(string productId)
+        public async Task<ProductEditFormModel> GetProductForEditByIdAsync(string productId)
         {
             Product product = await this.dbContext
                 .Products
@@ -197,14 +206,14 @@ namespace Blasco.Services.Data
                 .Where(p => p.IsActive)
                 .FirstAsync(h => h.Id.ToString() == productId);
 
-            return new ProductFormModel
+            return new ProductEditFormModel
             {
                 Title = product.Title,
                 Description = product.Description,
-                ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 City = product.City,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                ImageDeleteFormModels = this.imageService.GetImagesToEditByEntityCorrespondingIdAsync(productId)
             };
         }
 
@@ -218,7 +227,7 @@ namespace Blasco.Services.Data
             return product.CreatorId.ToString() == creatorId;
         }
 
-        public async Task EditProductByIdAndFormModelAsync(string productId, ProductFormModel formModel)
+        public async Task EditProductByIdAndFormModelAsync(string productId, ProductEditFormModel formModel)
         {
             Product product = await this.dbContext
                 .Products
@@ -227,27 +236,28 @@ namespace Blasco.Services.Data
 
             product.Title = formModel.Title;
             product.Description = formModel.Description;
-            product.ImageUrl = formModel.ImageUrl;
             product.Price = formModel.Price;
             product.City = formModel.City;
             product.CategoryId = formModel.CategoryId;
 
-            await this.dbContext.SaveChangesAsync();
-        }
-
-        public async Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productId)
-        {
-            Product product = await this.dbContext
-            .Products
-            .Where(p => p.IsActive)
-                .FirstAsync(p => p.Id.ToString() == productId);
-
-            return new ProductPreDeleteDetailsViewModel
+            if (formModel.ImageDeleteFormModels.Count() > 0)
             {
-                Title = product.Title,
-                ImageUrl = product.ImageUrl,
-                Price = product.Price,
-            };
+                for (int i = 0; i < formModel.ImageDeleteFormModels.Count(); i++)
+                {
+                    if (formModel.ImageDeleteFormModels.ElementAt(i).ToBeDeleted == true)
+                    {
+                        await this.imageService.DeleteProductImageByImageId(formModel.ImageDeleteFormModels.ElementAt(i).Id!);
+                    }
+                }
+            }
+
+            if (formModel.NewImages!.Any())
+            {
+                await this.imageService.InsertImagesAsync(formModel.NewImages!, productId);
+            }
+
+
+            await this.dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteProductByIdAsync(string id)
@@ -291,7 +301,7 @@ namespace Blasco.Services.Data
                 .Where(p => p.IsActive)
                 .FirstAsync(p => p.Id.ToString() == productId);
 
-            return product.CustomerId.HasValue && product.CustomerId.ToString()== customerId; 
+            return product.CustomerId.HasValue && product.CustomerId.ToString() == customerId;
         }
 
         public async Task CancelProductAsync(string productId, string customerId)

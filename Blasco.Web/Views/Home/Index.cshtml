@@ -3,9 +3,9 @@
 @using Blasco.Web.Infrastructure.Extentions;
 
 @inject ICustomerService CustomerService
-@{
+@*@{
     bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
-}
+}*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -23,7 +23,7 @@
         <p class="lead">
             @if (User.Identity?.IsAuthenticated ?? false)
             {
-                @if (!isUserCustomer)
+                @if (this.User.IsCustomer())
                 {
                     <a asp-controller="Project" asp-action="Add" class="btn btn-primary btn-lg"
                        role="button">Add Project</a>
@@ -39,23 +39,28 @@
         {
             var project = projects[i];
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                @if (project.ImageArray != null)
+                {
+                    string base64Image = Convert.ToBase64String(project.ImageArray);
                 <img class="d-block w-100" style="height:500px"
-                     src="@project.ImageUrl" alt="@project.Title">
+                     src="data:image/jpeg;base64,@base64Image" alt="@project.Title">
+                }
+                     
 
                 <div class="carousel-caption d-none d-md-block">
                     <h5>
-                        <a class="btn btn-primary" asp-controller="House" asp-action="Details"
+                        <a class="btn btn-primary" asp-controller="Project" asp-action="Details"
                        asp-route-id="@project.Id"> @project.Title</a>
                     </h5>
                 </div>
             </div>
         }
     </div>
-    <button class="carousel-control-prev" type="button" data-bstarget="#carouselExampleControls" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bstarget="#carouselExampleControls" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>

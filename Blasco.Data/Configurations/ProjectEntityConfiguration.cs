@@ -3,7 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    using Blasco.Data.Models;
+    using Models;
 
     public class ProjectEntityConfiguration : IEntityTypeConfiguration<Project>
     {
@@ -30,38 +30,11 @@
                 .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(this.GenerateProjects());
+            builder
+                .HasOne(p => p.Challenge)
+                .WithMany(c => c.Projects)
+                .HasForeignKey(p => p.ChallengeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
-
-        private Project[] GenerateProjects()
-        {
-            ICollection<Project> projects = new HashSet<Project>();
-
-            Project project;
-
-            project = new Project()
-            {
-                Title = "Fallingwater",
-                Description = "Fallingwater is a house designed by the architect Frank Lloyd Wright in 1935 in the Laurel Highlands of southwest Pennsylvania, about 70 miles (110 km) southeast of Pittsburgh in the United States. It is built partly over a waterfall on Bear Run in the Mill Run section of Stewart Township, Fayette County, Pennsylvania.",
-                ImageUrl = "https://en.wikipedia.org/wiki/Fallingwater#/media/File:Fallingwater3.jpg",
-                CategoryId = 2,
-                CreatorId = Guid.Parse("345DE848-8E19-41A4-944D-36C1B4D24B78")
-            };
-            projects.Add(project);
-
-            project = new Project()
-            {
-                Title = "The Year Zero",
-                Description = "Sarpaneva made his and Finland's largest glass sculpture, Ahtojää (\"Pack Ice,\" renamed from Jäävuori, \"Iceberg\"), for the Finnish pavilion at Expo 67 in Montreal in 1967.",
-                ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
-                CategoryId = 4,
-                CreatorId = Guid.Parse("345DE848-8E19-41A4-944D-36C1B4D24B78")
-            };
-            projects.Add(project);
-
-            return projects.ToArray();
-
-        }
-
     }
 }

@@ -35,35 +35,43 @@
                 services.AddScoped(interfaceType, st);
             }
         }
-
-        public static IApplicationBuilder SeedAdministrator(this IApplicationBuilder app, string email)
+   
+        public static IApplicationBuilder CreateRolesAdminCreatorAndCustomer(this IApplicationBuilder app)
         {
             using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
 
             IServiceProvider serviceProvider = scopedServices.ServiceProvider;
 
-            UserManager<Creator> creatorManagaer = serviceProvider.GetRequiredService<UserManager<Creator>>();
+            UserManager<ApplicationUser> creatorManagaer = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole<Guid>> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
             Task.Run(async () =>
             {
-                if (await roleManager.RoleExistsAsync(AdminRoleName))
+                IdentityRole<Guid> role;
+
+                if (!roleManager.Roles.Any(r => r.Name == AdminRoleName))
                 {
-                    return;
+                    role = new IdentityRole<Guid>(AdminRoleName);
+                    await roleManager.CreateAsync(role);
                 }
 
-                IdentityRole<Guid> role = new IdentityRole<Guid>(AdminRoleName);
+                if (!await roleManager.RoleExistsAsync(CreatorRoleName))
+                {
+                    role = new IdentityRole<Guid>(CreatorRoleName);
+                    await roleManager.CreateAsync(role);
+                }
 
-                await roleManager.CreateAsync(role);
-
-                Creator adminUser = await creatorManagaer.FindByEmailAsync(email);
-
-                await creatorManagaer.AddToRoleAsync(adminUser, AdminRoleName);
+                if (!await roleManager.RoleExistsAsync(CustomerRoleName))
+                {
+                    role = new IdentityRole<Guid>(CustomerRoleName);
+                    await roleManager.CreateAsync(role);
+                }
             })
                 .GetAwaiter()
                 .GetResult();
 
             return app;
         }
+
     }
 }

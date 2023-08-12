@@ -2,11 +2,6 @@
 @using Blasco.Services.Data.Interfaces;
 @using Blasco.Web.Infrastructure.Extentions;
 
-@inject ICustomerService CustomerService
-@{
-    bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
-}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,11 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Blasco</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Blasco.Web.styles.css" asp-append-version="true" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css" integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <partial name="_NotificationPartial" />
@@ -33,26 +28,29 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="AllProjects">All Projects</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="AllProjects">Projects</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">All Products</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AllProducts">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Challenge" asp-action="AllChallenges">Challenges</a>
                         </li>
                         @if (this.User.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Mine">My Product</a>
                             </li>
-                            @if (!isUserCustomer || this.User.IsAdmin())
+                            @if (this.User.IsCreator() || this.User.IsAdmin())
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Mine">My Projects</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="AddProject">Add Project</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Add">Add Project</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AddProduct">Add Product</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Add">Add Product</a>
                                 </li>
                             }
                         }
@@ -62,18 +60,17 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container-fluid">
             &copy; Blasco @releaseYear @if (DateTime.UtcNow.Year != releaseYear)
             {
-                @Html.Raw($" - {DateTime.UtcNow.Year}")
-                ;
+                @Html.Raw($" - {DateTime.UtcNow.Year}");
             }
         </div>
     </footer>

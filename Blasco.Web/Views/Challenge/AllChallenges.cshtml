@@ -1,0 +1,17 @@
+﻿@model AllChallengesModel
+@{
+    ViewBag.Title = "All Challenges";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+@if (!Model.Challenges.Any())
+{
+    <h2 class="text-center">There are no Challenges yet!</h2>
+}
+
+<div class="row">
+    @foreach (var challenge in Model.Challenges)
+    {
+        <partial name="_ChallengePartial" model="@challenge" />
+    }
+</div>

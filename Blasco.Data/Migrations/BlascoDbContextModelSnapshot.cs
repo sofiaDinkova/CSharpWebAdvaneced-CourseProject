@@ -22,7 +22,7 @@ namespace Blasco.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Blasco.Data.Models.Creator", b =>
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,6 +35,9 @@ namespace Blasco.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CustomerTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -44,17 +47,16 @@ namespace Blasco.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasDefaultValue("Test");
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasDefaultValue("Testov");
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -80,11 +82,8 @@ namespace Blasco.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Pseudonym")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("Pseudonym");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +97,8 @@ namespace Blasco.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerTypeId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -107,25 +108,291 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f416fb8e-cd98-437c-b647-7964543ea40f",
+                            Email = "admin@blasco.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            IsActive = true,
+                            LastName = "Admin",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "ADMIN@BLASCO.COM",
+                            NormalizedUserName = "ADMIN@BLASCO.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKWDFmfRxoPgMpqANc5iWG1xD1gDLZBTxzmf+0dF9co/1YdejdA98NE6fA73ewEW2g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "EDBFE8CB-1D4D-4397-8C67-72A91D240BC9",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@blasco.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ba8093f2-8f16-4e32-8039-814f76833a96",
+                            Email = "firstCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCREATOR@CREATOR.COM",
+                            NormalizedUserName = "FIRSTCREATOR@CREATOR.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO27GAb5QumhC3KzpknArGqyfkrIdMxDIvYmpL+nl7oBFW5zaLGTk8gn9284OwSGEQ==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "firstPseudonym",
+                            SecurityStamp = "D7BA4089-38F1-44C2-85A4-FFA63BCDC5ED",
+                            TwoFactorEnabled = false,
+                            UserName = "firstCreator@creator.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "5bb1fb54-3cd7-4dad-b2ed-7417b231a8df",
+                            Email = "secondCreator@creator.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Creator",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCREATOR@CREATOR.COM",
+                            NormalizedUserName = "SECONDCREATOR@CREATOR.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDU/2Pw3Zooe0Tmv/mjv0uMTmU/KMI5Z/onUwEynaU0Skbf/o0keUhh/HxxFpC4oLQ==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "secondPseudonym",
+                            SecurityStamp = "ECB32B29-1F5D-4350-B622-B5BB93E44A23",
+                            TwoFactorEnabled = false,
+                            UserName = "secondCreator@creator.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2f78e998-503d-4771-a64c-d66d8179957d",
+                            CustomerTypeId = 2,
+                            Email = "firstCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "First",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "FIRSTCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "FIRSTCUSTOMER@CUSTOMER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAENfccAdYoQdoRoax9E8inrbNYsJv1hVYYdH9Z5Uk+nGPsopHW+C4xaLwDnuNgVj5oQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "D4168115-B36A-40A9-8752-4693BEB1660C",
+                            TwoFactorEnabled = false,
+                            UserName = "firstCustomer@customer.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c5dd35f0-e01e-4b8d-8e6a-ed6cf5711430",
+                            CustomerTypeId = 1,
+                            Email = "secondCustomer@customer.com",
+                            EmailConfirmed = false,
+                            FirstName = "Second",
+                            IsActive = true,
+                            LastName = "Customer",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SECONDCUSTOMER@CUSTOMER.COM",
+                            NormalizedUserName = "SECONDCUSTOMER@CUSTOMER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELBhHzVP86aB8Gb73r9nsL+tSUTisgp35tT+8tzVT1tPyTBFyKbssjRNmbnaLWztIQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "98AE1C08-FF5D-4829-A974-2011EC46F801",
+                            TwoFactorEnabled = false,
+                            UserName = "secondCustomer@customer.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("92cd8068-4155-48d7-8a6d-1c1ea6e7f2c5"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "84f636e9-e2e3-4ffa-a096-5ab48a882d29",
+                            Email = "testFifthH@test.com",
+                            EmailConfirmed = false,
+                            FirstName = "TestFifthh",
+                            IsActive = true,
+                            LastName = "Testfifthovv",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "TESTFIFTHH@TEST.COM",
+                            NormalizedUserName = "TESTFIFTHH@TEST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKgFKaLnFL1nNc7DsPQTIIt0GTyQjIiVm8yZlve/yynAcw7O04qf6f6EQ7k9deImpA==",
+                            PhoneNumberConfirmed = false,
+                            Pseudonym = "tastFifthh",
+                            SecurityStamp = "FD32941E-175A-4DAA-969F-CE74F3C8FA41",
+                            TwoFactorEnabled = false,
+                            UserName = "testFifthh@test.com"
+                        });
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Customer", b =>
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUserPPCategory", b =>
+                {
+                    b.Property<int>("PPCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PPCategoryId", "ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("ApplicationUserPPCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            PPCategoryId = 10,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 13,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 9,
+                            ApplicationUserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78")
+                        },
+                        new
+                        {
+                            PPCategoryId = 5,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        },
+                        new
+                        {
+                            PPCategoryId = 8,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        },
+                        new
+                        {
+                            PPCategoryId = 11,
+                            ApplicationUserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7")
+                        });
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CreatorId")
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("CustomerCreatedChallengeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CustomerType")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("EndDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(month, +2, GETDATE())");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOnGoing")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("PriceToWin")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("WinnerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("Customers");
+                    b.HasIndex("CustomerCreatedChallengeId");
+
+                    b.HasIndex("WinnerId");
+
+                    b.ToTable("Challenges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CategoryId = 5,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerCreatedChallengeId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            Description = "Are you a creative mind with a flair for design? Put your artistic prowess to the test and join our exciting contest, \"Architectural Visions: Redesign Our Identity.\"\r\n\r\nAre you up for the challenge? Unleash your creativity and design a new logo that symbolizes the essence of Architecture, evoking elegance, forward-thinking concepts, and a seamless fusion of form and function.",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsOnGoing = true,
+                            PriceToWin = 200m,
+                            Title = "Architectural Visions: Redesign Our Identity"
+                        },
+                        new
+                        {
+                            Id = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CategoryId = 10,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerCreatedChallengeId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            Description = "Calling all nature enthusiasts and photography enthusiasts alike! Embark on a visual journey of awe and wonder as we invite you to participate in our thrilling contest, \"Capturing Nature's Wonders: A Photographic Odyssey.\" Immerse yourself in the beauty of the natural world and showcase your talent by capturing the most mesmerizing moments in nature through your lens.",
+                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            IsOnGoing = true,
+                            PriceToWin = 200m,
+                            Title = "Capturing Nature's Wonders: A Photographic Odyssey"
+                        });
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomerTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Private Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Freelancer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Buisness"
+                        });
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -157,11 +424,6 @@ namespace Blasco.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -188,30 +450,52 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bd7ff9e2-7d14-4d41-89db-cd594405f573"),
+                            Id = new Guid("7cee0b9a-2b1a-49e1-bfa6-f3f3e63626de"),
                             CategoryId = 10,
                             City = "Buenos Aires",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            CustomerId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
                             Description = "A group of bees compete for the only female in the group. Climate change, pesticides and ever-dwindling habitat make it difficult for bees around the world to maintain their species.",
-                            ImageUrl = "https://image.geo.de/32808766/t/vQ/v5/w1440/r1.5/-/--karine-aigner--1---wildlife-photographer-of-the-year.jpg",
-                            IsActive = false,
-                            Price = 15m,
+                            IsActive = true,
+                            Price = 35m,
                             Title = "Bees"
                         },
                         new
                         {
-                            Id = new Guid("4d4c87f9-088d-42be-a256-f1ceea011909"),
-                            CategoryId = 12,
+                            Id = new Guid("2700b45e-314b-4e66-b607-5f3cb9927852"),
+                            CategoryId = 8,
                             City = "London",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
-                            CustomerId = new Guid("c99c215f-1621-4874-99b4-14fd0c1eaabe"),
-                            Description = "Taking her art from life and nature, Helena breaks down forms simplifying and playing with the uses of light and shadows. Sometimes staying true to a likeness, which is always the starting point, but sometimes her work will take on a much more abstract nature. Often she uses her experience as a graphic designer to create works with a digital starting point using flat plains that are then assembled into a 3d structure.",
-                            ImageUrl = "https://artpark.com.au/wp-content/uploads/2022/12/Tosca-60x52x15cm-600x600.jpg",
-                            IsActive = false,
-                            Price = 17m,
-                            Title = "Horse"
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            CustomerId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            Description = "Taking her art from life and nature, she breaks down forms simplifying and playing with the uses of light and shadows. Sometimes staying true to a likeness, which is always the starting point, but sometimes her work will take on a much more abstract nature.",
+                            IsActive = true,
+                            Price = 170m,
+                            Title = "Ornate vase with intricate floral pattern design"
+                        },
+                        new
+                        {
+                            Id = new Guid("e667cc6a-341f-4320-9fdc-3fdc60cc7fff"),
+                            CategoryId = 11,
+                            City = "Madrid",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "High-quality Print of a Spaceman dancing music poster flyer design element",
+                            IsActive = true,
+                            Price = 25m,
+                            Title = "Spaceman"
+                        },
+                        new
+                        {
+                            Id = new Guid("8eab24f6-7888-4aa6-9ecd-5eae3d3c110e"),
+                            CategoryId = 9,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "Discover the beauty of flowers with this stunning Found a Flower Bouquet in Heavy Textured 3d Abstract Art. The intricate botanical design is both abstract and realistic, capturing the essence of nature in a unique and eye-catching way. Measuring 12x18 inches, it's the perfect size to make a stateme...",
+                            IsActive = true,
+                            Price = 120m,
+                            Title = "Heavy Textured 3d Abstract Art Painting"
                         });
                 });
 
@@ -314,6 +598,9 @@ namespace Blasco.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -326,11 +613,6 @@ namespace Blasco.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -346,6 +628,8 @@ namespace Blasco.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ChallengeId");
+
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Projects");
@@ -353,25 +637,95 @@ namespace Blasco.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c555ed2c-343d-4c6e-924a-f774236da6e5"),
-                            CategoryId = 2,
+                            Id = new Guid("65786e09-08fc-4bb3-bf02-665ff651c8e5"),
+                            CategoryId = 10,
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
-                            Description = "Fallingwater is a house designed by the architect Frank Lloyd Wright in 1935 in the Laurel Highlands of southwest Pennsylvania, about 70 miles (110 km) southeast of Pittsburgh in the United States. It is built partly over a waterfall on Bear Run in the Mill Run section of Stewart Township, Fayette County, Pennsylvania.",
-                            ImageUrl = "https://en.wikipedia.org/wiki/Fallingwater#/media/File:Fallingwater3.jpg",
-                            IsActive = false,
-                            Title = "Fallingwater"
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "In Collaboration with the Zoo: Graceful Giants Unveiled - A Mesmerizing Giraffe Photoshoot\r\nStep into a world of wonder as our lens captures the mesmerizing charm of giraffes, revealing their elegant grace and captivating allure. Witness these gentle giants in their natural habitat, towering above the savanna, their majestic presence leaving an indelible mark on your heart. ",
+                            IsActive = true,
+                            Title = "Giraffe"
                         },
                         new
                         {
-                            Id = new Guid("75dc5b88-4ca1-42d4-ae74-53c7ebcc2cd3"),
-                            CategoryId = 4,
+                            Id = new Guid("b10ce869-5388-47c4-88b8-0ebe7da7d7e3"),
+                            CategoryId = 10,
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorId = new Guid("345de848-8e19-41a4-944d-36c1b4d24b78"),
-                            Description = "Sarpaneva made his and Finland's largest glass sculpture, Ahtojää (\"Pack Ice,\" renamed from Jäävuori, \"Iceberg\"), for the Finnish pavilion at Expo 67 in Montreal in 1967.",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/34/The_Year_Zero_1985_Sarpaneva.jpg",
-                            IsActive = false,
-                            Title = "The Year Zero"
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "This endeavor seeks to encapsulate the enchanting allure of open landscapes, translating the serene expanse and delicate details of fields into a breathtaking visual experience. Immerse yourself in the essence of nature's tranquility and embrace the artistry that brings the field's beauty to life in a captivating display of creativity and awe-inspiring imagery.",
+                            IsActive = true,
+                            Title = "Fields"
+                        },
+                        new
+                        {
+                            Id = new Guid("5d3533b4-c059-47eb-9333-ae8cc728015d"),
+                            CategoryId = 5,
+                            ChallengeId = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            Description = "In my design I reimagined the identity by drawing inspiration from the mesmerizing patterns and structural elements of iconic architectural landmarks worldwide. Through a harmonious blend of modern aesthetics and timeless elegance, I created a visually captivating representation that symbolizes our collective journey towards a progressive and interconnected future.",
+                            IsActive = true,
+                            Title = "Architecture Brand Identity"
+                        },
+                        new
+                        {
+                            Id = new Guid("adeacb8d-6173-46ee-9b7b-c5696d55111a"),
+                            CategoryId = 13,
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatorId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            Description = "Embark on a captivating journey through culture and history with my Oriental Tapestry Project. This creative endeavor weaves together intricate threads of Eastern traditions, vibrant colors, and timeless narratives, crafting a mesmerizing masterpiece that transports viewers to distant lands. Immerse yourself in the rich tapestry of Asia's heritage, where artistry and storytelling intertwine in a captivating display of beauty and meaning.",
+                            IsActive = true,
+                            Title = "Oriental Tapestry"
+                        });
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicationUserWhoVotedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChallengeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("ProjectCastOnId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserWhoVotedId");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.HasIndex("ProjectCastOnId");
+
+                    b.ToTable("Votes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("953a5321-ee41-4397-9736-3972caa5aca4"),
+                            ApplicationUserWhoVotedId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            ChallengeId = new Guid("bd64aee7-19e4-4fc6-8db7-7388e3cc8191"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectCastOnId = new Guid("5d3533b4-c059-47eb-9333-ae8cc728015d")
+                        },
+                        new
+                        {
+                            Id = new Guid("5d6529bb-d319-45b6-b454-3d2c68da4633"),
+                            ApplicationUserWhoVotedId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            ChallengeId = new Guid("a84295eb-82fd-4aac-9330-505b88e228ff"),
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectCastOnId = new Guid("65786e09-08fc-4bb3-bf02-665ff651c8e5")
                         });
                 });
 
@@ -401,6 +755,29 @@ namespace Blasco.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744"),
+                            ConcurrencyStamp = "c80b0868-4ec6-4c43-9dfd-f4dfb20cdf70",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae"),
+                            ConcurrencyStamp = "f93a0b33-a592-4b45-98b9-43d5ac310f71",
+                            Name = "Creator",
+                            NormalizedName = "CREATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a"),
+                            ConcurrencyStamp = "50e16301-5b6f-4a12-98ae-d32b5b40acf6",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -487,6 +864,33 @@ namespace Blasco.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("f564ad91-73fa-4e3c-8965-dee864871429"),
+                            RoleId = new Guid("7c929f80-e14d-4063-8b76-eebc9f2c3744")
+                        },
+                        new
+                        {
+                            UserId = new Guid("64e3c1da-2969-44cd-ac2b-18b0d5179f78"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("3c09b722-de81-4d10-aa3c-1f7d8ea4bcd7"),
+                            RoleId = new Guid("38cd07af-3542-4541-8f3c-efbefd3dcaae")
+                        },
+                        new
+                        {
+                            UserId = new Guid("307309dd-f039-48b2-835d-dca03aac807b"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        },
+                        new
+                        {
+                            UserId = new Guid("546424cf-268f-4f68-beba-9b069b886d88"),
+                            RoleId = new Guid("2559fb3c-8a95-4912-b0f6-0f2da973920a")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -510,15 +914,58 @@ namespace Blasco.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Customer", b =>
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Blasco.Data.Models.Creator", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Blasco.Data.Models.CustomerType", "CustomerType")
+                        .WithMany("Customers")
+                        .HasForeignKey("CustomerTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CustomerType");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUserPPCategory", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("PPCategories")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Creator");
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", "ProductProjectCategory")
+                        .WithMany("Creators")
+                        .HasForeignKey("PPCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("ProductProjectCategory");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ProductProjectCategory", "Category")
+                        .WithMany("Challenges")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "CustomerCreatedChallenge")
+                        .WithMany("Challenges")
+                        .HasForeignKey("CustomerCreatedChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("CustomerCreatedChallenge");
+
+                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.Product", b =>
@@ -529,16 +976,15 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Creator", "Creator")
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Creator")
                         .WithMany("Products")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Customer", "Customer")
-                        .WithMany("Products")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Category");
 
@@ -555,7 +1001,12 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Creator", "Creator")
+                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
+                        .WithMany("Projects")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "Creator")
                         .WithMany("Projects")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -563,7 +1014,36 @@ namespace Blasco.Data.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Challenge");
+
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Vote", b =>
+                {
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", "ApplicationUserWhoVoted")
+                        .WithMany("Votes")
+                        .HasForeignKey("ApplicationUserWhoVotedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.Challenge", "Challenge")
+                        .WithMany("Votes")
+                        .HasForeignKey("ChallengeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blasco.Data.Models.Project", "ProjectCastOn")
+                        .WithMany("Votes")
+                        .HasForeignKey("ProjectCastOnId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUserWhoVoted");
+
+                    b.Navigation("Challenge");
+
+                    b.Navigation("ProjectCastOn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -577,7 +1057,7 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Blasco.Data.Models.Creator", null)
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -586,7 +1066,7 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Blasco.Data.Models.Creator", null)
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -601,7 +1081,7 @@ namespace Blasco.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Blasco.Data.Models.Creator", null)
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -610,30 +1090,52 @@ namespace Blasco.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Blasco.Data.Models.Creator", null)
+                    b.HasOne("Blasco.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Creator", b =>
+            modelBuilder.Entity("Blasco.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Challenges");
+
+                    b.Navigation("PPCategories");
+
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("Votes");
                 });
 
-            modelBuilder.Entity("Blasco.Data.Models.Customer", b =>
+            modelBuilder.Entity("Blasco.Data.Models.Challenge", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Projects");
+
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.CustomerType", b =>
+                {
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("Blasco.Data.Models.ProductProjectCategory", b =>
                 {
+                    b.Navigation("Challenges");
+
+                    b.Navigation("Creators");
+
                     b.Navigation("Products");
 
                     b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("Blasco.Data.Models.Project", b =>
+                {
+                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

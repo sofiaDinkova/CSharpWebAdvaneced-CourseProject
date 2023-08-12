@@ -1,15 +1,15 @@
-﻿using Blasco.Services.Data.Models.Product;
-using Blasco.Services.Data.Models.Statistics;
-using Blasco.Web.ViewModels.Home;
-using Blasco.Web.ViewModels.Product;
-
-namespace Blasco.Services.Data.Interfaces
+﻿namespace Blasco.Services.Data.Interfaces
 {
+    using Models.Product;
+    using Models.Statistics;
+    using Web.ViewModels.Home;
+    using Web.ViewModels.Product;
+
     public interface IProductService
     {
         Task<IEnumerable<IndexViewModel>> LastThreeProductAsync();
 
-        Task<string> CreateAndReturnIdAsync(ProductFormModel formModel, string creatorId);
+        Task<string> CreateAndReturnIdAsync(ProductAddFormModel formModel, string creatorId);
 
         Task<AllProductsFilteredAndPagedModel> AllAsync(AllProductsQueryModel queryModel);
 
@@ -21,13 +21,11 @@ namespace Blasco.Services.Data.Interfaces
 
         Task<bool> ExistsByIdAsync(string productId);
 
-        Task<ProductFormModel> GetProductForEditByIdAsync(string productId);
+        Task<ProductEditFormModel> GetProductForEditByIdAsync(string productId);
 
         Task<bool> IsCreatorWithIdOwnerOfProductWithIdAsync(string productId, string creatorId);
 
-        Task EditProductByIdAndFormModelAsync(string productId, ProductFormModel formModel);
-
-        Task<ProductPreDeleteDetailsViewModel> GetProductForDeleteByIdAsync(string productid);
+        Task EditProductByIdAndFormModelAsync(string productId, ProductEditFormModel formModel);
 
         Task DeleteProductByIdAsync(string id);
 
@@ -40,6 +38,5 @@ namespace Blasco.Services.Data.Interfaces
         Task CancelProductAsync(string productId, string customerId);
 
         Task<StatisticsServiceModel> GetStatisticsAsync();
-
     }
 }

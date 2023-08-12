@@ -1,7 +1,7 @@
-﻿using Blasco.Web.ViewModels.Product;
-
-namespace Blasco.Services.Data.Models.Product
+﻿namespace Blasco.Services.Data.Models.Product
 {
+    using Web.ViewModels.Product;
+
     public class AllProductsFilteredAndPagedModel
     {
         public AllProductsFilteredAndPagedModel()

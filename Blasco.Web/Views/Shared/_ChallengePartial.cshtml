@@ -1,0 +1,47 @@
+﻿@model ChallangeAllViewModel
+
+<div class="container mx-auto">
+    <div class="challenge-box">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="challenge-box">
+                    @if (Model.ImageArray != null)
+                    {
+                        string base64Image = Convert.ToBase64String(Model.ImageArray);
+                        <div class="img-thumbnail">
+                            <img src="data:image/jpeg;base64,@base64Image" alt="Image" />
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Image not found</p>
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-4">
+                <div class="challenge-box">
+                    <div class="challenge-details">
+                        <h5 class="challenge-title">@Model.Title</h5>
+                        <p class="challenge-info">
+                            <strong>Category:</strong> @Model.Category<br />
+                            <strong>Price to Win:</strong> <span class="challenge-price">@Model.PriceToWin</span>
+                        </p>
+                        <p class="challenge-description">@Model.Description</p>
+                        <div class="form-container">
+                            <form class="ml-2" asp-area="" asp-controller="Project" asp-action="AllProjectsInChallenge" asp-route-id="@Model.Id" method="get">
+                                <input class="participate-button" type="submit" value="All Projects" />
+                            </form>
+                            <form class="ml-2" asp-area="" asp-controller="Project" asp-action="Participate" asp-route-id="@Model.Id" method="get">
+                                <input class="participate-button" type="submit" value="Participate" />
+                            </form>
+                            <form class="ml-2" asp-area="" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">
+                                <input class="participate-button" type="submit" value="Vote" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

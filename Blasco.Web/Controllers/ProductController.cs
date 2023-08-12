@@ -1,13 +1,15 @@
-﻿
-namespace Blasco.Web.Controllers
+﻿namespace Blasco.Web.Controllers
 {
-    using Blasco.Services.Data.Interfaces;
-    using Blasco.Services.Data.Models.Product;
-    using Blasco.Web.Infrastructure.Extentions;
-    using Blasco.Web.ViewModels.Product;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
+    using Services.Data.Interfaces;
+    using Services.Data.Models.Product;
+    using Infrastructure.Extentions;
+    using ViewModels.Product;
+
     using static Common.NotificationMessagesConstents;
+    using static Common.GeneralApplicationConstants;
 
     [Authorize]
     public class ProductController : Controller
@@ -16,13 +18,15 @@ namespace Blasco.Web.Controllers
         private readonly ICustomerService customerService;
         private readonly IProductService productService;
         private readonly ICreatorService creatorService;
+        private readonly IImageService imageService;
 
-        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService, ICreatorService creatorService)
+        public ProductController(IProductProjectCategoryService productProjectCategoryService, ICustomerService customerService, IProductService productService, ICreatorService creatorService, IImageService imageService)
         {
             this.productProjectCategoryService = productProjectCategoryService;
             this.customerService = customerService;
             this.productService = productService;
             this.creatorService = creatorService;
+            this.imageService = imageService;
         }
 
         [HttpGet]
@@ -46,19 +50,17 @@ namespace Blasco.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddProduct()
+        public async Task<IActionResult> Add()
         {
             try
             {
-                bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-                if (isCustomer && !this.User.IsAdmin())
+                if (this.User.IsCustomer())
                 {
                     this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                     return this.RedirectToAction("Home", "Index");
                 }
 
-                ProductFormModel formModel = new ProductFormModel()
+                ProductAddFormModel formModel = new ProductAddFormModel()
                 {
                     ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync()
                 };
@@ -73,11 +75,9 @@ namespace Blasco.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductFormModel model)
+        public async Task<IActionResult> Add(ProductAddFormModel model)
         {
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            if (this.User.IsCustomer())
             {
                 this.TempData[ErrorMessage] = "You must be a creator to add new Products";
                 return this.RedirectToAction("Home", "Index");
@@ -103,11 +103,12 @@ namespace Blasco.Web.Controllers
 
                 this.TempData[SuccessMessage] = "Product was added successfully";
 
-                return this.RedirectToAction("Details", "Product", new { productId });
+                return this.RedirectToAction("Details", "Product", new { id = productId});
             }
             catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, "Unexpected error occured while saving your Product. Please try again letar or contact an administrator.");
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
                 model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
 
                 return this.View(model);
@@ -115,49 +116,8 @@ namespace Blasco.Web.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteProduct(string id)
-        {
-            bool productExists = await productService.ExistsByIdAsync(id);
-
-            if (!productExists)
-            {
-                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            string customerId = this.User.GetId()!;
-
-            bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
-
-            if (!isCreatorOwner && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
-                return this.RedirectToAction("Mine", "Product");
-            }
-
-            try
-            {
-                ProductPreDeleteDetailsViewModel viewmodel = await this.productService.GetProductForDeleteByIdAsync(id);
-
-                return this.View(viewmodel);
-            }
-            catch (Exception)
-            {
-                return this.GeneralError();
-            }
-        }
         [HttpPost]
-        public async Task<IActionResult> DeleteProduct(string id, ProductPreDeleteDetailsViewModel model)
+        public async Task<IActionResult> Delete(string id)
         {
             bool productExists = await productService.ExistsByIdAsync(id);
 
@@ -167,18 +127,17 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
 
-            if (isCustomer && !this.User.IsAdmin())
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
+                this.TempData[ErrorMessage] = "You must be Creator to delete Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            string customerId = this.User.GetId()!;
+            string creatorId = this.User.GetId()!;
 
             bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, customerId!);
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, creatorId!);
 
             if (!isCreatorOwner && !this.User.IsAdmin())
             {
@@ -188,6 +147,7 @@ namespace Blasco.Web.Controllers
 
             try
             {
+                await this.imageService.DeleteProductImagesByEntityCorrespondingIdAsync(id);
                 await this.productService.DeleteProductByIdAsync(id);
 
                 this.TempData[WarningMessage] = "The Product was successfully deleted";
@@ -206,31 +166,15 @@ namespace Blasco.Web.Controllers
 
             try
             {
-                string creatorId = this.User.GetId();
+                string userId = this.User.GetId()!;
 
-                bool isUserCustomer = await this.customerService.CustomerExistsByCreatorId(creatorId);
-                if (this.User.IsAdmin())
+                if (this.User.IsCustomer())
                 {
-                    string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
-                    //purchased Product as customer
-                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
-                    //added Product as creator
-                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(creatorId));
-
-                    //preventing doubles(Products)
-                    myProducts = myProducts
-                        .DistinctBy(p => p.Id)
-                        .ToList();
+                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(userId));
                 }
-                else if (isUserCustomer)
+                else if(this.User.IsCreator())
                 {
-                    string customerId = await this.customerService.GetCustomerByUserIdAsync(creatorId);
-
-                    myProducts.AddRange(await this.productService.AllByCustomerIdAsync(customerId));
-                }
-                else
-                {
-                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(creatorId));
+                    myProducts.AddRange(await this.productService.AllByCreatorIdAsync(userId));
                 }
             }
             catch (Exception)
@@ -265,9 +209,52 @@ namespace Blasco.Web.Controllers
                 return this.GeneralError();
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> EditProduct(string id, ProductFormModel model)
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
+            bool productExists = await productService.ExistsByIdAsync(id);
+
+            if (!productExists)
+            {
+                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
+                return this.RedirectToAction("AllProducts", "Product");
+            }
+
+            bool isCreatorOwner = await this.productService
+                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
+
+            if (!isCreatorOwner && !this.User.IsAdmin())
+            {
+                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
+                return this.RedirectToAction("Mine", "Product");
+            }
+
+            try
+            {
+                ProductEditFormModel formModel = await this.productService
+                .GetProductForEditByIdAsync(id);
+                formModel.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
+
+                return this.View(formModel);
+            }
+            catch (Exception)
+            {
+                return this.GeneralError();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, ProductEditFormModel model)
+        {
+
             if (!this.ModelState.IsValid)
             {
                 model.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
@@ -282,16 +269,11 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
+            if (this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be Creator to edit Products";
                 return this.RedirectToAction("AllProducts", "Product");
             }
-
-
-            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
 
             bool isCreatorOwner = await this.creatorService.HasProductWithIdAsync(id, this.User.GetId()!);
 
@@ -313,59 +295,19 @@ namespace Blasco.Web.Controllers
                 return this.View(model);
 
             }
+
             this.TempData[SuccessMessage] = "Product was edited successfully";
 
-            return this.RedirectToAction("Details", "Product", new { id });
+            return this.RedirectToAction("Details", "Product", new { id = id });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditProduct(string id)
-        {
-            bool productExists = await productService.ExistsByIdAsync(id);
-
-            if (!productExists)
-            {
-                this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (isCustomer && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be Creator to edit Products";
-                return this.RedirectToAction("AllProducts", "Product");
-            }
-
-            //string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId()!);
-
-            bool isCreatorOwner = await this.productService
-                .IsCreatorWithIdOwnerOfProductWithIdAsync(id, this.User.GetId()!);
-
-            if (!isCreatorOwner && !this.User.IsAdmin())
-            {
-                this.TempData[ErrorMessage] = "You must be the Creator owner to the Product in order to edit it.";
-                return this.RedirectToAction("Mine", "Product");
-            }
-
-            try
-            {
-                ProductFormModel formModel = await this.productService
-                .GetProductForEditByIdAsync(id);
-                formModel.ProductProjectCategories = await this.productProjectCategoryService.AllProductProjectCategoryAsync();
-
-                return this.View(formModel);
-            }
-            catch (Exception)
-            {
-                return this.GeneralError();
-            }
-        }
+        
 
         [HttpPost]
         public async Task<IActionResult> PurchaseProduct(string id)
         {
             bool productExists = await this.productService.ExistsByIdAsync(id);
+
             if (!productExists)
             {
                 this.TempData[ErrorMessage] = "Product with the provided ID does not exist";
@@ -379,20 +321,7 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("AllProducts", "Product");
             }
 
-            //TODO: change ProductEntity to have Buyer instead of Customer; Change logic so that creators can also buy Products!
-            //string userId = this.User.GetId()!;
-
-            //bool isTheCreatorOfTheProductTheUser = await this.productService.IsCreatorWithIdOwnerOfProductWithIdAsync(id, userId);
-
-            //if (isTheCreatorOfTheProductTheUser)
-            //{
-            //    this.TempData[ErrorMessage] = "Creators of products can not purchase their own products!";
-            //    return this.RedirectToAction("AllProducts", "Product");
-            //}
-
-            bool isCustomer = await this.customerService.CustomerExistsByCreatorId(this.User.GetId()!);
-
-            if (!isCustomer && !this.User.IsAdmin())
+            if (!this.User.IsCustomer() && !this.User.IsAdmin())
             {
                 this.TempData[ErrorMessage] = "You must be a customer to purchase Products";
                 return this.RedirectToAction("Index", "Home");
@@ -400,8 +329,7 @@ namespace Blasco.Web.Controllers
 
             try
             {
-                string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
-                await this.productService.PuchaseProductAsync(id, customerId);
+                await this.productService.PuchaseProductAsync(id, this.User.GetId()!);
             }
             catch (Exception)
             {
@@ -429,9 +357,7 @@ namespace Blasco.Web.Controllers
                 return this.RedirectToAction("Mine", "Product");
             }
 
-            string customerId = await this.customerService.GetCustomerByUserIdAsync(this.User.GetId());
-
-            bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, customerId);
+            bool didTheCurrCustomerPurchaseTheProduct = await this.productService.isPurchesedByCustomerWithIdAsync(id, this.User.GetId()!);
 
             if (!didTheCurrCustomerPurchaseTheProduct)
             {
@@ -441,7 +367,7 @@ namespace Blasco.Web.Controllers
 
             try
             {
-                await this.productService.CancelProductAsync(id, customerId);
+                await this.productService.CancelProductAsync(id, this.User.GetId()!);
             }
             catch (Exception)
             {
