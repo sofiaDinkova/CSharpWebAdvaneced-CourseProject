@@ -1,4 +1,4 @@
-#Blasco ARTcomumunity
+# Blasco ARTcomumunity
 
 is platform that connects artists and art enthusiasts, allowing artists to showcase their projects and products while engaging in challenges, and enabling customers to purchase products and appreciate artistic creations.
 \
