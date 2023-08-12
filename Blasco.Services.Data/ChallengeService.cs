@@ -8,6 +8,7 @@
     using Blasco.Data.Models;
     using Blasco.Web.ViewModels.Challenge;
     using Blasco.Web.ViewModels.Project;
+    using Blasco.Web.ViewModels.Product;
 
     public class ChallengeService : IChallengeService
     {
@@ -96,6 +97,25 @@
                 .AnyAsync(p => p.Id.ToString() == challengeId);
 
             return result;
+        }
+
+        public async Task<string> CreateAndReturnIdAsync(ChallengeFormModel formModel, string creatorId)
+        {
+            Challenge challenge = new Challenge
+            {
+                Title = formModel.Title,
+                Description = formModel.Description,
+                CategoryId = formModel.CategoryId,
+                CustomerCreatedChallengeId = Guid.Parse(creatorId),
+                PriceToWin = formModel.PriceToWin,
+            };
+
+            await this.dbContext.Challenges.AddAsync(challenge);
+            await this.dbContext.SaveChangesAsync();
+
+            await this.imageService.InsertImageAsync(formModel.Image, challenge.Id.ToString());
+
+            return challenge.Id.ToString();
         }
     }
 }

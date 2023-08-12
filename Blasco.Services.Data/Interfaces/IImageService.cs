@@ -19,5 +19,7 @@
         public List<ImageDeleteFormModel> GetImagesToEditByEntityCorrespondingIdAsync(string id);
 
         public Task DeleteProductImageByImageId(string id);
+
+        Task InsertImageAsync(IFormFile file, string entityCorrespondingId);
     }
 }

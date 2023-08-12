@@ -33,7 +33,7 @@
                 return imageBytes;
             }
 
-            return null; 
+            return null;
         }
 
         public List<byte[]> GetAllImagesBytesByEntityCorrespondingId(string entityId)
@@ -53,7 +53,7 @@
                 return imagesBytes;
             }
 
-            return null; 
+            return null;
         }
 
         public Dictionary<string, byte[]> GetAllImagesIdsAndBytesByEntityCorrespondingId(string entityId)
@@ -73,7 +73,7 @@
                 return imagesBytes;
             }
 
-            return null; 
+            return null;
         }
 
 
@@ -96,6 +96,24 @@
                     }
                 }
             }
+        }
+        public async Task InsertImageAsync(IFormFile file, string entityCorrespondingId)
+        {
+            if (file != null && file.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    var image = new Image
+                    {
+                        FileName = file.FileName,
+                        ContentImage = memoryStream.ToArray(),
+                        EntityCorrespondingId = entityCorrespondingId.ToLower()
+                    };
+                    await images.InsertOneAsync(image);
+                }
+            }
+
         }
 
         public async Task DeleteProductImagesByEntityCorrespondingIdAsync(string id)

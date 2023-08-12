@@ -16,5 +16,7 @@
         Task AddProductToChallengeAsync(ProjectParticipateViewModel model);
 
         Task<bool> ExistsByIdAsync(string challengeId);
+
+        Task<string> CreateAndReturnIdAsync(ChallengeFormModel formModel, string creatorId);
     }
 }
