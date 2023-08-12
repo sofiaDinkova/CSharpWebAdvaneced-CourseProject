@@ -1,5 +1,12 @@
-﻿@model ChallangeAllViewModel
+﻿@using Blasco.Services.Data.Interfaces
+@using Blasco.Web.Infrastructure.Extentions;
 
+@inject IUserService userService
+
+@model ChallangeAllViewModel
+@{
+    bool didAllreadyVote = await this.userService.DidAllreadyVoteForChallengeAsync(this.User.GetId()!, Model.Id);
+}
 <div class="container mx-auto">
     <div class="challenge-box">
         <div class="row">
@@ -32,12 +39,22 @@
                             <form class="ml-2" asp-area="" asp-controller="Project" asp-action="AllProjectsInChallenge" asp-route-id="@Model.Id" method="get">
                                 <input class="participate-button" type="submit" value="All Projects" />
                             </form>
-                            <form class="ml-2" asp-area="" asp-controller="Project" asp-action="Participate" asp-route-id="@Model.Id" method="get">
-                                <input class="participate-button" type="submit" value="Participate" />
-                            </form>
-                            <form class="ml-2" asp-area="" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">
-                                <input class="participate-button" type="submit" value="Vote" />
-                            </form>
+                            @if (this.User.Identity?.IsAuthenticated ?? false)
+                            {
+                                if (this.User.IsCreator() && !this.User.IsAdmin())
+                                {
+                                  <form class="ml-2" asp-area="" asp-controller="Project" asp-action="Participate" asp-route-id="@Model.Id" method="get">
+                                    <input class="participate-button" type="submit" value="Participate" />
+                                </form>  
+                                }
+
+                                if (!didAllreadyVote && !this.User.IsAdmin())
+                                {
+                                <form class="ml-2" asp-area="" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">
+                                    <input class="participate-button" type="submit" value="Vote" />
+                                </form>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

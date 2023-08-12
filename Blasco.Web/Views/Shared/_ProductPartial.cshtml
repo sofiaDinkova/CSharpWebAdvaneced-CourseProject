@@ -87,14 +87,14 @@
                     }
 
                     <p></p>
-                    @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct)
+                    @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct && !this.User.IsAdmin())
                     {
                         <form asp-controller="Product"
                              asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">
                             <input class="btn btn-outline-dark" type="submit" value="Purchase" />
                         </form>
                     }
-                    @if (this.User.IsCustomer() && isCustomerOwnerOfProduct)
+                    @if (this.User.IsCustomer() && isCustomerOwnerOfProduct && !this.User.IsAdmin())
                     {
                         <form asp-controller="Product" asp-action="CancelProduct"
                       asp-route-id="@Model.Id.ToString()" method="post">
