@@ -43,20 +43,38 @@
                     @if ((this.User.IsCreator() && isCreatorrOwnerOfProject) || this.User.IsAdmin())
                     {
                         <a asp-area="" asp-controller="Project" asp-action="Edit"
-                   asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                        <a asp-area="" asp-controller="Project" asp-action="Delete"
-                   asp-route-id="@Model.Id" class="ml-2 btn btn-danger">Delete</a>
+                   asp-route-id="@Model.Id" class="btn btn-outline-dark" method="post">Edit</a>
+
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you wan to delete product: @Model.Title
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                        <form asp-area="" asp-controller="Project" asp-action="Delete" asp-route-id="@Model.Id.ToString()" method="post">
+                                            <input class="btn btn-outline-dark" type="submit" value="Delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     }
 
                     @if (!isCreatorrOwnerOfProject)
                     {
-                        <form class="ml-2" asp-area="" asp-controller="Project"
-                      asp-action="Contact" asp-route-id="@Model.Id"
-                              method="post">
-                            <input class="btn btn-primary" type="submit"
-                                   value="Contact Creator" />
-                        </form>
+                        <a asp-area="" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.CreatorId.ToString()"
+                           class="btn btn-outline-dark">Contact</a>
                     }
                 }
             </div>

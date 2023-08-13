@@ -85,5 +85,31 @@
                 return this.RedirectToAction("Index", "Home");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AllMessages()
+        {
+            string userId= this.User.GetId()!;
+
+            bool userExists = await this.userService.ExistByIdAsync(userId);
+            if (!userExists)
+            {
+                this.TempData[ErrorMessage] = "The User Id provided does not Exist";
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            try
+            {
+                AllMessagesViewModel allMessages = await this.messageService.AllMessagesAsync(userId);
+
+                return View(allMessages);
+            }
+            catch (Exception)
+            {
+                this.ModelState.AddModelError(string.Empty, GeneralErronrMassage);
+
+                return this.RedirectToAction("Index", "Home");
+            }
+        }
     }
 }

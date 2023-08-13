@@ -6,5 +6,7 @@
     public interface IMessageService
     {
         Task CreateMessageAsync(MessageFormModel formModel, string senderId);
+
+        Task<AllMessagesViewModel> AllMessagesAsync(string userId);
     }
 }

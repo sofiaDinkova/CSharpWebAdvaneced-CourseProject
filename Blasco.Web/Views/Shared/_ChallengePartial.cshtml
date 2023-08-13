@@ -50,7 +50,7 @@
 
                                 if (!didAllreadyVote && !this.User.IsAdmin())
                                 {
-                                <form class="ml-2" asp-area="" asp-controller="Challenge" asp-action="Vote" asp-route-id="@Model.Id" method="post">
+                                    <form class="ml-2" asp-area="" asp-controller="Project" asp-action="AllProjectsInChallenge" asp-route-id="@Model.Id" method="get">
                                     <input class="participate-button" type="submit" value="Vote" />
                                 </form>
                                 }

@@ -51,9 +51,32 @@
                     @if ((this.User.IsCreator() && isCreatorrOwnerOfProduct) || this.User.IsAdmin())
                     {
                         <a asp-area="" asp-controller="Product" asp-action="Edit"
-                   asp-route-id="@Model.Id" class="btn btn-outline-dark">Edit</a>
-                        <a asp-area="" asp-controller="Product" asp-action="Delete"
-                   asp-route-id="@Model.Id" class="ml-2 btn btn-outline-dark">Delete</a>
+                   asp-route-id="@Model.Id" class="btn btn-outline-dark" method="post">Edit</a>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            Delete
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you wan to delete product: @Model.Title
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                        <form asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id.ToString()" method="post">
+                                            <input class="btn btn-outline-dark" type="submit" value="Delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     }
 
@@ -68,8 +91,10 @@
                     }
                     @if (this.User.IsCustomer() && isCustomerOwnerOfProduct)
                     {
-                        <a asp-area="" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.CreatorId.ToString()"
-                           class="btn btn-outline-dark">Contact</a>
+                        <form asp-controller="Product" asp-action="CancelProduct"
+                      asp-route-id="@Model.Id.ToString()" method="post">
+                            <input class="btn btn-outline-dark" type="submit" value="Cancel" />
+                        </form>
                     }
                 }
             </div>

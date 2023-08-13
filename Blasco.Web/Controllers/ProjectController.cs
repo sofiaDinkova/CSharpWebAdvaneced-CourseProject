@@ -387,7 +387,7 @@
                 await this.projectService.DeleteProductByIdAsync(id);
 
                 this.TempData[WarningMessage] = "The Project was successfully deleted";
-                return this.RedirectToAction("Mine", "Product");
+                return this.RedirectToAction("Mine", "Project");
             }
             catch (Exception)
             {

@@ -81,7 +81,7 @@
                         }
 
 
-                        @if (!Model.IsPurchased && !isCreatorrOwnerOfProduct && !this.User.IsAdmin())
+                    @if (!Model.IsPurchased && this.User.IsCustomer()&& !this.User.IsAdmin())
                         {
                             <form asp-controller="Product"
                           asp-action="PurchaseProduct" asp-route-id="@Model.Id.ToString()" method="post">

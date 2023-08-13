@@ -7,7 +7,20 @@
     bool isUserCustomer = await CustomerService.CustomerExistsByCreatorId(this.User.GetId());
 }*@
 
-@{
+<div style="padding-top: 60px;">
+    <h1 class="text-center" style="font-size: 52px;">BLASCO</h1>
+    <div class="text-center" style="display: flex; align-items: baseline; justify-content: center;">
+        <h2 style="font-size: 28px;">FIND</h2>
+        <span style="margin: 0 10px; font-size: 28px;">|</span>
+        <h2 style="font-size: 28px;">CREATE</h2>
+        <span style="margin: 0 10px; font-size: 28px;">|</span>
+        <h2 style="font-size: 28px;">COLLABORATE</h2>
+    </div>
+</div>
+
+
+
+@*@{
     ViewData["Title"] = "Home Page";
     var projects = Model.ToList();
 }
@@ -45,7 +58,7 @@
                 <img class="d-block w-100" style="height:500px"
                      src="data:image/jpeg;base64,@base64Image" alt="@project.Title">
                 }
-                     
+
 
                 <div class="carousel-caption d-none d-md-block">
                     <h5>
@@ -64,7 +77,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-</div>
+</div>*@
 
 @*<div class="mb-5"></div>
 <div class="row">

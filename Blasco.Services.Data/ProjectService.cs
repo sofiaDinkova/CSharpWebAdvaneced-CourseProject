@@ -264,7 +264,7 @@
             IEnumerable<ProjectAllViewModel> allProjects = await this.dbContext
                 .Projects
                 .Include(p => p.Creator)
-                .Where(p => p.CreatorId.ToString() == creatorId)
+                .Where(p => p.CreatorId.ToString() == creatorId && p.IsActive == true)
                 .Select(p => new ProjectAllViewModel
                 {
                     Id = p.Id.ToString(),

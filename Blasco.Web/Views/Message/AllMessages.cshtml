@@ -1,0 +1,97 @@
+﻿@model AllMessagesViewModel
+
+@{
+    ViewData["Title"] = $"All Messages";
+}
+
+<h2 class="text-center"> @ViewData["Title"]</h2>
+<hr />
+<h3 class="text-center">Received Messages</h3>
+
+@if (Model.AllSentMessages.Count() == 0)
+{
+    <h5 class="text-center">You do not have any Received Messages</h5>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Received on</th>
+                <th scope="col">Read</th>
+            </tr>
+        </thead>
+
+        @foreach (var recievedMessage in Model.AllRecievedMessages)
+        {
+            int num = 1;
+            <tbody>
+                <tr>
+                    <th scope="row">@num</th>
+                    <td>@recievedMessage.SednderName</td>
+                    <td>@recievedMessage.Title</td>
+                    <td>@recievedMessage.CreatedOn.ToString()</td>
+                    @if (recievedMessage.IsRead == true)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                </tr>
+
+            </tbody>
+            num++;
+        }
+    </table>
+}
+
+
+<hr />
+<h3 class="text-center">Sent Messages</h3>
+
+@if (Model.AllSentMessages.Count() == 0)
+{
+    <h5 class="text-center">You do not have any Sent Messages</h5>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Received on</th>
+                <th scope="col">Read</th>
+            </tr>
+        </thead>
+
+        @foreach (var recievedMessage in Model.AllSentMessages)
+        {
+            int num = 1;
+            <tbody>
+                <tr>
+                    <th scope="row">@num</th>
+                    <td>@recievedMessage.ReceiverName</td>
+                    <td>@recievedMessage.Title</td>
+                    <td>@recievedMessage.CreatedOn.ToString()</td>
+                    @if (recievedMessage.IsRead == true)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                </tr>
+
+            </tbody>
+            num++;
+        }
+    </table>
+}
